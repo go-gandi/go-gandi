@@ -24,6 +24,30 @@ func zone() {
 				Action:      "list",
 				Description: "List all zones",
 			},
+			actionDescription{
+				Action:      "create",
+				Description: "Create a zone",
+			},
+			actionDescription{
+				Action:      "get",
+				Description: "Get a zone",
+			},
+			actionDescription{
+				Action:      "update",
+				Description: "Update a zone",
+			},
+			actionDescription{
+				Action:      "delete",
+				Description: "Delete a zone",
+			},
+			actionDescription{
+				Action:      "domains",
+				Description: "List domains attached to a zone",
+			},
+			actionDescription{
+				Action:      "attach",
+				Description: "Attach a domain to a zone",
+			},
 		})
 	}
 }
