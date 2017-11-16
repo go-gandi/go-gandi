@@ -8,7 +8,7 @@ This library interacts with Gandi's LiveDNS API, to manage domains hosted on Gan
 
 Please note Gandi is currently (as of Nov. 2017) migrating on a new platform, this library is for the NEW platform.
 
-A simple CLI is also shipped with this library.
+A simple CLI is also shipped with this library. It returns responses to the requests in JSON.
 
 Compiling the CLI
 -----------------
