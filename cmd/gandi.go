@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	resourceType = kingpin.Arg("type", "Resource type (zone)").Required().String()
+	resourceType = kingpin.Arg("type", "Resource type (zone or record)").Required().String()
 	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
 	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
 	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
@@ -21,6 +21,8 @@ func main() {
 	switch *resourceType {
 	case "zone":
 		zone()
+	case "record":
+		zoneRecord()
 	default:
 		kingpin.Usage()
 	}
@@ -33,6 +35,13 @@ func jsonPrint(data interface{}, err error) {
 	}
 	response, _ := json.MarshalIndent(data, "", "  ")
 	fmt.Println(string(response))
+}
+func textPrint(data []byte, err error) {
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	fmt.Println(string(data))
 }
 func noPrint(err error) {
 	if err != nil {
