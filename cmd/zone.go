@@ -53,7 +53,7 @@ func zone() {
 }
 
 func createZone() {
-	if len(*args) == 0 {
+	if len(*args) < 1 {
 		displayArgsList([]string{
 			"Name of the zone to be created",
 		})
