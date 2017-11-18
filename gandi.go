@@ -3,6 +3,7 @@ package gandi
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -18,27 +19,11 @@ const (
 )
 
 func askGandi(key, method, path string, params, recipient interface{}) error {
-	var (
-		err              error
-		marshalledParams []byte
-		req              *http.Request
-	)
-	client := &http.Client{}
-	if params != nil {
-		marshalledParams, err = json.Marshal(params)
-		if err != nil {
-			return err
-		}
-		req, err = http.NewRequest(method, gandiEndpoint+path, bytes.NewReader(marshalledParams))
-	} else {
-		req, err = http.NewRequest(method, gandiEndpoint+path, nil)
-	}
+	marshalledParams, err := json.Marshal(params)
 	if err != nil {
 		return err
 	}
-	req.Header.Add("X-Api-Key", key)
-	req.Header.Add("Content-Type", "application/json")
-	resp, err := client.Do(req)
+	resp, err := doAskGandi(key, method, path, marshalledParams, nil)
 	if err != nil {
 		return err
 	}
@@ -49,28 +34,14 @@ func askGandi(key, method, path string, params, recipient interface{}) error {
 }
 
 func askGandiToBytes(key, method, path string, params interface{}) ([]byte, error) {
-	var (
-		err              error
-		marshalledParams []byte
-		req              *http.Request
-	)
-	client := &http.Client{}
-	if params != nil {
-		marshalledParams, err = json.Marshal(params)
-		if err != nil {
-			return nil, err
-		}
-		req, err = http.NewRequest(method, gandiEndpoint+path, bytes.NewReader(marshalledParams))
-	} else {
-		req, err = http.NewRequest(method, gandiEndpoint+path, nil)
+	headers := [][2]string{
+		[2]string{"Accept", "text/plain"},
 	}
+	marshalledParams, err := json.Marshal(params)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("X-Api-Key", key)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "text/plain")
-	resp, err := client.Do(req)
+	resp, err := doAskGandi(key, method, path, marshalledParams, headers)
 	if err != nil {
 		return nil, err
 	}
@@ -79,22 +50,7 @@ func askGandiToBytes(key, method, path string, params interface{}) ([]byte, erro
 }
 
 func askGandiFromBytes(key, method, path string, params []byte, recipient interface{}) error {
-	var (
-		err error
-		req *http.Request
-	)
-	client := &http.Client{}
-	if params != nil {
-		req, err = http.NewRequest(method, gandiEndpoint+path, bytes.NewReader(params))
-	} else {
-		req, err = http.NewRequest(method, gandiEndpoint+path, nil)
-	}
-	if err != nil {
-		return err
-	}
-	req.Header.Add("X-Api-Key", key)
-	req.Header.Add("Content-Type", "text/plain")
-	resp, err := client.Do(req)
+	resp, err := doAskGandi(key, method, path, params, nil)
 	if err != nil {
 		return err
 	}
@@ -102,6 +58,37 @@ func askGandiFromBytes(key, method, path string, params []byte, recipient interf
 	decoder := json.NewDecoder(resp.Body)
 	decoder.Decode(recipient)
 	return nil
+}
+
+func doAskGandi(key, method, path string, params []byte, extraHeaders [][2]string) (*http.Response, error) {
+	client := &http.Client{}
+	req, err := http.NewRequest(method, gandiEndpoint+path, bytes.NewReader(params))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("X-Api-Key", key)
+	req.Header.Add("Content-Type", "application/json")
+	for _, header := range extraHeaders {
+		req.Header.Add(header[0], header[1])
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return resp, err
+	}
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		defer resp.Body.Close()
+		var message StandardResponse
+		defer resp.Body.Close()
+		decoder := json.NewDecoder(resp.Body)
+		decoder.Decode(&message)
+		if message.Message != "" {
+			err = fmt.Errorf("%d: %s", resp.StatusCode, message.Message)
+		} else {
+			err = fmt.Errorf("%d", resp.StatusCode)
+
+		}
+	}
+	return resp, err
 }
 
 // StandardResponse is a standard response

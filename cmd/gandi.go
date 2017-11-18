@@ -52,7 +52,7 @@ func main() {
 
 func jsonPrint(data interface{}, err error) {
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"\n", err)
+		fmt.Printf("{\"error\": \"%s\"}\n", err)
 		return
 	}
 	response, _ := json.MarshalIndent(data, "", "  ")
@@ -67,7 +67,7 @@ func textPrint(data []byte, err error) {
 }
 func noPrint(err error) {
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"\n", err)
+		fmt.Printf("{\"error\": \"%s\"}\n", err)
 		return
 	}
 	fmt.Println("OK")
