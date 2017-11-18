@@ -35,7 +35,7 @@ func GetZone(key, uuid string) (zone Zone, err error) {
 	return
 }
 
-// UpdateZone updates a zone
+// UpdateZone updates a zone (only its name, actually...)
 func UpdateZone(key, uuid, name string) (response StandardResponse, err error) {
 	err = askGandi(key, mPATCH, "zones/"+uuid, Zone{Name: name}, &response)
 	return
