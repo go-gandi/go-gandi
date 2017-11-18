@@ -4,11 +4,11 @@ import g "github.com/tiramiseb/go-gandi-livedns"
 
 func snapshot() {
 	switch *action {
-	case "list":
+	case aList:
 		listSnapshots()
-	case "create":
+	case aCreate:
 		createSnapshot()
-	case "get":
+	case aGet:
 		getSnapshot()
 	default:
 		displayActionsList([]actionDescription{

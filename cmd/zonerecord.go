@@ -9,17 +9,17 @@ import (
 
 func zoneRecord() {
 	switch *action {
-	case "list":
+	case aList:
 		listRecords()
-	case "text":
+	case aText:
 		listRecordsAsText()
-	case "get":
+	case aGet:
 		getRecord()
-	case "create":
+	case aCreate:
 		createRecord()
-	case "update":
+	case aUpdate:
 		updateRecord()
-	case "delete":
+	case aDelete:
 		deleteRecord()
 	default:
 		displayActionsList([]actionDescription{

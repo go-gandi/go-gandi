@@ -8,8 +8,16 @@ import (
 )
 
 const (
-	create = "create"
-	list   = "list"
+	// Actions names
+	aAdd     = "add"
+	aAttach  = "attach"
+	aCreate  = "create"
+	aDelete  = "delete"
+	aDomains = "domains"
+	aGet     = "get"
+	aList    = "list"
+	aText    = "text"
+	aUpdate  = "update"
 )
 
 var (

@@ -4,28 +4,12 @@ import g "github.com/tiramiseb/go-gandi-livedns"
 
 func domain() {
 	switch *action {
-	case "list":
+	case aList:
 		jsonPrint(g.ListDomains(*apiKey))
-	case "add":
+	case aAdd:
 		addDomainToZone()
-		/*
-			case "create":
-				createDomain()
-		*/
-	case "get":
+	case aGet:
 		getDomain()
-		/*
-			case "update":
-				updateDomain()
-			case "delete":
-				deleteDomain()
-		*/
-	/*
-		case "domains":
-			getDomainDomains()
-		case "attach":
-			attachDomainToDomain()
-	*/
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
