@@ -7,8 +7,13 @@ import (
 	"github.com/alecthomas/kingpin"
 )
 
+const (
+	create = "create"
+	list   = "list"
+)
+
 var (
-	resourceType = kingpin.Arg("type", "Resource type (zone, record or snapshot)").Required().String()
+	resourceType = kingpin.Arg("type", "Resource type (zone, record, snapshot or domain)").Required().String()
 	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
 	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
 	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
@@ -24,6 +29,8 @@ func main() {
 		zoneRecord()
 	case "snapshot":
 		snapshot()
+	case "domain":
+		domain()
 	default:
 		kingpin.Usage()
 	}
