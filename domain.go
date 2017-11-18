@@ -25,57 +25,57 @@ type SigningKey struct {
 }
 
 // ListDomains lists all domains
-func ListDomains(key string) (domains []Domain, err error) {
-	err = askGandi(key, mGET, "domains", nil, &domains)
+func (g *Gandi) ListDomains() (domains []Domain, err error) {
+	err = g.askGandi(mGET, "domains", nil, &domains)
 	return
 }
 
 // AddDomainToZone adds a domain to a zone
 // It is equivalent to AttachDomainToZone, the only difference is the entry point in the LiveDNS API.
-func AddDomainToZone(key, fqdn, uuid string) (response StandardResponse, err error) {
-	err = askGandi(key, mPOST, "domains", Domain{FQDN: fqdn, ZoneUUID: uuid}, &response)
+func (g *Gandi) AddDomainToZone(fqdn, uuid string) (response StandardResponse, err error) {
+	err = g.askGandi(mPOST, "domains", Domain{FQDN: fqdn, ZoneUUID: uuid}, &response)
 	return
 }
 
 // GetDomain returns a domain
-func GetDomain(key, fqdn string) (domain Domain, err error) {
-	err = askGandi(key, mGET, "domains/"+fqdn, nil, &domain)
+func (g *Gandi) GetDomain(fqdn string) (domain Domain, err error) {
+	err = g.askGandi(mGET, "domains/"+fqdn, nil, &domain)
 	return
 }
 
 // ChangeAssociatedZone changes the zone associated to a domain
-func ChangeAssociatedZone(key, fqdn, uuid string) (response StandardResponse, err error) {
-	err = askGandi(key, mPATCH, "domains/"+fqdn, Domain{ZoneUUID: uuid}, &response)
+func (g *Gandi) ChangeAssociatedZone(fqdn, uuid string) (response StandardResponse, err error) {
+	err = g.askGandi(mPATCH, "domains/"+fqdn, Domain{ZoneUUID: uuid}, &response)
 	return
 }
 
 // SignDomain creates a DNSKEY and asks Gandi servers to automatically sign the domain
-func SignDomain(key, fqdn string) (response StandardResponse, err error) {
+func (g *Gandi) SignDomain(fqdn string) (response StandardResponse, err error) {
 	f := SigningKey{Flags: 257}
-	err = askGandi(key, mPOST, "domains/"+fqdn+"/keys", f, &response)
+	err = g.askGandi(mPOST, "domains/"+fqdn+"/keys", f, &response)
 	return
 }
 
 // GetDomainKeys returns data about the signing keys created for a domain
-func GetDomainKeys(key, fqdn string) (keys []SigningKey, err error) {
-	err = askGandi(key, mGET, "domains/"+fqdn+"/keys", nil, &keys)
+func (g *Gandi) GetDomainKeys(fqdn string) (keys []SigningKey, err error) {
+	err = g.askGandi(mGET, "domains/"+fqdn+"/keys", nil, &keys)
 	return
 }
 
 // DeleteDomainKey deletes a signing key from a domain
-func DeleteDomainKey(key, fqdn, uuid string) (err error) {
-	err = askGandi(key, mDELETE, "domains/"+fqdn+"/keys/"+uuid, nil, nil)
+func (g *Gandi) DeleteDomainKey(fqdn, uuid string) (err error) {
+	err = g.askGandi(mDELETE, "domains/"+fqdn+"/keys/"+uuid, nil, nil)
 	return
 }
 
 // UpdateDomainKey updates a signing key for a domain (only the deleted status, actually...)
-func UpdateDomainKey(key, fqdn, uuid string, deleted bool) (err error) {
-	err = askGandi(key, mPUT, "domains/"+fqdn+"/keys/"+uuid, SigningKey{Deleted: &deleted}, nil)
+func (g *Gandi) UpdateDomainKey(fqdn, uuid string, deleted bool) (err error) {
+	err = g.askGandi(mPUT, "domains/"+fqdn+"/keys/"+uuid, SigningKey{Deleted: &deleted}, nil)
 	return
 }
 
 // GetDomainNS returns the list of the nameservers for a domain
-func GetDomainNS(key, fqdn string) (ns []string, err error) {
-	err = askGandiFromBytes(key, mGET, "nameservers/"+fqdn, nil, &ns)
+func (g *Gandi) GetDomainNS(fqdn string) (ns []string, err error) {
+	err = g.askGandiFromBytes(mGET, "nameservers/"+fqdn, nil, &ns)
 	return
 }

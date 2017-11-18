@@ -1,11 +1,9 @@
 package main
 
-import g "github.com/tiramiseb/go-gandi-livedns"
-
 func zone() {
 	switch *action {
 	case aList:
-		jsonPrint(g.ListZones(*apiKey))
+		jsonPrint(g.ListZones())
 	case aCreate:
 		createZone()
 	case aGet:
@@ -59,7 +57,7 @@ func createZone() {
 		})
 		return
 	}
-	jsonPrint(g.CreateZone(*apiKey, (*args)[0]))
+	jsonPrint(g.CreateZone((*args)[0]))
 }
 
 func getZone() {
@@ -69,7 +67,7 @@ func getZone() {
 		})
 		return
 	}
-	jsonPrint(g.GetZone(*apiKey, (*args)[0]))
+	jsonPrint(g.GetZone((*args)[0]))
 }
 
 func updateZone() {
@@ -80,7 +78,7 @@ func updateZone() {
 		})
 		return
 	}
-	jsonPrint(g.UpdateZone(*apiKey, (*args)[0], (*args)[1]))
+	jsonPrint(g.UpdateZone((*args)[0], (*args)[1]))
 }
 
 func deleteZone() {
@@ -90,7 +88,7 @@ func deleteZone() {
 		})
 		return
 	}
-	noPrint(g.DeleteZone(*apiKey, (*args)[0]))
+	noPrint(g.DeleteZone((*args)[0]))
 }
 
 func getZoneDomains() {
@@ -100,7 +98,7 @@ func getZoneDomains() {
 		})
 		return
 	}
-	jsonPrint(g.GetZoneDomains(*apiKey, (*args)[0]))
+	jsonPrint(g.GetZoneDomains((*args)[0]))
 }
 
 func attachDomainToZone() {
@@ -111,5 +109,5 @@ func attachDomainToZone() {
 		})
 		return
 	}
-	jsonPrint(g.AttachDomainToZone(*apiKey, (*args)[0], (*args)[1]))
+	jsonPrint(g.AttachDomainToZone((*args)[0], (*args)[1]))
 }

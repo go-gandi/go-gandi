@@ -9,25 +9,25 @@ type Tsig struct {
 }
 
 // ListTsigs lists all tsigs
-func ListTsigs(key string) (tsigs []Tsig, err error) {
-	err = askGandi(key, mGET, "axfr/tsig", nil, &tsigs)
+func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
+	err = g.askGandi(mGET, "axfr/tsig", nil, &tsigs)
 	return
 }
 
 // CreateTsig creates a tsig
-func CreateTsig(key string) (tsig Tsig, err error) {
-	err = askGandi(key, mPOST, "axfr/tsig", nil, &tsig)
+func (g *Gandi) CreateTsig() (tsig Tsig, err error) {
+	err = g.askGandi(mPOST, "axfr/tsig", nil, &tsig)
 	return
 }
 
 // AddTsigToDomain adds a tsig to a domain
-func AddTsigToDomain(key, fqdn, uuid string) (err error) {
-	err = askGandi(key, mPUT, "domains/"+fqdn+"/axfr/tsig/"+uuid, nil, nil)
+func (g *Gandi) AddTsigToDomain(fqdn, uuid string) (err error) {
+	err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/tsig/"+uuid, nil, nil)
 	return
 }
 
 // AddSlaveToDomain adds a slave to a domain
-func AddSlaveToDomain(key, fqdn, host string) (err error) {
-	err = askGandi(key, mPUT, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
+func (g *Gandi) AddSlaveToDomain(fqdn, host string) (err error) {
+	err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
 	return
 }

@@ -1,13 +1,11 @@
 package main
 
-import g "github.com/tiramiseb/go-gandi-livedns"
-
 func axfr() {
 	switch *action {
 	case aList:
-		jsonPrint(g.ListTsigs(*apiKey))
+		jsonPrint(g.ListTsigs())
 	case aCreate:
-		jsonPrint(g.CreateTsig(*apiKey))
+		jsonPrint(g.CreateTsig())
 	case aAdd:
 		addTsigToDomain()
 	case aSlave:
@@ -42,7 +40,7 @@ func addTsigToDomain() {
 		})
 		return
 	}
-	noPrint(g.AddTsigToDomain(*apiKey, (*args)[0], (*args)[1]))
+	noPrint(g.AddTsigToDomain((*args)[0], (*args)[1]))
 }
 
 func addSlaveToDomain() {
@@ -53,5 +51,5 @@ func addSlaveToDomain() {
 		})
 		return
 	}
-	noPrint(g.AddSlaveToDomain(*apiKey, (*args)[0], (*args)[1]))
+	noPrint(g.AddSlaveToDomain((*args)[0], (*args)[1]))
 }

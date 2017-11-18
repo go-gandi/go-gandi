@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/kingpin"
+	gandi "github.com/tiramiseb/go-gandi-livedns"
 )
 
 const (
@@ -30,11 +31,13 @@ var (
 	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
 	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
 	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
+	g            *gandi.Gandi
 )
 
 func main() {
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
+	g = gandi.New(*apiKey)
 	switch *resourceType {
 	case "zone":
 		zone()
