@@ -13,15 +13,19 @@ const (
 	aAttach  = "attach"
 	aCreate  = "create"
 	aDelete  = "delete"
+	aDelKey  = "delkey"
 	aDomains = "domains"
 	aGet     = "get"
+	aKeys    = "keys"
 	aList    = "list"
+	aSign    = "sign"
+	aSlave   = "slave"
 	aText    = "text"
 	aUpdate  = "update"
 )
 
 var (
-	resourceType = kingpin.Arg("type", "Resource type (zone, record, snapshot or domain)").Required().String()
+	resourceType = kingpin.Arg("type", "Resource type (zone, record, snapshot, domain or axfr)").Required().String()
 	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
 	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
 	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
@@ -39,6 +43,8 @@ func main() {
 		snapshot()
 	case "domain":
 		domain()
+	case "axfr":
+		axfr()
 	default:
 		kingpin.Usage()
 	}

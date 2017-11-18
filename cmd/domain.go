@@ -10,6 +10,12 @@ func domain() {
 		addDomainToZone()
 	case aGet:
 		getDomain()
+	case aSign:
+		signDomain()
+	case aKeys:
+		getDomainKeys()
+	case aDelKey:
+		deleteDomainKey()
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
@@ -24,26 +30,18 @@ func domain() {
 				Action:      aGet,
 				Description: "Get a domain",
 			},
-			/*
-				actionDescription{
-					Action:      "update",
-					Description: "Update a domain",
-				},
-				actionDescription{
-					Action:      "delete",
-					Description: "Delete a domain",
-				},
-			*/
-			/*
-				actionDescription{
-					Action:      "domains",
-					Description: "List domains attached to a domain",
-				},
-				actionDescription{
-					Action:      "attach",
-					Description: "Attach a domain to a domain",
-				},
-			*/
+			actionDescription{
+				Action:      aSign,
+				Description: "Ask the Gandi server to sign a domain",
+			},
+			actionDescription{
+				Action:      aKeys,
+				Description: "Return the signing keys created for domain",
+			},
+			actionDescription{
+				Action:      aDelKey,
+				Description: "Delete a signing key",
+			},
 		})
 	}
 }
@@ -80,46 +78,34 @@ func changeAssociatedZone() {
 	jsonPrint(g.ChangeAssociatedZone(*apiKey, (*args)[0], (*args)[1]))
 }
 
-/*
-func updateDomain() {
-	if len(*args) < 2 {
-		displayArgsList([]string{
-			"UUID of the domain to be updated",
-			"New name of the domain",
-		})
-		return
-	}
-	//jsonPrint(g.UpdateDomain(*apiKey, (*args)[0], (*args)[1]))
-}
-
-func deleteDomain() {
+func signDomain() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
-			"UUID of the domain to be deleted",
+			"FQDN of the domain to be signed",
 		})
 		return
 	}
-	//noPrint(g.DeleteDomain(*apiKey, (*args)[0]))
+	jsonPrint(g.SignDomain(*apiKey, (*args)[0]))
 }
 
-func getDomainDomains() {
+func getDomainKeys() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
-			"UUID of the domain to be checked",
+			"FQDN of the domain for which to return keys",
 		})
 		return
 	}
-	jsonPrint(g.GetDomainDomains(*apiKey, (*args)[0]))
+	jsonPrint(g.GetDomainKeys(*apiKey, (*args)[0]))
 }
 
-func attachDomainToDomain() {
+func deleteDomainKey() {
 	if len(*args) < 2 {
 		displayArgsList([]string{
-			"UUID of the domain to attach the domain to",
-			"FQDN of the domain to be attached",
+			"FQDN of the domain for which to delete a key",
+			"UUID of the key to delete",
 		})
 		return
 	}
-	jsonPrint(g.AttachDomainToDomain(*apiKey, (*args)[0], (*args)[1]))
+	noPrint(g.DeleteDomainKey(*apiKey, (*args)[0], (*args)[1]))
+
 }
-*/
