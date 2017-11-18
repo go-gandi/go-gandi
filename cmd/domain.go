@@ -16,6 +16,8 @@ func domain() {
 		getDomainKeys()
 	case aDelKey:
 		deleteDomainKey()
+	case aNS:
+		getDomainNS()
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
@@ -41,6 +43,10 @@ func domain() {
 			actionDescription{
 				Action:      aDelKey,
 				Description: "Delete a signing key",
+			},
+			actionDescription{
+				Action:      aNS,
+				Description: "Get nameservers for a domain",
 			},
 		})
 	}
@@ -107,5 +113,14 @@ func deleteDomainKey() {
 		return
 	}
 	noPrint(g.DeleteDomainKey(*apiKey, (*args)[0], (*args)[1]))
+}
 
+func getDomainNS() {
+	if len(*args) < 1 {
+		displayArgsList([]string{
+			"FQDN of the domain for which to return the nameservers",
+		})
+		return
+	}
+	jsonPrint(g.GetDomainNS(*apiKey, (*args)[0]))
 }

@@ -67,3 +67,15 @@ func DeleteDomainKey(key, fqdn, uuid string) (err error) {
 	err = askGandi(key, mDELETE, "domains/"+fqdn+"/keys/"+uuid, nil, nil)
 	return
 }
+
+// UpdateDomainKey updates a signing key for a domain (only the deleted status, actually...)
+func UpdateDomainKey(key, fqdn, uuid string, deleted bool) (err error) {
+	err = askGandi(key, mPUT, "domains/"+fqdn+"/keys/"+uuid, SigningKey{Deleted: &deleted}, nil)
+	return
+}
+
+// GetDomainNS returns the list of the nameservers for a domain
+func GetDomainNS(key, fqdn string) (ns []string, err error) {
+	err = askGandiFromBytes(key, mGET, "nameservers/"+fqdn, nil, &ns)
+	return
+}

@@ -35,7 +35,7 @@ gandi.CreateZoneRecord(apikey, zoneUUID, "www", "A", 3600, []string{"192.168.0.1
 // Step 4: associate the domain
 gandi.AttachDomainToZone(apikey, zoneUUID, "example.com")
 // Step 5: change nameservers
-// not implemented yet
+nameservers := gandi.getDomainNS(apikey, "example.com")
 // Step 6: setup automatic DNSSEC signing
 gandi.SignDomain(apikey, "example.com")
 // Getting the key href
@@ -43,7 +43,7 @@ gandi.GetDomainKeys(apikey, "example.com")
 // Deleting the key
 gandi.DeleteDomainKey(apikey, "example.com", "bb004a38-566b-4200-bd6e-830b48ea50cf")
 // Recovering the key
-// not implemented
+gandi.UpdateDomainKey(apikey, "example.com", "bb004a38-566b-4200-bd6e-830b48ea50cf", false)
 // Step 7: adding extra security with a slave server
 // Creating a TSIG key
 tsig, _ := gandi.CreateTsig(apikey)

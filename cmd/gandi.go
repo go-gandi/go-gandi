@@ -18,6 +18,7 @@ const (
 	aGet     = "get"
 	aKeys    = "keys"
 	aList    = "list"
+	aNS      = "ns"
 	aSign    = "sign"
 	aSlave   = "slave"
 	aText    = "text"
