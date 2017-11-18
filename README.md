@@ -18,6 +18,7 @@ This example mimics the steps of [the official LiveDNS documentation example](ht
 First (step 1), [get your API key](https://account.gandi.net/) from the "Security" section in new Account admin panel to be able to make authenticated requests to the API.
 
 ```go
+import "github.com/tiramiseb/go-gandi-livedns"
 apikey = "<the API key>"
 // Step 2: create the zone
 gandi.CreateZone(apikey, "example.com Zone")
