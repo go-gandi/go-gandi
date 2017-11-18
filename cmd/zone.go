@@ -21,31 +21,31 @@ func zone() {
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
-				Action:      "list",
+				Action:      aList,
 				Description: "List all zones",
 			},
 			actionDescription{
-				Action:      "create",
+				Action:      aCreate,
 				Description: "Create a zone",
 			},
 			actionDescription{
-				Action:      "get",
+				Action:      aGet,
 				Description: "Get a zone",
 			},
 			actionDescription{
-				Action:      "update",
+				Action:      aUpdate,
 				Description: "Update a zone",
 			},
 			actionDescription{
-				Action:      "delete",
+				Action:      aDelete,
 				Description: "Delete a zone",
 			},
 			actionDescription{
-				Action:      "domains",
+				Action:      aDomains,
 				Description: "List domains attached to a zone",
 			},
 			actionDescription{
-				Action:      "attach",
+				Action:      aAttach,
 				Description: "Attach a domain to a zone",
 			},
 		})

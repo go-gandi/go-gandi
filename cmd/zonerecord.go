@@ -24,19 +24,19 @@ func zoneRecord() {
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
-				Action:      "list",
+				Action:      aList,
 				Description: "List all records in a zone, by zone ID or by domain",
 			},
 			actionDescription{
-				Action:      "text",
+				Action:      aText,
 				Description: "List all records in a zone as text",
 			},
 			actionDescription{
-				Action:      "get",
+				Action:      aGet,
 				Description: "Get a single record in a zone, by zone ID or by domain",
 			},
 			actionDescription{
-				Action:      "create",
+				Action:      aCreate,
 				Description: "Create a record",
 			},
 		})

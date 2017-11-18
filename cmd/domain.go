@@ -13,21 +13,15 @@ func domain() {
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
-				Action:      "list",
+				Action:      aList,
 				Description: "List all domains",
 			},
 			actionDescription{
-				Action:      "add",
+				Action:      aAdd,
 				Description: "Add a domains in a zone",
 			},
-			/*
-				actionDescription{
-					Action:      "create",
-					Description: "Create a domain",
-				},
-			*/
 			actionDescription{
-				Action:      "get",
+				Action:      aGet,
 				Description: "Get a domain",
 			},
 			/*
@@ -65,17 +59,6 @@ func addDomainToZone() {
 	jsonPrint(g.AddDomainToZone(*apiKey, (*args)[0], (*args)[1]))
 }
 
-/*
-func createDomain() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"Name of the domain to be created",
-		})
-		return
-	}
-	//jsonPrint(g.CreateDomain(*apiKey, (*args)[0]))
-}
-*/
 func getDomain() {
 	if len(*args) < 1 {
 		displayArgsList([]string{

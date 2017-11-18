@@ -13,15 +13,15 @@ func snapshot() {
 	default:
 		displayActionsList([]actionDescription{
 			actionDescription{
-				Action:      "list",
+				Action:      aList,
 				Description: "List all snapshots for a zone",
 			},
 			actionDescription{
-				Action:      "create",
+				Action:      aCreate,
 				Description: "Create a snapshot",
 			},
 			actionDescription{
-				Action:      "get",
+				Action:      aGet,
 				Description: "Get a snapshot",
 			},
 		})
