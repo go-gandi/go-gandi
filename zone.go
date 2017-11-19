@@ -14,12 +14,12 @@ type Zone struct {
 	Serial          int    `json:"serial,omitempty"`
 	Email           string `json:"email,omitempty"`
 	PrimaryNS       string `json:"primary_ns,omitempty"`
-	Name            string `json:"name"`
+	Name            string `json:"name,omitempty"`
 }
 
 // ListZones lists all zones
 func (g *Gandi) ListZones() (zones []Zone, err error) {
-	err = g.askGandi(mGET, "zones", nil, &zones)
+	_, err = g.askGandi(mGET, "zones", nil, &zones)
 	return
 }
 
@@ -31,7 +31,7 @@ func (g *Gandi) CreateZone(name string) (response StandardResponse, err error) {
 
 // GetZone returns a zone
 func (g *Gandi) GetZone(uuid string) (zone Zone, err error) {
-	err = g.askGandi(mGET, "zones/"+uuid, nil, &zone)
+	_, err = g.askGandi(mGET, "zones/"+uuid, nil, &zone)
 	return
 }
 
@@ -43,18 +43,18 @@ func (g *Gandi) UpdateZone(uuid, name string) (response StandardResponse, err er
 
 // DeleteZone deletes a zone
 func (g *Gandi) DeleteZone(uuid string) (err error) {
-	err = g.askGandi(mDELETE, "zones/"+uuid, nil, nil)
+	_, err = g.askGandi(mDELETE, "zones/"+uuid, nil, nil)
 	return
 }
 
 // GetZoneDomains returns domains attached to a zone
 func (g *Gandi) GetZoneDomains(uuid string) (domains []Domain, err error) {
-	err = g.askGandi(mGET, "zones/"+uuid+"/domains", nil, &domains)
+	_, err = g.askGandi(mGET, "zones/"+uuid+"/domains", nil, &domains)
 	return
 }
 
 // AttachDomainToZone attaches a domain to a zone
 func (g *Gandi) AttachDomainToZone(uuid, fqdn string) (response StandardResponse, err error) {
-	err = g.askGandi(mPOST, "zones/"+uuid+"/domains/"+fqdn, nil, &response)
+	_, err = g.askGandi(mPOST, "zones/"+uuid+"/domains/"+fqdn, nil, &response)
 	return
 }

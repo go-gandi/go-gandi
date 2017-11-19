@@ -30,46 +30,47 @@ func New(apikey string) *Gandi {
 	return &Gandi{apikey: apikey}
 }
 
-func (g *Gandi) askGandi(method, path string, params, recipient interface{}) error {
+func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (http.Header, error) {
 	marshalledParams, err := json.Marshal(params)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	resp, err := g.doAskGandi(method, path, marshalledParams, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	decoder := json.NewDecoder(resp.Body)
 	decoder.Decode(recipient)
-	return nil
+	return resp.Header, nil
 }
 
-func (g *Gandi) askGandiToBytes(method, path string, params interface{}) ([]byte, error) {
+func (g *Gandi) askGandiToBytes(method, path string, params interface{}) (http.Header, []byte, error) {
 	headers := [][2]string{
 		[2]string{"Accept", "text/plain"},
 	}
 	marshalledParams, err := json.Marshal(params)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	resp, err := g.doAskGandi(method, path, marshalledParams, headers)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
+	content, err := ioutil.ReadAll(resp.Body)
+	return resp.Header, content, err
 }
 
-func (g *Gandi) askGandiFromBytes(method, path string, params []byte, recipient interface{}) error {
+func (g *Gandi) askGandiFromBytes(method, path string, params []byte, recipient interface{}) (http.Header, error) {
 	resp, err := g.doAskGandi(method, path, params, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	decoder := json.NewDecoder(resp.Body)
 	decoder.Decode(recipient)
-	return nil
+	return resp.Header, nil
 }
 
 func (g *Gandi) doAskGandi(method, path string, params []byte, extraHeaders [][2]string) (*http.Response, error) {

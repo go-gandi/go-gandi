@@ -10,24 +10,24 @@ type Tsig struct {
 
 // ListTsigs lists all tsigs
 func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
-	err = g.askGandi(mGET, "axfr/tsig", nil, &tsigs)
+	_, err = g.askGandi(mGET, "axfr/tsig", nil, &tsigs)
 	return
 }
 
 // CreateTsig creates a tsig
 func (g *Gandi) CreateTsig() (tsig Tsig, err error) {
-	err = g.askGandi(mPOST, "axfr/tsig", nil, &tsig)
+	_, err = g.askGandi(mPOST, "axfr/tsig", nil, &tsig)
 	return
 }
 
 // AddTsigToDomain adds a tsig to a domain
 func (g *Gandi) AddTsigToDomain(fqdn, uuid string) (err error) {
-	err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/tsig/"+uuid, nil, nil)
+	_, err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/tsig/"+uuid, nil, nil)
 	return
 }
 
 // AddSlaveToDomain adds a slave to a domain
 func (g *Gandi) AddSlaveToDomain(fqdn, host string) (err error) {
-	err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
+	_, err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
 	return
 }

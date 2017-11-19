@@ -10,18 +10,18 @@ type Snapshot struct {
 
 // ListSnapshots lists all zones
 func (g *Gandi) ListSnapshots(uuid string) (snapshots []Snapshot, err error) {
-	err = g.askGandi(mGET, "zones/"+uuid+"/snapshots", nil, &snapshots)
+	_, err = g.askGandi(mGET, "zones/"+uuid+"/snapshots", nil, &snapshots)
 	return
 }
 
 // CreateSnapshot creates a zone
 func (g *Gandi) CreateSnapshot(uuid string) (response StandardResponse, err error) {
-	err = g.askGandi(mPOST, "zones/"+uuid+"/snapshots", nil, &response)
+	_, err = g.askGandi(mPOST, "zones/"+uuid+"/snapshots", nil, &response)
 	return
 }
 
 // GetSnapshot returns a zone
 func (g *Gandi) GetSnapshot(uuid, snapUUID string) (snapshot Snapshot, err error) {
-	err = g.askGandi(mGET, "zones/"+uuid+"/snapshots/"+snapUUID, nil, &snapshot)
+	_, err = g.askGandi(mGET, "zones/"+uuid+"/snapshots/"+snapUUID, nil, &snapshot)
 	return
 }
