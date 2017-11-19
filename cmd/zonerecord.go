@@ -3,8 +3,6 @@ package main
 import (
 	"strconv"
 	"strings"
-
-	g "github.com/tiramiseb/go-gandi-livedns"
 )
 
 func zoneRecord() {
@@ -54,15 +52,15 @@ func listRecords() {
 	uuidOrFQDN := (*args)[0]
 	if len(*args) < 2 {
 		if strings.Contains(uuidOrFQDN, ".") {
-			jsonPrint(g.ListDomainRecords(*apiKey, uuidOrFQDN))
+			jsonPrint(g.ListDomainRecords(uuidOrFQDN))
 		} else {
-			jsonPrint(g.ListZoneRecords(*apiKey, uuidOrFQDN))
+			jsonPrint(g.ListZoneRecords(uuidOrFQDN))
 		}
 	} else {
 		if strings.Contains(uuidOrFQDN, ".") {
-			jsonPrint(g.ListDomainRecordsWithName(*apiKey, uuidOrFQDN, (*args)[1]))
+			jsonPrint(g.ListDomainRecordsWithName(uuidOrFQDN, (*args)[1]))
 		} else {
-			jsonPrint(g.ListZoneRecordsWithName(*apiKey, uuidOrFQDN, (*args)[1]))
+			jsonPrint(g.ListZoneRecordsWithName(uuidOrFQDN, (*args)[1]))
 		}
 	}
 }
@@ -74,7 +72,7 @@ func listRecordsAsText() {
 		})
 		return
 	}
-	textPrint(g.ListZoneRecordsAsText(*apiKey, (*args)[0]))
+	textPrint(g.ListZoneRecordsAsText((*args)[0]))
 }
 
 func createRecord() {
@@ -94,9 +92,9 @@ func createRecord() {
 	}
 	uuidOrFQDN := (*args)[0]
 	if strings.Contains(uuidOrFQDN, ".") {
-		jsonPrint(g.CreateDomainRecord(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2], ttl, (*args)[4:]))
+		jsonPrint(g.CreateDomainRecord(uuidOrFQDN, (*args)[1], (*args)[2], ttl, (*args)[4:]))
 	} else {
-		jsonPrint(g.CreateZoneRecord(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2], ttl, (*args)[4:]))
+		jsonPrint(g.CreateZoneRecord(uuidOrFQDN, (*args)[1], (*args)[2], ttl, (*args)[4:]))
 	}
 }
 
@@ -111,9 +109,9 @@ func getRecord() {
 	}
 	uuidOrFQDN := (*args)[0]
 	if strings.Contains(uuidOrFQDN, ".") {
-		jsonPrint(g.GetDomainRecordWithNameAndType(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2]))
+		jsonPrint(g.GetDomainRecordWithNameAndType(uuidOrFQDN, (*args)[1], (*args)[2]))
 	} else {
-		jsonPrint(g.GetZoneRecordWithNameAndType(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2]))
+		jsonPrint(g.GetZoneRecordWithNameAndType(uuidOrFQDN, (*args)[1], (*args)[2]))
 	}
 }
 
@@ -133,7 +131,7 @@ func updateRecord() {
 		noPrint(err)
 	}
 	values := (*args)[4:]
-	jsonPrint(g.ChangeZoneRecordWithNameAndType(*apiKey, (*args)[0], (*args)[1], (*args)[2], ttl, values))
+	jsonPrint(g.ChangeZoneRecordWithNameAndType((*args)[0], (*args)[1], (*args)[2], ttl, values))
 }
 
 func deleteRecord() {
@@ -148,19 +146,19 @@ func deleteRecord() {
 	uuidOrFQDN := (*args)[0]
 	if strings.Contains(uuidOrFQDN, ".") {
 		if len(*args) < 2 {
-			noPrint(g.DeleteAllDomainRecords(*apiKey, uuidOrFQDN))
+			noPrint(g.DeleteAllDomainRecords(uuidOrFQDN))
 		} else if len(*args) < 3 {
-			noPrint(g.DeleteDomainRecords(*apiKey, uuidOrFQDN, (*args)[1]))
+			noPrint(g.DeleteDomainRecords(uuidOrFQDN, (*args)[1]))
 		} else {
-			noPrint(g.DeleteDomainRecord(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2]))
+			noPrint(g.DeleteDomainRecord(uuidOrFQDN, (*args)[1], (*args)[2]))
 		}
 	} else {
 		if len(*args) < 2 {
-			noPrint(g.DeleteAllZoneRecords(*apiKey, uuidOrFQDN))
+			noPrint(g.DeleteAllZoneRecords(uuidOrFQDN))
 		} else if len(*args) < 3 {
-			noPrint(g.DeleteZoneRecords(*apiKey, uuidOrFQDN, (*args)[1]))
+			noPrint(g.DeleteZoneRecords(uuidOrFQDN, (*args)[1]))
 		} else {
-			noPrint(g.DeleteZoneRecord(*apiKey, uuidOrFQDN, (*args)[1], (*args)[2]))
+			noPrint(g.DeleteZoneRecord(uuidOrFQDN, (*args)[1], (*args)[2]))
 		}
 	}
 }

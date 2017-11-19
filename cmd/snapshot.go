@@ -1,7 +1,5 @@
 package main
 
-import g "github.com/tiramiseb/go-gandi-livedns"
-
 func snapshot() {
 	switch *action {
 	case aList:
@@ -35,7 +33,7 @@ func listSnapshots() {
 		})
 		return
 	}
-	jsonPrint(g.ListSnapshots(*apiKey, (*args)[0]))
+	jsonPrint(g.ListSnapshots((*args)[0]))
 }
 
 func createSnapshot() {
@@ -45,7 +43,7 @@ func createSnapshot() {
 		})
 		return
 	}
-	jsonPrint(g.CreateSnapshot(*apiKey, (*args)[0]))
+	jsonPrint(g.CreateSnapshot((*args)[0]))
 }
 
 func getSnapshot() {
@@ -56,5 +54,5 @@ func getSnapshot() {
 		})
 		return
 	}
-	jsonPrint(g.GetSnapshot(*apiKey, (*args)[0], (*args)[1]))
+	jsonPrint(g.GetSnapshot((*args)[0], (*args)[1]))
 }

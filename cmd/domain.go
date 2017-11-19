@@ -1,11 +1,9 @@
 package main
 
-import g "github.com/tiramiseb/go-gandi-livedns"
-
 func domain() {
 	switch *action {
 	case aList:
-		jsonPrint(g.ListDomains(*apiKey))
+		jsonPrint(g.ListDomains())
 	case aAdd:
 		addDomainToZone()
 	case aGet:
@@ -60,7 +58,7 @@ func addDomainToZone() {
 		})
 		return
 	}
-	jsonPrint(g.AddDomainToZone(*apiKey, (*args)[0], (*args)[1]))
+	jsonPrint(g.AddDomainToZone((*args)[0], (*args)[1]))
 }
 
 func getDomain() {
@@ -70,7 +68,7 @@ func getDomain() {
 		})
 		return
 	}
-	jsonPrint(g.GetDomain(*apiKey, (*args)[0]))
+	jsonPrint(g.GetDomain((*args)[0]))
 }
 
 func changeAssociatedZone() {
@@ -81,7 +79,7 @@ func changeAssociatedZone() {
 		})
 		return
 	}
-	jsonPrint(g.ChangeAssociatedZone(*apiKey, (*args)[0], (*args)[1]))
+	jsonPrint(g.ChangeAssociatedZone((*args)[0], (*args)[1]))
 }
 
 func signDomain() {
@@ -91,7 +89,7 @@ func signDomain() {
 		})
 		return
 	}
-	jsonPrint(g.SignDomain(*apiKey, (*args)[0]))
+	jsonPrint(g.SignDomain((*args)[0]))
 }
 
 func getDomainKeys() {
@@ -101,7 +99,7 @@ func getDomainKeys() {
 		})
 		return
 	}
-	jsonPrint(g.GetDomainKeys(*apiKey, (*args)[0]))
+	jsonPrint(g.GetDomainKeys((*args)[0]))
 }
 
 func deleteDomainKey() {
@@ -112,7 +110,7 @@ func deleteDomainKey() {
 		})
 		return
 	}
-	noPrint(g.DeleteDomainKey(*apiKey, (*args)[0], (*args)[1]))
+	noPrint(g.DeleteDomainKey((*args)[0], (*args)[1]))
 }
 
 func getDomainNS() {
@@ -122,5 +120,5 @@ func getDomainNS() {
 		})
 		return
 	}
-	jsonPrint(g.GetDomainNS(*apiKey, (*args)[0]))
+	jsonPrint(g.GetDomainNS((*args)[0]))
 }

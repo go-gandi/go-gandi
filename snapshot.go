@@ -9,19 +9,19 @@ type Snapshot struct {
 }
 
 // ListSnapshots lists all zones
-func ListSnapshots(key, uuid string) (snapshots []Snapshot, err error) {
-	err = askGandi(key, mGET, "zones/"+uuid+"/snapshots", nil, &snapshots)
+func (g *Gandi) ListSnapshots(uuid string) (snapshots []Snapshot, err error) {
+	err = g.askGandi(mGET, "zones/"+uuid+"/snapshots", nil, &snapshots)
 	return
 }
 
 // CreateSnapshot creates a zone
-func CreateSnapshot(key, uuid string) (response StandardResponse, err error) {
-	err = askGandi(key, mPOST, "zones/"+uuid+"/snapshots", nil, &response)
+func (g *Gandi) CreateSnapshot(uuid string) (response StandardResponse, err error) {
+	err = g.askGandi(mPOST, "zones/"+uuid+"/snapshots", nil, &response)
 	return
 }
 
 // GetSnapshot returns a zone
-func GetSnapshot(key, uuid, snapUUID string) (snapshot Snapshot, err error) {
-	err = askGandi(key, mGET, "zones/"+uuid+"/snapshots/"+snapUUID, nil, &snapshot)
+func (g *Gandi) GetSnapshot(uuid, snapUUID string) (snapshot Snapshot, err error) {
+	err = g.askGandi(mGET, "zones/"+uuid+"/snapshots/"+snapUUID, nil, &snapshot)
 	return
 }
