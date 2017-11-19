@@ -19,22 +19,14 @@ First (step 1), [get your API key](https://account.gandi.net/) from the "Securit
 
 ```go
 import "github.com/tiramiseb/go-gandi-livedns"
-apikey = "<the API key>"
-g = gandi.New(apikey)
+apikey := "<the API key>"
+g := gandi.New(apikey)
 // Step 2: create the zone
-g.CreateZone("example.com Zone")
-// Step 2bis: fetch the zone UUID
-var zoneUUID string
-for _, zone = range g.ListZones() {
-    if zone.Name == "example.com Zone" {
-        zoneUUID = zone.UUID
-        break
-    }
-}
+zone := g.CreateZone("example.com Zone")
 // Step 3: create DNS records
-g.CreateZoneRecord(zoneUUID, "www", "A", 3600, []string{"192.168.0.1"})
+g.CreateZoneRecord(zone.UUID, "www", "A", 3600, []string{"192.168.0.1"})
 // Step 4: associate the domain
-g.AttachDomainToZone(zoneUUID, "example.com")
+g.AttachDomainToZone(zone.UUID, "example.com")
 // Step 5: change nameservers
 nameservers := g.getDomainNS("example.com")
 // Step 6: setup automatic DNSSEC signing

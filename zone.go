@@ -1,5 +1,7 @@
 package gandi
 
+import "strings"
+
 // Zone represents a DNS Zone
 type Zone struct {
 	Retry           int    `json:"retry,omitempty"`
@@ -25,7 +27,9 @@ func (g *Gandi) ListZones() (zones []Zone, err error) {
 
 // CreateZone creates a zone
 func (g *Gandi) CreateZone(name string) (response StandardResponse, err error) {
-	err = g.askGandi(mPOST, "zones", Zone{Name: name}, &response)
+	headers, err := g.askGandi(mPOST, "zones", Zone{Name: name}, &response)
+	spLoc := strings.Split(headers.Get("Location"), "/")
+	response.UUID = spLoc[len(spLoc)-1]
 	return
 }
 
@@ -37,7 +41,9 @@ func (g *Gandi) GetZone(uuid string) (zone Zone, err error) {
 
 // UpdateZone updates a zone (only its name, actually...)
 func (g *Gandi) UpdateZone(uuid, name string) (response StandardResponse, err error) {
-	err = g.askGandi(mPATCH, "zones/"+uuid, Zone{Name: name}, &response)
+	headers, err := g.askGandi(mPATCH, "zones/"+uuid, Zone{Name: name}, &response)
+	spLoc := strings.Split(headers.Get("Location"), "/")
+	response.UUID = spLoc[len(spLoc)-1]
 	return
 }
 
