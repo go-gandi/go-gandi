@@ -31,3 +31,15 @@ func (g *Gandi) AddSlaveToDomain(fqdn, host string) (err error) {
 	_, err = g.askGandi(mPUT, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
 	return
 }
+
+// ListSlavesInDomain lists slaves in a domain
+func (g *Gandi) ListSlavesInDomain(fqdn string) (slaves []string, err error) {
+	_, err = g.askGandi(mGET, "domains/"+fqdn+"/axfr/slaves", nil, &slaves)
+	return
+}
+
+// DelSlaveFromDomain removes a slave from a domain
+func (g *Gandi) DelSlaveFromDomain(fqdn, host string) (err error) {
+	_, err = g.askGandi(mDELETE, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
+	return
+}

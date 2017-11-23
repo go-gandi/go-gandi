@@ -10,20 +10,22 @@ import (
 
 const (
 	// Actions names
-	aAdd     = "add"
-	aAttach  = "attach"
-	aCreate  = "create"
-	aDelete  = "delete"
-	aDelKey  = "delkey"
-	aDomains = "domains"
-	aGet     = "get"
-	aKeys    = "keys"
-	aList    = "list"
-	aNS      = "ns"
-	aSign    = "sign"
-	aSlave   = "slave"
-	aText    = "text"
-	aUpdate  = "update"
+	aAdd      = "add"
+	aAttach   = "attach"
+	aCreate   = "create"
+	aDelete   = "delete"
+	aDelKey   = "delkey"
+	aDelSlave = "delslave"
+	aDomains  = "domains"
+	aGet      = "get"
+	aKeys     = "keys"
+	aList     = "list"
+	aNS       = "ns"
+	aSign     = "sign"
+	aSlave    = "slave"
+	aSlaves   = "slaves"
+	aText     = "text"
+	aUpdate   = "update"
 )
 
 var (
