@@ -43,7 +43,7 @@ tsig, _ := g.CreateTsig()
 // Adding the TSIG key for AXFRs
 g.AddTsigToDomain("example.com", tsig.UUID)
 // Adding two slaves servers to the domain
-for _, host = range []string{"198.51.100.1", "2001:DB8::1"} {
+for _, host := range []string{"198.51.100.1", "2001:DB8::1"} {
     g.AddSlaveToDomain("example.com", host)
 }
 // Getting sample configurations
