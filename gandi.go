@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+	"strings"
 )
 
 const (
@@ -114,6 +115,12 @@ func (g *Gandi) doAskGandi(method, path string, params []byte, extraHeaders [][2
 		decoder.Decode(&message)
 		if message.Message != "" {
 			err = fmt.Errorf("%d: %s", resp.StatusCode, message.Message)
+		} else if len(message.Errors) > 0 {
+			var errors []string
+			for _, oneError := range message.Errors {
+				errors = append(errors, fmt.Sprintf("%s: %s", oneError.Name, oneError.Description))
+			}
+			err = fmt.Errorf(strings.Join(errors, ", "))
 		} else {
 			err = fmt.Errorf("%d", resp.StatusCode)
 
