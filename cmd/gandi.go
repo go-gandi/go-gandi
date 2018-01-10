@@ -40,7 +40,7 @@ var (
 func main() {
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
-	g = gandi.New(*apiKey,*sharing_id)
+	g = gandi.New(*apiKey, *sharing_id)
 	switch *resourceType {
 	case "zone":
 		zone()
