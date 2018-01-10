@@ -33,13 +33,14 @@ var (
 	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
 	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
 	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
+	sharing_id   = kingpin.Flag("sharing_id", "The Gandi LiveDNS sharing_id (may be stored in the GANDI_SHARING_ID environment variable)").OverrideDefaultFromEnvar("GANDI_SHARING_ID").Short('i').String()
 	g            *gandi.Gandi
 )
 
 func main() {
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
-	g = gandi.New(*apiKey)
+	g = gandi.New(*apiKey,*sharing_id)
 	switch *resourceType {
 	case "zone":
 		zone()
