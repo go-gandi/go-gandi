@@ -16,11 +16,12 @@ Example
 This example mimics the steps of [the official LiveDNS documentation example](http://doc.livedns.gandi.net/#quick-example).
 
 First (step 1), [get your API key](https://account.gandi.net/) from the "Security" section in new Account admin panel to be able to make authenticated requests to the API.
-
+Note: sharing_id is optional. It is used e.g. when the API key is registered to a user, where the domain you want to manage is not registered with that user (but the user does have rights on that zone/organization).
 ```go
 import "github.com/tiramiseb/go-gandi-livedns"
 apikey := "<the API key>"
-g := gandi.New(apikey)
+sharing_id := "<the sharing_id for that domain, may be nil>"
+g := gandi.New(apikey, sharing_id)
 // Step 2: create the zone
 zone := g.CreateZone("example.com Zone")
 // Step 3: create DNS records

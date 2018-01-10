@@ -22,13 +22,14 @@ const (
 
 // Gandi makes it easier to interact with Gandi LiveDNS
 type Gandi struct {
-	apikey string
-	debug  bool
+	apikey     string
+	sharing_id string
+	debug      bool
 }
 
 // New instantiates a new Gandi instance
-func New(apikey string) *Gandi {
-	return &Gandi{apikey: apikey}
+func New(apikey string, sharing_id string) *Gandi {
+	return &Gandi{apikey: apikey, sharing_id: sharing_id}
 }
 
 func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (http.Header, error) {
@@ -80,10 +81,14 @@ func (g *Gandi) doAskGandi(method, path string, params []byte, extraHeaders [][2
 		req *http.Request
 	)
 	client := &http.Client{}
+	suffix := ""
+	if len(g.sharing_id) != 0 {
+		suffix += "?sharing_id=" + g.sharing_id
+	}
 	if params != nil && string(params) != "null" {
-		req, err = http.NewRequest(method, gandiEndpoint+path, bytes.NewReader(params))
+		req, err = http.NewRequest(method, gandiEndpoint+path+suffix, bytes.NewReader(params))
 	} else {
-		req, err = http.NewRequest(method, gandiEndpoint+path, nil)
+		req, err = http.NewRequest(method, gandiEndpoint+path+suffix, nil)
 	}
 	if err != nil {
 		return nil, err
