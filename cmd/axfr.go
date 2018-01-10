@@ -4,6 +4,8 @@ func axfr() {
 	switch *action {
 	case aList:
 		jsonPrint(g.ListTsigs())
+	case aListBind:
+		listTsigsBind()
 	case aCreate:
 		jsonPrint(g.CreateTsig())
 	case aAdd:
@@ -19,6 +21,10 @@ func axfr() {
 			actionDescription{
 				Action:      aList,
 				Description: "List all tsigs",
+			},
+			actionDescription{
+				Action:      aListBind,
+				Description: "List BIND config for tsig",
 			},
 			actionDescription{
 				Action:      aCreate,
@@ -42,6 +48,16 @@ func axfr() {
 			},
 		})
 	}
+}
+
+func listTsigsBind() {
+	if len(*args) < 1 {
+		displayArgsList([]string{
+			"UUID of the TSIG key",
+		})
+		return
+	}
+	jsonPrint(g.ListTsigsBind((*args)[0]))
 }
 
 func addTsigToDomain() {

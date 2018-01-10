@@ -20,6 +20,7 @@ const (
 	aGet      = "get"
 	aKeys     = "keys"
 	aList     = "list"
+	aListBind = "bind"
 	aNS       = "ns"
 	aSign     = "sign"
 	aSlave    = "slave"

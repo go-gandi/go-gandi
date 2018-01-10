@@ -13,6 +13,11 @@ func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
 	_, err = g.askGandi(mGET, "axfr/tsig", nil, &tsigs)
 	return
 }
+// ListTsigsBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) ListTsigsBind(uuid string) (err error) {
+	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/bind", nil, nil)
+	return
+}
 
 // CreateTsig creates a tsig
 func (g *Gandi) CreateTsig() (tsig Tsig, err error) {
@@ -43,3 +48,4 @@ func (g *Gandi) DelSlaveFromDomain(fqdn, host string) (err error) {
 	_, err = g.askGandi(mDELETE, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
 	return
 }
+
