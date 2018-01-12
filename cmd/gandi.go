@@ -10,23 +10,26 @@ import (
 
 const (
 	// Actions names
-	aAdd      = "add"
-	aAttach   = "attach"
-	aCreate   = "create"
-	aDelete   = "delete"
-	aDelKey   = "delkey"
-	aDelSlave = "delslave"
-	aDomains  = "domains"
-	aGet      = "get"
-	aKeys     = "keys"
-	aList     = "list"
-	aListBind = "bind"
-	aNS       = "ns"
-	aSign     = "sign"
-	aSlave    = "slave"
-	aSlaves   = "slaves"
-	aText     = "text"
-	aUpdate   = "update"
+	aAdd          = "add"
+	aAttach       = "attach"
+	aCreate       = "create"
+	aDelete       = "delete"
+	aDelKey       = "delkey"
+	aDelSlave     = "delslave"
+	aDomains      = "domains"
+	aGet          = "get"
+	aKeys         = "keys"
+	aList         = "list"
+	aListBind     = "bind"
+	aListPowerdns = "powerdns"
+	aListNsd      = "nsd"
+	aListKnot     = "knot"
+	aNS           = "ns"
+	aSign         = "sign"
+	aSlave        = "slave"
+	aSlaves       = "slaves"
+	aText         = "text"
+	aUpdate       = "update"
 )
 
 var (
@@ -41,7 +44,7 @@ var (
 func main() {
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
-	g = gandi.New(*apiKey,*sharing_id)
+	g = gandi.New(*apiKey, *sharing_id)
 	switch *resourceType {
 	case "zone":
 		zone()

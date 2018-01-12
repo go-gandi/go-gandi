@@ -13,9 +13,32 @@ func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
 	_, err = g.askGandi(mGET, "axfr/tsig", nil, &tsigs)
 	return
 }
-// ListTsigsBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) ListTsigsBind(uuid string) (err error) {
-	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/bind", nil, nil)
+
+// Due to a feature/bug in the gandi API, an axfr/tsig/uuid/config/[bind|knot|powerdns|nsd] request will not return a valid JSON,
+// but rather the actual configuration example.
+// Hence we have to treat the return as 'configexample string' instead of 'configexample []string'.
+
+// ListTsigBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) ListTsigBind(uuid string) (configexample string, err error) {
+	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/bind", nil, &configexample)
+	return
+}
+
+// ListTsigPowerdns shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) ListTsigPowerdns(uuid string) (configexample string, err error) {
+	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/powerdns", nil, &configexample)
+	return
+}
+
+// ListTsigNsd shows a NSD nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) ListTsigNsd(uuid string) (configexample string, err error) {
+	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/nsd", nil, &configexample)
+	return
+}
+
+// ListTsigKnot shows a KNOT nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) ListTsigKnot(uuid string) (configexample string, err error) {
+	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/knot", nil, &configexample)
 	return
 }
 
@@ -48,4 +71,3 @@ func (g *Gandi) DelSlaveFromDomain(fqdn, host string) (err error) {
 	_, err = g.askGandi(mDELETE, "domains/"+fqdn+"/axfr/slaves/"+host, nil, nil)
 	return
 }
-
