@@ -4,6 +4,8 @@ func axfr() {
 	switch *action {
 	case aList:
 		jsonPrint(g.ListTsigs())
+  case aGet:
+    getTsig()
 	case aGetBIND:
 		getTsigBIND()
 	case aGetNSD:
@@ -29,6 +31,10 @@ func axfr() {
 				Description: "List all tsigs",
 			},
 			actionDescription{
+				Action:      aGet,
+				Description: "Get tsig details",
+			},
+			actionDescription{
 				Action:      aGetBIND,
 				Description: "Get BIND config example for tsig",
 			},
@@ -43,7 +49,7 @@ func axfr() {
 			actionDescription{
 				Action:      aGetKnot,
 				Description: "Get Knot config example for tsig",
-			},
+      },
 			actionDescription{
 				Action:      aCreate,
 				Description: "Create a tsig (cannot be deleted)",
@@ -66,6 +72,16 @@ func axfr() {
 			},
 		})
 	}
+}
+
+func getTsig() {
+	if len(*args) < 1 {
+		displayArgsList([]string{
+			"UUID of the tsig to get details from",
+		})
+		return
+	}
+	jsonPrint(g.GetTsig((*args)[0]))
 }
 
 func getTsigBIND() {

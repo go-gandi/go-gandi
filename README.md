@@ -21,7 +21,7 @@ Note: sharing_id is optional. It is used e.g. when the API key is registered to 
 import "github.com/tiramiseb/go-gandi-livedns"
 apikey := "<the API key>"
 sharing_id := "<the sharing_id for that domain, may be nil>"
-g := gandi.New(apikey,sharing_id)
+g := gandi.New(apikey, sharing_id)
 // Step 2: create the zone
 zone := g.CreateZone("example.com Zone")
 // Step 3: create DNS records
