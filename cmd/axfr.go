@@ -1,19 +1,17 @@
 package main
 
-import "fmt"
-
 func axfr() {
 	switch *action {
 	case aList:
 		jsonPrint(g.ListTsigs())
-	case aListBind:
-		listTsigBind()
-	case aListNsd:
-		listTsigNsd()
-	case aListPowerdns:
-		listTsigPowerdns()
-	case aListKnot:
-		listTsigKnot()
+	case aGetBind:
+		getTsigBind()
+	case aGetNsd:
+		getTsigNsd()
+	case aGetPowerdns:
+		getTsigPowerdns()
+	case aGetKnot:
+		getTsigKnot()
 	case aCreate:
 		jsonPrint(g.CreateTsig())
 	case aAdd:
@@ -31,20 +29,20 @@ func axfr() {
 				Description: "List all tsigs",
 			},
 			actionDescription{
-				Action:      aListBind,
-				Description: "List BIND config example for tsig (in text, no JSON output)",
+				Action:      aGetBind,
+				Description: "Get BIND config example for tsig",
 			},
 			actionDescription{
-				Action:      aListNsd,
-				Description: "List NSD config example for tsig (in text, no JSON output)",
+				Action:      aGetNsd,
+				Description: "Get NSD config example for tsig",
 			},
 			actionDescription{
-				Action:      aListBind,
-				Description: "List PowerDNS config example for tsig (in text, no JSON output)",
+				Action:      aGetPowerdns,
+				Description: "Get PowerDNS config example for tsig",
 			},
 			actionDescription{
-				Action:      aListBind,
-				Description: "List KNOT config example for tsig (in text, no JSON output)",
+				Action:      aGetKnot,
+				Description: "Get KNOT config example for tsig",
 			},
 			actionDescription{
 				Action:      aCreate,
@@ -70,65 +68,44 @@ func axfr() {
 	}
 }
 
-func listTsigBind() {
+func getTsigBind() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	// api.gandi.net tsig config examples only return text no JSON
-	if r, e := g.ListTsigBind((*args)[0]); e != nil {
-		jsonPrint(r, e)
-	} else {
-		fmt.Println(r)
-	}
-
+	textPrint(g.GetTsigBind((*args)[0]))
 }
 
-func listTsigNsd() {
+func getTsigNsd() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	// api.gandi.net tsig config examples only return text no JSON
-	if r, e := g.ListTsigNsd((*args)[0]); e != nil {
-		jsonPrint(r, e)
-	} else {
-		fmt.Println(r)
-	}
+	textPrint(g.GetTsigNsd((*args)[0]))
 }
 
-func listTsigPowerdns() {
+func getTsigPowerdns() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	// api.gandi.net tsig config examples only return text no JSON
-	if r, e := g.ListTsigPowerdns((*args)[0]); e != nil {
-		jsonPrint(r, e)
-	} else {
-		fmt.Println(r)
-	}
+	textPrint(g.GetTsigPowerdns((*args)[0]))
 }
 
-func listTsigKnot() {
+func getTsigKnot() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	// api.gandi.net tsig config examples only return text no JSON
-	if r, e := g.ListTsigKnot((*args)[0]); e != nil {
-		jsonPrint(r, e)
-	} else {
-		fmt.Println(r)
-	}
+	textPrint(g.GetTsigKnot((*args)[0]))
 }
 
 func addTsigToDomain() {

@@ -47,6 +47,12 @@ g.AddTsigToDomain("example.com", tsig.UUID)
 for _, host := range []string{"198.51.100.1", "2001:DB8::1"} {
     g.AddSlaveToDomain("example.com", host)
 }
+// Step 8: Create a TSIG key
+g.CreateTsig()
+//Step 9: Add the TSIG key to the domain
+g.AddTsigToDomain("example.com", "85e7b6e3-4553-479b-b968-cd0c77143802")
+//Step 10: Get the nameservers which provide axfr services for that TSIG key in the BIND config example
+g.GetTsigBind("85e7b6e3-4553-479b-b968-cd0c77143802")
 // Getting sample configurations
 // not implemented yet
 ```

@@ -20,10 +20,10 @@ const (
 	aGet          = "get"
 	aKeys         = "keys"
 	aList         = "list"
-	aListBind     = "bind"
-	aListPowerdns = "powerdns"
-	aListNsd      = "nsd"
-	aListKnot     = "knot"
+	aGetBind     = "bind"
+	aGetPowerdns = "powerdns"
+	aGetNsd      = "nsd"
+	aGetKnot     = "knot"
 	aNS           = "ns"
 	aSign         = "sign"
 	aSlave        = "slave"
@@ -69,6 +69,7 @@ func jsonPrint(data interface{}, err error) {
 	response, _ := json.MarshalIndent(data, "", "  ")
 	fmt.Println(string(response))
 }
+
 func textPrint(data []byte, err error) {
 	if err != nil {
 		fmt.Println("Error: ", err)

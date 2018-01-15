@@ -14,32 +14,28 @@ func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
 	return
 }
 
-// By gandi API design, an axfr/tsig/uuid/config/[bind|knot|powerdns|nsd] request will not return a valid JSON,
-// but rather the actual configuration example.
-// Hence we have to treat the return as 'configexample string' instead of 'configexample []string'.
-
-// ListTsigBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) ListTsigBind(uuid string) (configexample string, err error) {
-	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/bind", nil, &configexample)
-	return
+// GetTsigBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigBind(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/bind", nil)
+	return content, err
 }
 
-// ListTsigPowerdns shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) ListTsigPowerdns(uuid string) (configexample string, err error) {
-	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/powerdns", nil, &configexample)
-	return
+// GetTsigPowerdns shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigPowerdns(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/powerdns", nil)
+	return content, err
 }
 
-// ListTsigNsd shows a NSD nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) ListTsigNsd(uuid string) (configexample string, err error) {
-	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/nsd", nil, &configexample)
-	return
+// GetTsigNsd shows a NSD nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigNsd(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/nsd", nil)
+	return content, err
 }
 
-// ListTsigKnot shows a KNOT nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) ListTsigKnot(uuid string) (configexample string, err error) {
-	_, err = g.askGandi(mGET, "axfr/tsig/"+uuid+"/config/knot", nil, &configexample)
-	return
+// GetTsigKnot shows a KNOT nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigKnot(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/knot", nil)
+	return content, err
 }
 
 // CreateTsig creates a tsig
