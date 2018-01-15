@@ -4,12 +4,12 @@ func axfr() {
 	switch *action {
 	case aList:
 		jsonPrint(g.ListTsigs())
-	case aGetBind:
-		getTsigBind()
-	case aGetNsd:
-		getTsigNsd()
-	case aGetPowerdns:
-		getTsigPowerdns()
+	case aGetBIND:
+		getTsigBIND()
+	case aGetNSD:
+		getTsigNSD()
+	case aGetPowerDNS:
+		getTsigPowerDNS()
 	case aGetKnot:
 		getTsigKnot()
 	case aCreate:
@@ -29,20 +29,20 @@ func axfr() {
 				Description: "List all tsigs",
 			},
 			actionDescription{
-				Action:      aGetBind,
+				Action:      aGetBIND,
 				Description: "Get BIND config example for tsig",
 			},
 			actionDescription{
-				Action:      aGetNsd,
+				Action:      aGetNSD,
 				Description: "Get NSD config example for tsig",
 			},
 			actionDescription{
-				Action:      aGetPowerdns,
+				Action:      aGetPowerDNS,
 				Description: "Get PowerDNS config example for tsig",
 			},
 			actionDescription{
 				Action:      aGetKnot,
-				Description: "Get KNOT config example for tsig",
+				Description: "Get Knot config example for tsig",
 			},
 			actionDescription{
 				Action:      aCreate,
@@ -68,34 +68,34 @@ func axfr() {
 	}
 }
 
-func getTsigBind() {
+func getTsigBIND() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	textPrint(g.GetTsigBind((*args)[0]))
+	textPrint(g.GetTsigBIND((*args)[0]))
 }
 
-func getTsigNsd() {
+func getTsigNSD() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	textPrint(g.GetTsigNsd((*args)[0]))
+	textPrint(g.GetTsigNSD((*args)[0]))
 }
 
-func getTsigPowerdns() {
+func getTsigPowerDNS() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"UUID of the TSIG key",
 		})
 		return
 	}
-	textPrint(g.GetTsigPowerdns((*args)[0]))
+	textPrint(g.GetTsigPowerDNS((*args)[0]))
 }
 
 func getTsigKnot() {

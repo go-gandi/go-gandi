@@ -14,20 +14,20 @@ func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
 	return
 }
 
-// GetTsigBind shows a BIND nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) GetTsigBind(uuid string) ([]byte, error) {
+// GetTsigBIND shows a BIND nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigBIND(uuid string) ([]byte, error) {
 	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/bind", nil)
 	return content, err
 }
 
-// GetTsigPowerdns shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) GetTsigPowerdns(uuid string) ([]byte, error) {
+// GetTsigPowerDNS shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigPowerDNS(uuid string) ([]byte, error) {
 	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/powerdns", nil)
 	return content, err
 }
 
-// GetTsigNsd shows a NSD nameserver config, and includes the nameservers available for zone transfers
-func (g *Gandi) GetTsigNsd(uuid string) ([]byte, error) {
+// GetTsigNSD shows a NSD nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigNSD(uuid string) ([]byte, error) {
 	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/nsd", nil)
 	return content, err
 }
