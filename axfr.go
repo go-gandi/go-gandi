@@ -32,7 +32,7 @@ func (g *Gandi) GetTsigNSD(uuid string) ([]byte, error) {
 	return content, err
 }
 
-// GetTsigKnot shows a KNOT nameserver config, and includes the nameservers available for zone transfers
+// GetTsigKnot shows a Knot nameserver config, and includes the nameservers available for zone transfers
 func (g *Gandi) GetTsigKnot(uuid string) ([]byte, error) {
 	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/knot", nil)
 	return content, err
