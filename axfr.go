@@ -21,6 +21,30 @@ func (g *Gandi) GetTsig(uuid string) (tsig Tsig, err error) {
 	return
 }
 
+// GetTsigBIND shows a BIND nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigBIND(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/bind", nil)
+	return content, err
+}
+
+// GetTsigPowerDNS shows a PowerDNS nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigPowerDNS(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/powerdns", nil)
+	return content, err
+}
+
+// GetTsigNSD shows a NSD nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigNSD(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/nsd", nil)
+	return content, err
+}
+
+// GetTsigKnot shows a Knot nameserver config, and includes the nameservers available for zone transfers
+func (g *Gandi) GetTsigKnot(uuid string) ([]byte, error) {
+	_, content, err := g.askGandiToBytes(mGET, "axfr/tsig/"+uuid+"/config/knot", nil)
+	return content, err
+}
+
 // CreateTsig creates a tsig
 func (g *Gandi) CreateTsig() (tsig Tsig, err error) {
 	_, err = g.askGandi(mPOST, "axfr/tsig", nil, &tsig)

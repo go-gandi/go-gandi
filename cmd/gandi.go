@@ -10,22 +10,26 @@ import (
 
 const (
 	// Actions names
-	aAdd      = "add"
-	aAttach   = "attach"
-	aCreate   = "create"
-	aDelete   = "delete"
-	aDelKey   = "delkey"
-	aDelSlave = "delslave"
-	aDomains  = "domains"
-	aGet      = "get"
-	aKeys     = "keys"
-	aList     = "list"
-	aNS       = "ns"
-	aSign     = "sign"
-	aSlave    = "slave"
-	aSlaves   = "slaves"
-	aText     = "text"
-	aUpdate   = "update"
+	aAdd          = "add"
+	aAttach       = "attach"
+	aCreate       = "create"
+	aDelete       = "delete"
+	aDelKey       = "delkey"
+	aDelSlave     = "delslave"
+	aDomains      = "domains"
+	aGet          = "get"
+	aKeys         = "keys"
+	aList         = "list"
+	aGetBIND     = "bind"
+	aGetPowerDNS = "powerdns"
+	aGetNSD      = "nsd"
+	aGetKnot     = "knot"
+	aNS           = "ns"
+	aSign         = "sign"
+	aSlave        = "slave"
+	aSlaves       = "slaves"
+	aText         = "text"
+	aUpdate       = "update"
 )
 
 var (
@@ -65,6 +69,7 @@ func jsonPrint(data interface{}, err error) {
 	response, _ := json.MarshalIndent(data, "", "  ")
 	fmt.Println(string(response))
 }
+
 func textPrint(data []byte, err error) {
 	if err != nil {
 		fmt.Println("Error: ", err)
