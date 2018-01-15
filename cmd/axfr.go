@@ -4,6 +4,8 @@ func axfr() {
 	switch *action {
 	case aList:
 		jsonPrint(g.ListTsigs())
+	case aGet:
+		getTsig()
 	case aCreate:
 		jsonPrint(g.CreateTsig())
 	case aAdd:
@@ -19,6 +21,10 @@ func axfr() {
 			actionDescription{
 				Action:      aList,
 				Description: "List all tsigs",
+			},
+			actionDescription{
+				Action:      aGet,
+				Description: "Get tsig details",
 			},
 			actionDescription{
 				Action:      aCreate,
@@ -42,6 +48,16 @@ func axfr() {
 			},
 		})
 	}
+}
+
+func getTsig() {
+	if len(*args) < 1 {
+		displayArgsList([]string{
+			"UUID of the tsig to get details from",
+		})
+		return
+	}
+	jsonPrint(g.GetTsig((*args)[0]))
 }
 
 func addTsigToDomain() {
