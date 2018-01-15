@@ -14,7 +14,7 @@ func (g *Gandi) ListTsigs() (tsigs []Tsig, err error) {
 	return
 }
 
-// Due to a feature/bug in the gandi API, an axfr/tsig/uuid/config/[bind|knot|powerdns|nsd] request will not return a valid JSON,
+// By gandi API design, an axfr/tsig/uuid/config/[bind|knot|powerdns|nsd] request will not return a valid JSON,
 // but rather the actual configuration example.
 // Hence we have to treat the return as 'configexample string' instead of 'configexample []string'.
 
