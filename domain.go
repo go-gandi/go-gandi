@@ -49,6 +49,12 @@ func (g *Gandi) ChangeAssociatedZone(fqdn, uuid string) (response StandardRespon
 	return
 }
 
+// DetachDomain detaches a domain from the zone it is attached to
+func (g *Gandi) DetachDomain(fqdn string) (err error) {
+	_, err = g.askGandi(mDELETE, "domains/"+fqdn, nil, nil)
+	return
+}
+
 // SignDomain creates a DNSKEY and asks Gandi servers to automatically sign the domain
 func (g *Gandi) SignDomain(fqdn string) (response StandardResponse, err error) {
 	f := SigningKey{Flags: 257}

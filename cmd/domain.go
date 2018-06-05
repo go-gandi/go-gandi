@@ -8,6 +8,8 @@ func domain() {
 		addDomainToZone()
 	case aGet:
 		getDomain()
+	case aDetach:
+		detachDomain()
 	case aSign:
 		signDomain()
 	case aKeys:
@@ -29,6 +31,10 @@ func domain() {
 			actionDescription{
 				Action:      aGet,
 				Description: "Get a domain",
+			},
+			actionDescription{
+				Action:      aDetach,
+				Description: "Detach a domain",
 			},
 			actionDescription{
 				Action:      aSign,
@@ -80,6 +86,16 @@ func changeAssociatedZone() {
 		return
 	}
 	jsonPrint(g.ChangeAssociatedZone((*args)[0], (*args)[1]))
+}
+
+func detachDomain() {
+	if len(*args) < 1 {
+		displayArgsList([]string{
+			"FQDN of the domain to detach",
+		})
+		return
+	}
+	noPrint(g.DetachDomain((*args)[0]))
 }
 
 func signDomain() {
