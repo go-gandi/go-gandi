@@ -1,6 +1,6 @@
 package gandi_livedns
 
-import "github.com/tiramiseb/go-gandi-livedns/internal/client"
+import "github.com/tiramiseb/go-gandi/internal/client"
 
 // Domain represents a DNS domain
 type Domain struct {

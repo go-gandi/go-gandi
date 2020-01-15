@@ -1,4 +1,4 @@
-module github.com/tiramiseb/go-gandi-livedns
+module github.com/tiramiseb/go-gandi
 
 go 1.13
 

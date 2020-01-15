@@ -1,7 +1,7 @@
 package gandi_livedns
 
 import (
-	"github.com/tiramiseb/go-gandi-livedns/internal/client"
+	"github.com/tiramiseb/go-gandi/internal/client"
 )
 
 type LiveDNS struct {

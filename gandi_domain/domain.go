@@ -3,7 +3,7 @@ package gandi_domain
 import (
 	"time"
 
-	"github.com/tiramiseb/go-gandi-livedns/internal/client"
+	"github.com/tiramiseb/go-gandi/internal/client"
 )
 
 type Domain struct {
