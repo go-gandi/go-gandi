@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/kingpin"
-	gandi "github.com/tiramiseb/go-gandi-livedns"
+	gandi "github.com/tiramiseb/go-gandi"
 )
 
 const (
