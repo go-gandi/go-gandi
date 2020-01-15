@@ -1,9 +1,9 @@
 package main
 
-func axfr() {
+func livednsAxfr() {
 	switch *action {
 	case aList:
-		jsonPrint(g.ListTsigs())
+		jsonPrint(l.ListTsigs())
   case aGet:
     getTsig()
 	case aGetBIND:
@@ -15,7 +15,7 @@ func axfr() {
 	case aGetKnot:
 		getTsigKnot()
 	case aCreate:
-		jsonPrint(g.CreateTsig())
+		jsonPrint(l.CreateTsig())
 	case aAdd:
 		addTsigToDomain()
 	case aSlave:
@@ -81,7 +81,7 @@ func getTsig() {
 		})
 		return
 	}
-	jsonPrint(g.GetTsig((*args)[0]))
+	jsonPrint(l.GetTsig((*args)[0]))
 }
 
 func getTsigBIND() {
@@ -91,7 +91,7 @@ func getTsigBIND() {
 		})
 		return
 	}
-	textPrint(g.GetTsigBIND((*args)[0]))
+	textPrint(l.GetTsigBIND((*args)[0]))
 }
 
 func getTsigNSD() {
@@ -101,7 +101,7 @@ func getTsigNSD() {
 		})
 		return
 	}
-	textPrint(g.GetTsigNSD((*args)[0]))
+	textPrint(l.GetTsigNSD((*args)[0]))
 }
 
 func getTsigPowerDNS() {
@@ -111,7 +111,7 @@ func getTsigPowerDNS() {
 		})
 		return
 	}
-	textPrint(g.GetTsigPowerDNS((*args)[0]))
+	textPrint(l.GetTsigPowerDNS((*args)[0]))
 }
 
 func getTsigKnot() {
@@ -121,7 +121,7 @@ func getTsigKnot() {
 		})
 		return
 	}
-	textPrint(g.GetTsigKnot((*args)[0]))
+	textPrint(l.GetTsigKnot((*args)[0]))
 }
 
 func addTsigToDomain() {
@@ -132,7 +132,7 @@ func addTsigToDomain() {
 		})
 		return
 	}
-	noPrint(g.AddTsigToDomain((*args)[0], (*args)[1]))
+	noPrint(l.AddTsigToDomain((*args)[0], (*args)[1]))
 }
 
 func addSlaveToDomain() {
@@ -143,7 +143,7 @@ func addSlaveToDomain() {
 		})
 		return
 	}
-	noPrint(g.AddSlaveToDomain((*args)[0], (*args)[1]))
+	noPrint(l.AddSlaveToDomain((*args)[0], (*args)[1]))
 }
 
 func listSlavesInDomain() {
@@ -153,7 +153,7 @@ func listSlavesInDomain() {
 		})
 		return
 	}
-	jsonPrint(g.ListSlavesInDomain((*args)[0]))
+	jsonPrint(l.ListSlavesInDomain((*args)[0]))
 }
 
 func delSlaveFromDomain() {
@@ -164,5 +164,5 @@ func delSlaveFromDomain() {
 		})
 		return
 	}
-	noPrint(g.DelSlaveFromDomain((*args)[0], (*args)[1]))
+	noPrint(l.DelSlaveFromDomain((*args)[0], (*args)[1]))
 }
