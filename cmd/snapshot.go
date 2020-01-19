@@ -1,6 +1,6 @@
 package main
 
-func snapshot() {
+func livednsSnapshot() {
 	switch *action {
 	case aList:
 		listSnapshots()
@@ -16,11 +16,11 @@ func snapshot() {
 			},
 			actionDescription{
 				Action:      aCreate,
-				Description: "Create a snapshot",
+				Description: "Create a livednsSnapshot",
 			},
 			actionDescription{
 				Action:      aGet,
-				Description: "Get a snapshot",
+				Description: "Get a livednsSnapshot",
 			},
 		})
 	}
@@ -33,26 +33,26 @@ func listSnapshots() {
 		})
 		return
 	}
-	jsonPrint(g.ListSnapshots((*args)[0]))
+	jsonPrint(l.ListSnapshots((*args)[0]))
 }
 
 func createSnapshot() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
-			"UUID of the zone for which to create a snapshot",
+			"UUID of the zone for which to create a livednsSnapshot",
 		})
 		return
 	}
-	jsonPrint(g.CreateSnapshot((*args)[0]))
+	jsonPrint(l.CreateSnapshot((*args)[0]))
 }
 
 func getSnapshot() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
-			"UUID of the zone for which to get a snapshot",
-			"UUID of the snapshot",
+			"UUID of the zone for which to get a livednsSnapshot",
+			"UUID of the livednsSnapshot",
 		})
 		return
 	}
-	jsonPrint(g.GetSnapshot((*args)[0], (*args)[1]))
+	jsonPrint(l.GetSnapshot((*args)[0], (*args)[1]))
 }
