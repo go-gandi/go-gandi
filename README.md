@@ -1,7 +1,9 @@
 Gandi Go library
-========================
+================
 
 WIP: migrating from https://github.com/tiramiseb/go-gandi-livedns
+
+cmd not working, fix needed
 
 [![GoDoc](https://godoc.org/github.com/tiramiseb/go-gandi?status.svg)](https://godoc.org/github.com/tiramiseb/go-gandi)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/tiramiseb/go-gandi/master/LICENSE)

@@ -1,4 +1,4 @@
-package gandi_domain
+package domain
 
 import (
 	"time"
