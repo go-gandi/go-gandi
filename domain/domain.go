@@ -85,7 +85,7 @@ type DomainListResponse struct {
 
 // AutoRenew is the auto renewal information for the domain
 type AutoRenew struct {
-	Href     string      `json:"href"`
+	Href     string      `json:"href,omitempty"`
 	Dates    []time.Time `json:"dates,omitempty"`
 	Duration int         `json:"duration,omitempty"`
 	Enabled  *bool       `json:"enabled,omitempty"`
@@ -162,5 +162,10 @@ func (g *Domain) GetContacts(domain string) (contacts DomainContacts, err error)
 // SetContacts returns the contact objects for a domain
 func (g *Domain) SetContacts(domain string, contacts DomainContacts) (err error) {
 	_, err = g.client.Patch("domains/"+domain+"/contacts", contacts, nil)
+	return
+}
+
+func (g *Domain) SetAutoRenew(domain string, autorenew bool) (err error) {
+	_, err = g.client.Patch("domains/"+domain+"/autorenew", AutoRenew{Enabled: &autorenew}, nil)
 	return
 }
