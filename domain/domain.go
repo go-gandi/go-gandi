@@ -6,7 +6,7 @@ import (
 	"github.com/tiramiseb/go-gandi/internal/client"
 )
 
-// Domain is the API client to the Gandi v3 Domain API
+// Domain is the API client to the Gandi v5 Domain API
 type Domain struct {
 	client client.Gandi
 }

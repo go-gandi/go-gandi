@@ -1,19 +1,19 @@
 package main
 
-func livedns_type() {
+func livednsType() {
 	switch *resourceType {
 	case "record":
 		livednsDomainRecord()
 	case "livednsSnapshot":
 		livednsSnapshot()
 	case "domain":
-		livedns_domains()
+		livednsDomains()
 	case "livednsAxfr":
 		livednsAxfr()
 	}
 }
 
-func livedns_domains() {
+func livednsDomains() {
 	switch *action {
 	case aList:
 		jsonPrint(l.ListDomains())
