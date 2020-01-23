@@ -5,9 +5,9 @@ func domain_type() {
 	case "list":
 		domain_list()
 	case "get":
-		domain()
+		domain_print()
 	case "nameservers":
-		nameservers()
+		nameservers_list()
 	}
 }
 
@@ -15,7 +15,7 @@ func domain_list() {
 	jsonPrint(d.ListDomains())
 }
 
-func domain() {
+func domain_print() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"FQDN of the domain to get info for",
@@ -25,7 +25,7 @@ func domain() {
 	jsonPrint(d.GetDomain((*args)[0]))
 }
 
-func nameservers() {
+func nameservers_list() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"FQDN of the domain for which to return the nameservers",
