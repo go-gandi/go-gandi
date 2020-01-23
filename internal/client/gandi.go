@@ -22,31 +22,42 @@ type Gandi struct {
 	debug     bool
 }
 
-// New instantiates a new Gandi instance
+// New instantiates a new Gandi client
 func New(apikey string, sharingID string, debug bool) *Gandi {
 	return &Gandi{apikey: apikey, endpoint: gandiEndpoint, sharingID: sharingID, debug: debug}
 }
 
+// SetEndpoint sets the URL to the endpoint. It takes a string defining the subpath under https://api.gandi.net/v5/
 func (g *Gandi) SetEndpoint(endpoint string) {
 	g.endpoint = gandiEndpoint + endpoint
 }
 
+// Get issues a GET request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
 func (g *Gandi) Get(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodGet, path, params, recipient)
 }
 
+// Post issues a POST request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
 func (g *Gandi) Post(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodPost, path, params, recipient)
 }
 
+// Patch issues a PATCH request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
 func (g *Gandi) Patch(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodPatch, path, params, recipient)
 }
 
+// Delete issues a DELETE request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
 func (g *Gandi) Delete(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodDelete, path, params, recipient)
 }
 
+// Put issues a PUT request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
 func (g *Gandi) Put(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodPut, path, params, recipient)
 }
@@ -62,6 +73,8 @@ func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (ht
 	return resp.Header, nil
 }
 
+// GetBytes issues a GET request but does not attempt to parse any response into JSON.
+// It returns the response headers, a byteslice of the response, and any error
 func (g *Gandi) GetBytes(path string, params interface{}) (http.Header, []byte, error) {
 	headers := [][2]string{
 		{"Accept", "text/plain"},

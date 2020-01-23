@@ -1,21 +1,21 @@
 package main
 
-func domain_type() {
+func domainType() {
 	switch *resourceType {
 	case "list":
-		domain_list()
+		domainList()
 	case "get":
-		domain_print()
+		domainPrint()
 	case "nameservers":
-		nameservers_list()
+		nameserversList()
 	}
 }
 
-func domain_list() {
+func domainList() {
 	jsonPrint(d.ListDomains())
 }
 
-func domain_print() {
+func domainPrint() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"FQDN of the domain to get info for",
@@ -25,7 +25,7 @@ func domain_print() {
 	jsonPrint(d.GetDomain((*args)[0]))
 }
 
-func nameservers_list() {
+func nameserversList() {
 	if len(*args) < 1 {
 		displayArgsList([]string{
 			"FQDN of the domain for which to return the nameservers",
