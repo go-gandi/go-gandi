@@ -32,7 +32,7 @@ type zone struct {
 
 type createDomainRequest struct {
 	FQDN string `json:"fqdn"`
-	Zone zone `json:"zone,omitempty"`
+	Zone zone   `json:"zone,omitempty"`
 }
 
 // UpdateDomainRequest contains the params for the UpdateDomain method
