@@ -82,8 +82,8 @@ type ListResponse struct {
 	Owner       string           `json:"owner"`
 	Status      []string         `json:"status"`
 	TLD         string           `json:"tld"`
-	SharingID   string              `json:"sharing_id,omitempty"`
-	Tags        []string            `json:"tags,omitempty"`
+	SharingID   string           `json:"sharing_id,omitempty"`
+	Tags        []string         `json:"tags,omitempty"`
 }
 
 // AutoRenew is the auto renewal information for the domain
@@ -116,33 +116,33 @@ type Details struct {
 	Status       []string      `json:"status"`
 	TLD          string        `json:"tld"`
 	AuthInfo     string        `json:"authinfo,omitempty"`
-	ID           string         `json:"id,omitempty"`
-	SharingID    string              `json:"sharing_id,omitempty"`
-	Tags         []string            `json:"tags,omitempty"`
-	TrusteeRoles []string            `json:"trustee_roles,omitempty"`
+	ID           string        `json:"id,omitempty"`
+	SharingID    string        `json:"sharing_id,omitempty"`
+	Tags         []string      `json:"tags,omitempty"`
+	TrusteeRoles []string      `json:"trustee_roles,omitempty"`
 }
 
 // CreateRequest is used to request a new domain
 type CreateRequest struct {
-	FQDN string `json:"fqdn"`
-	Owner Contact `json:"owner"`
-	Admin Contact `json:"admin,omitempty"`
-	Bill  Contact `json:"bill,omitempty"`
-	Claims string `json:"claims,omitempty"`
-	Currency string `json:"currency,omitempty"`
+	FQDN     string  `json:"fqdn"`
+	Owner    Contact `json:"owner"`
+	Admin    Contact `json:"admin,omitempty"`
+	Bill     Contact `json:"bill,omitempty"`
+	Claims   string  `json:"claims,omitempty"`
+	Currency string  `json:"currency,omitempty"`
 	// Duration in years between 1 and 10
-	Duration int `json:"duration,omitempty"`
-	EnforcePremium bool `json:"enforce_premium,omitempty"`
-	Lang string `json:"lang,omitempty"`
+	Duration       int    `json:"duration,omitempty"`
+	EnforcePremium bool   `json:"enforce_premium,omitempty"`
+	Lang           string `json:"lang,omitempty"`
 	// NameserverIPs sets the Glue Records for the domain
 	NameserverIPs map[string]string `json:"nameserver_ips,omitempty"`
-	Nameservers  []string            `json:"nameservers,omitempty"`
-	Price int `json:"price,omitempty"`
-	ReselleeID string `json:"resellee_id,omitempty"`
+	Nameservers   []string          `json:"nameservers,omitempty"`
+	Price         int               `json:"price,omitempty"`
+	ReselleeID    string            `json:"resellee_id,omitempty"`
 	// SMD is a Signed Mark Data file; if used, `TLDPeriod` must be "sunrise"
-	SMD string `json:"smd,omitempty"`
-	Tech  Contact `json:"tech,omitempty"`
-	TLDPeriod string `json:"tld_period,omitempty"`
+	SMD       string  `json:"smd,omitempty"`
+	Tech      Contact `json:"tech,omitempty"`
+	TLDPeriod string  `json:"tld_period,omitempty"`
 }
 
 // Contacts is the set of contacts associated with a Domain

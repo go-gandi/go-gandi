@@ -10,7 +10,7 @@ type Config struct {
 	// SharingID is the Organization ID, available from the Organization API
 	SharingID string
 	// Debug enables verbose debugging of HTTP calls
-	Debug     bool
+	Debug bool
 }
 
 // NewDomainClient returns a client to the Gandi Domains API

@@ -4,8 +4,8 @@ func livednsAxfr() {
 	switch *action {
 	case aList:
 		jsonPrint(l.ListTsigs())
-  case aGet:
-    getTsig()
+	case aGet:
+		getTsig()
 	case aGetBIND:
 		getTsigBIND()
 	case aGetNSD:
@@ -49,7 +49,7 @@ func livednsAxfr() {
 			actionDescription{
 				Action:      aGetKnot,
 				Description: "Get Knot config example for tsig",
-      },
+			},
 			actionDescription{
 				Action:      aCreate,
 				Description: "Create a tsig (cannot be deleted)",
