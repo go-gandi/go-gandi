@@ -1,5 +1,5 @@
 name: Go
-on: [push]
+on: [pull_request]
 jobs:
 
   build:
@@ -22,9 +22,10 @@ jobs:
         go get -u golang.org/x/lint/golint
  
     - name: Build
-      run: go build -v .
+      run: |
+        go build -v .
+        go vet ./...
   
     - name: Lint
-      run: |
-        go vet ./...
-        golint ./...
+      uses: sjkaliski/go-github-actions/fmt@v0.5.0
+      
