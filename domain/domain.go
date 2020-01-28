@@ -12,8 +12,8 @@ type Domain struct {
 }
 
 // New returns an instance of the Domain API client
-func New(apikey string, sharingid string, debug bool) *Domain {
-	client := client.New(apikey, sharingid, debug)
+func New(apikey string, sharingid string, debug bool, dryRun bool) *Domain {
+	client := client.New(apikey, sharingid, debug, dryRun)
 	client.SetEndpoint("domain/")
 	return &Domain{client: *client}
 }

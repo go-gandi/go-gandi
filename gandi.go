@@ -11,16 +11,18 @@ type Config struct {
 	SharingID string
 	// Debug enables verbose debugging of HTTP calls
 	Debug bool
+	// DryRun prevents the API from making changes. Only certain API calls support it.
+	DryRun bool
 }
 
 // NewDomainClient returns a client to the Gandi Domains API
 // It expects an API key, available from https://account.gandi.net/en/
 func NewDomainClient(apikey string, config Config) *domain.Domain {
-	return domain.New(apikey, config.SharingID, config.Debug)
+	return domain.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }
 
 // NewLiveDNSClient returns a client to the Gandi Domains API
 // It expects an API key, available from https://account.gandi.net/en/
 func NewLiveDNSClient(apikey string, config Config) *livedns.LiveDNS {
-	return livedns.New(apikey, config.SharingID, config.Debug)
+	return livedns.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }

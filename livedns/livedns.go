@@ -10,8 +10,8 @@ type LiveDNS struct {
 }
 
 // New returns an instance of the LiveDNS API client
-func New(apikey string, sharingid string, debug bool) *LiveDNS {
-	client := client.New(apikey, sharingid, debug)
+func New(apikey string, sharingid string, debug bool, dryRun bool) *LiveDNS {
+	client := client.New(apikey, sharingid, debug, dryRun)
 	client.SetEndpoint("livedns/")
 	return &LiveDNS{client: *client}
 }
