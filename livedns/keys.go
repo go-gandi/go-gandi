@@ -16,18 +16,18 @@ type SigningKey struct {
 }
 
 type configSamples struct {
-	Bind string `json:"bind,omitempty"`
-	Knot string `json:"knot,omitempty"`
-	NSD string `json:"nsd,omitempty"`
+	Bind     string `json:"bind,omitempty"`
+	Knot     string `json:"knot,omitempty"`
+	NSD      string `json:"nsd,omitempty"`
 	PowerDNS string `json:"powerdns,omitempty"`
 }
 
 // TSIGKey describes the TSIG key associated with an AXFR secondary
 type TSIGKey struct {
-	KeyHREF string `json:"href,omitempty"`
-	ID string `json:"id,omitempty"`
-	KeyName string `json:"key_name,omitempty"`
-	Secret string `json:"secret,omitempty"`
+	KeyHREF       string        `json:"href,omitempty"`
+	ID            string        `json:"id,omitempty"`
+	KeyName       string        `json:"key_name,omitempty"`
+	Secret        string        `json:"secret,omitempty"`
 	ConfigSamples configSamples `json:"config_samples,omitempty"`
 }
 
@@ -43,7 +43,7 @@ func (g *LiveDNS) GetTSIGKey(id string) (response TSIGKey, err error) {
 	return
 }
 
-// AddTSIGKey retrieves all the TSIG keys for the account
+// CreateTSIGKey creates a TSIG key
 func (g *LiveDNS) CreateTSIGKey(fqdn string) (response TSIGKey, err error) {
 	_, err = g.client.Post("axfr/tsig", nil, &response)
 	return
@@ -97,4 +97,3 @@ func (g *LiveDNS) UpdateDomainKey(fqdn, uuid string, deleted bool) (err error) {
 	_, err = g.client.Put("domains/"+fqdn+"/keys/"+uuid, SigningKey{Deleted: &deleted}, nil)
 	return
 }
-
