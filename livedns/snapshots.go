@@ -8,12 +8,12 @@ import (
 
 // Snapshot represents a point in time record of a domain
 type Snapshot struct {
-	Automatic *bool `json:"automatic,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	ID string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-	SnapshotHREF string `json:"snapshot_href,omitempty"`
-	ZoneData    []DomainRecord `json:"zone_data,omitempty"`
+	Automatic    *bool          `json:"automatic,omitempty"`
+	CreatedAt    time.Time      `json:"created_at,omitempty"`
+	ID           string         `json:"id,omitempty"`
+	Name         string         `json:"name,omitempty"`
+	SnapshotHREF string         `json:"snapshot_href,omitempty"`
+	ZoneData     []DomainRecord `json:"zone_data,omitempty"`
 }
 
 // ListSnapshots lists all snapshots for a domain
@@ -39,4 +39,3 @@ func (g *LiveDNS) DeleteSnapshot(fqdn, snapUUID string) (err error) {
 	_, err = g.client.Delete("domains/"+fqdn+"/snapshots/"+snapUUID, nil, nil)
 	return
 }
-

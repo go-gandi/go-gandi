@@ -4,11 +4,11 @@ import "github.com/tiramiseb/go-gandi/internal/client"
 
 // Domain represents a DNS domain
 type Domain struct {
-	FQDN              string `json:"fqdn,omitempty"`
-	DomainHref        string `json:"domain_href,omitempty"`
-	DomainKeysHref    string `json:"domain_keys_href,omitempty"`
-	DomainRecordsHref string `json:"domain_records_href,omitempty"`
-	AutomaticSnapshots *bool `json:"automatic_snapshots,omitempty"`
+	FQDN               string `json:"fqdn,omitempty"`
+	DomainHref         string `json:"domain_href,omitempty"`
+	DomainKeysHref     string `json:"domain_keys_href,omitempty"`
+	DomainRecordsHref  string `json:"domain_records_href,omitempty"`
+	AutomaticSnapshots *bool  `json:"automatic_snapshots,omitempty"`
 }
 
 type zone struct {
@@ -56,13 +56,13 @@ func (g *LiveDNS) GetDomainAXFRSecondaries(fqdn string) (secondaries []string, e
 }
 
 // CreateDomainAXFRSecondary adds an IP address to the list of IPs that are permitted to do AXFR transfers of the domain
-func (g *LiveDNS) CreateDomainAXFRSecondary(fqdn string, ip string)  (err error) {
+func (g *LiveDNS) CreateDomainAXFRSecondary(fqdn string, ip string) (err error) {
 	_, err = g.client.Put("domains/"+fqdn+"/axfr/slaves/"+ip, nil, nil)
 	return
 }
 
 // DeleteDomainAXFRSecondary removes an IP address from the list of IPs that are permitted to do AXFR transfers of the domain
-func (g *LiveDNS) DeleteDomainAXFRSecondary(fqdn string, ip string)  (response client.StandardResponse, err error) {
+func (g *LiveDNS) DeleteDomainAXFRSecondary(fqdn string, ip string) (response client.StandardResponse, err error) {
 	_, err = g.client.Delete("domains/"+fqdn+"/axfr/slaves/"+ip, nil, &response)
 	return
 }

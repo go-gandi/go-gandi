@@ -71,7 +71,7 @@ func (g *LiveDNS) UpdateDomainRecordsByName(fqdn, name string, records []DomainR
 func (g *LiveDNS) UpdateDomainRecordByNameAndType(fqdn, name, recordtype string, ttl int, values []string) (response client.StandardResponse, err error) {
 	_, err = g.client.Put("domains/"+fqdn+"/records/"+name+"/"+recordtype,
 		DomainRecord{
-			RrsetType:recordtype,
+			RrsetType:   recordtype,
 			RrsetTTL:    ttl,
 			RrsetValues: values,
 		},
