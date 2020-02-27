@@ -53,7 +53,7 @@ func listRecords() {
 	if len(*args) < 2 {
 		jsonPrint(l.ListDomainRecords(uuidOrFQDN))
 	} else {
-		jsonPrint(l.ListDomainRecordsWithName(uuidOrFQDN, (*args)[1]))
+		jsonPrint(l.ListDomainRecordsByName(uuidOrFQDN, (*args)[1]))
 	}
 }
 
@@ -96,7 +96,7 @@ func getRecord() {
 		return
 	}
 	uuidOrFQDN := (*args)[0]
-	jsonPrint(l.GetDomainRecordWithNameAndType(uuidOrFQDN, (*args)[1], (*args)[2]))
+	jsonPrint(l.GetDomainRecordByNameAndType(uuidOrFQDN, (*args)[1], (*args)[2]))
 }
 
 func updateRecord() {
@@ -115,7 +115,7 @@ func updateRecord() {
 		noPrint(err)
 	}
 	values := (*args)[4:]
-	jsonPrint(l.ChangeDomainRecordWithNameAndType((*args)[0], (*args)[1], (*args)[2], ttl, values))
+	jsonPrint(l.UpdateDomainRecordByNameAndType((*args)[0], (*args)[1], (*args)[2], ttl, values))
 }
 
 func deleteRecord() {
