@@ -1,141 +1,92 @@
 package main
 
-func livednsType() {
-	switch *resourceType {
-	case "record":
-		livednsDomainRecord()
-	case "livednsSnapshot":
-		livednsSnapshot()
-	case "domain":
-		livednsDomains()
-	case "livednsAxfr":
-		livednsAxfr()
-	}
+type liveDNSCmd struct {
+	Create liveDNSCreateCmd `kong:"cmd,help='Enable LiveDNS for a Domain'"`
+	List   liveDNSListCmd   `kong:"cmd,help='List LiveDNS Domains'"`
+	Manage liveDNSManageCmd `kong:"cmd,help='Manage LiveDNS Domain'"`
 }
 
-func livednsDomains() {
-	switch *action {
-	case aList:
-		jsonPrint(l.ListDomains())
-	case aAdd:
-		addDomainToZone()
-	case aGet:
-		getDomain()
-	case aSign:
-		signDomain()
-	case aKeys:
-		getDomainKeys()
-	case aDelKey:
-		deleteDomainKey()
-	case aNS:
-		getDomainNS()
-	default:
-		displayActionsList([]actionDescription{
-			actionDescription{
-				Action:      aList,
-				Description: "List all livedns_domains",
-			},
-			actionDescription{
-				Action:      aAdd,
-				Description: "Add a livedns_domains in a zone",
-			},
-			actionDescription{
-				Action:      aGet,
-				Description: "Get a domain",
-			},
-			actionDescription{
-				Action:      aDetach,
-				Description: "Detach a domain",
-			},
-			actionDescription{
-				Action:      aSign,
-				Description: "Ask the Gandi server to sign a domain",
-			},
-			actionDescription{
-				Action:      aKeys,
-				Description: "Return the signing keys created for domain",
-			},
-			actionDescription{
-				Action:      aDelKey,
-				Description: "Delete a signing key",
-			},
-			actionDescription{
-				Action:      aNS,
-				Description: "Get nameservers for a domain",
-			},
-		})
-	}
+type liveDNSCreateCmd struct {
+	FQDN string `kong:"arg"`
+	TTL  int    `kong:"arg,optional,default='60',help='The default TTL of the domain, default= 60'"`
 }
 
-func addDomainToZone() {
-	if len(*args) < 2 {
-		displayArgsList([]string{
-			"FQDN of the domain to be added",
-			"UUID of the zone where to add the domain",
-		})
-		return
-	}
-	jsonPrint(l.CreateDomain((*args)[0], 300))
+func (d *liveDNSCreateCmd) Run(g *globals) error {
+	l := g.liveDNSHandle
+	return jsonPrint(l.CreateDomain(d.FQDN, d.TTL))
 }
 
-func getDomain() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain to be returned",
-		})
-		return
-	}
-	jsonPrint(l.GetDomain((*args)[0]))
+type liveDNSListCmd struct{}
+
+func (c *liveDNSListCmd) Run(g *globals) error {
+	l := g.liveDNSHandle
+	return jsonPrint(l.ListDomains())
 }
 
-func changeAssociatedZone() {
-	if len(*args) < 2 {
-		displayArgsList([]string{
-			"FQDN of the domain to be added",
-			"UUID of the zone where to move the domain",
-		})
-		return
-	}
-	return
+type liveDNSManageCmd struct {
+	Name struct {
+		Name    string              `kong:"arg"`
+		Display liveDNSGetDomainCmd `kong:"cmd,help='Display the domain'"`
+		Records struct {
+			List   liveDNSGetRecordsCmd   `kong:"cmd,name='list',help='Display records for domain'"`
+			Create liveDNSCreateRecordCmd `kong:"cmd,name='create',help='Create records for domain'"`
+			Update liveDNSUpdateRecordCmd `kong:"cmd,name='update',help='Update records for domain'"`
+			Delete liveDNSUpdateRecordCmd `kong:"cmd,name='delete',help='Delete records for domain'"`
+		} `kong:"cmd"`
+		Sign          liveDNSSignDomainCmd           `kong:"cmd,help='Sign the domain'"`
+		Keys          liveDNSGetDomainKeysCmd        `kong:"cmd,help='Get the DNSSEC keys for the domain'"`
+		DeleteKey     liveDNSDeleteDomainKeyCmd      `kong:"cmd,help='Delete a DNSSEC key for the domain'"`
+		NameServers   liveDNSGetDomainNSCmd          `kong:"cmd,help='Get nameservers for the domain'"`
+		Snapshot      liveDNSCreateSnapshotCmd       `kong:"cmd,help='Create a snapshot of the domain'"`
+		GetSnapshot   liveDNSGetSnapshotCmd          `kong:"cmd,name='get-snapshot',help='Get a snapshot of the domain'"`
+		ListSnapshots liveDNSListSnapshotsCmd        `kong:"cmd,name='list-snapshots',help='List snapshots of the domain'"`
+		GetTsigs      liveDNSGetTSIGsCmd             `kong:"cmd,name='get-tsigs',help='Get TSIGs'"`
+		AddTSIG       liveDNSAddTSIGToDomainCmd      `kong:"cmd,name='add-tsig',help='Add TSIG to domain'"`
+		RemoveTSIG    liveDNSRemoveTSIGFromDomainCmd `kong:"cmd,name='remove-tsig',help='Remove TSIG from domain'"`
+		GetAXFRs      liveDNSListAXFRSlavesCmd       `kong:"cmd,name='get-axfrs',help='Get AXFRs'"`
+		AddAXFR       liveDNSAddAXFRSlaveCmd         `kong:"cmd,name='add-axfr',help='Add AXFR to domain'"`
+		RemoveAXFR    liveDNSRemoveAXFRSlaveCmd      `kong:"cmd,name='remove-axfr',help='Remove AXFR from domain'"`
+	} `kong:"arg"`
 }
 
-func signDomain() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain to be signed",
-		})
-		return
-	}
-	jsonPrint(l.SignDomain((*args)[0]))
+type liveDNSGetDomainCmd struct{}
+
+func (d *liveDNSGetDomainCmd) Run(g *globals) error {
+	fqdn := c.LiveDNS.Manage.Name.Name
+	l := g.liveDNSHandle
+	return jsonPrint(l.GetDomain(fqdn))
 }
 
-func getDomainKeys() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain for which to return keys",
-		})
-		return
-	}
-	jsonPrint(l.GetDomainKeys((*args)[0]))
+type liveDNSSignDomainCmd struct{}
+
+func (d *liveDNSSignDomainCmd) Run(g *globals) error {
+	fqdn := c.LiveDNS.Manage.Name.Name
+	l := g.liveDNSHandle
+	return jsonPrint(l.SignDomain(fqdn))
 }
 
-func deleteDomainKey() {
-	if len(*args) < 2 {
-		displayArgsList([]string{
-			"FQDN of the domain for which to delete a key",
-			"UUID of the key to delete",
-		})
-		return
-	}
-	noPrint(l.DeleteDomainKey((*args)[0], (*args)[1]))
+type liveDNSGetDomainKeysCmd struct{}
+
+func (d *liveDNSGetDomainKeysCmd) Run(g *globals) error {
+	fqdn := c.LiveDNS.Manage.Name.Name
+	l := g.liveDNSHandle
+	return jsonPrint(l.GetDomainKeys(fqdn))
 }
 
-func getDomainNS() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain for which to return the nameservers",
-		})
-		return
-	}
-	jsonPrint(l.GetDomainNS((*args)[0]))
+type liveDNSDeleteDomainKeyCmd struct {
+	ID string `kong:"arg,help='The ID of the key to delete'"`
+}
+
+func (d *liveDNSDeleteDomainKeyCmd) Run(g *globals) error {
+	fqdn := c.LiveDNS.Manage.Name.Name
+	l := g.liveDNSHandle
+	return noPrint(l.DeleteDomainKey(fqdn, d.ID))
+}
+
+type liveDNSGetDomainNSCmd struct{}
+
+func (d *liveDNSGetDomainNSCmd) Run(g *globals) error {
+	fqdn := c.LiveDNS.Manage.Name.Name
+	l := g.liveDNSHandle
+	return jsonPrint(l.GetDomainNS(fqdn))
 }

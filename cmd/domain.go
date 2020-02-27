@@ -1,36 +1,37 @@
 package main
 
-func domainType() {
-	switch *resourceType {
-	case "list":
-		domainList()
-	case "get":
-		domainPrint()
-	case "nameservers":
-		nameserversList()
-	}
+type domainCmd struct {
+	List   domainListCmd   `kong:"cmd,help='List managed domains'"`
+	Manage domainManageCmd `kong:"cmd,help='Manage a domain'"`
 }
 
-func domainList() {
-	jsonPrint(d.ListDomains())
+type domainListCmd struct{}
+
+func (cmd *domainListCmd) Run(g *globals) error {
+	d := g.domainHandle
+	return jsonPrint(d.ListDomains())
 }
 
-func domainPrint() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain to get info for",
-		})
-		return
-	}
-	jsonPrint(d.GetDomain((*args)[0]))
+type domainManageCmd struct {
+	Name struct {
+		Name        string             `kong:"arg"`
+		Display     domainDisplayCmd   `kong:"cmd,help='Display the domain'"`
+		NameServers domainDisplayNSCmd `kong:"cmd,name='nameservers',help='Display the Name Servers for the domain'"`
+	} `kong:"arg"`
 }
 
-func nameserversList() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain for which to return the nameservers",
-		})
-		return
-	}
-	jsonPrint(d.GetNameServers((*args)[0]))
+type domainDisplayCmd struct{}
+
+func (cmd *domainDisplayCmd) Run(g *globals) error {
+	fqdn := c.Domain.Manage.Name.Name
+	d := g.domainHandle
+	return jsonPrint(d.GetDomain(fqdn))
+}
+
+type domainDisplayNSCmd struct{}
+
+func (cmd *domainDisplayNSCmd) Run(g *globals) error {
+	fqdn := c.Domain.Manage.Name.Name
+	d := g.domainHandle
+	return jsonPrint(d.GetNameServers(fqdn))
 }

@@ -4,116 +4,80 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/alecthomas/kingpin"
+	"github.com/alecthomas/kong"
 
 	"github.com/tiramiseb/go-gandi"
 	"github.com/tiramiseb/go-gandi/domain"
 	"github.com/tiramiseb/go-gandi/livedns"
 )
 
-const (
-	// Actions names
-	aAdd         = "add"
-	aAttach      = "attach"
-	aCreate      = "create"
-	aDelete      = "delete"
-	aDelKey      = "delkey"
-	aDelSlave    = "delslave"
-	aDetach      = "detach"
-	aDomains     = "livedns_domains"
-	aGet         = "get"
-	aKeys        = "keys"
-	aList        = "list"
-	aGetBIND     = "bind"
-	aGetPowerDNS = "powerdns"
-	aGetNSD      = "nsd"
-	aGetKnot     = "knot"
-	aNS          = "ns"
-	aSign        = "sign"
-	aSlave       = "slave"
-	aSlaves      = "slaves"
-	aText        = "text"
-	aUpdate      = "update"
-)
-
-var (
-	apiType      = kingpin.Arg("type", "API type (domain, livedns, email, billing or organisation)").Required().String()
-	resourceType = kingpin.Arg("subtype", "Resource type (record, livednsSnapshot, domain or livednsAxfr)").Required().String()
-	action       = kingpin.Arg("action", "Action (valid actions depend on the type - if you provide an erroneous action, a list of allowed actions will be displayed)").Required().String()
-	args         = kingpin.Arg("args", "Arguments to the action (valid arguments depend on the action)").Strings()
-	apiKey       = kingpin.Flag("key", "The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)").OverrideDefaultFromEnvar("GANDI_KEY").Short('k').String()
-	sharingID    = kingpin.Flag("sharingID", "The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)").OverrideDefaultFromEnvar("GANDI_SHARING_ID").Short('i').String()
-	debug        = kingpin.Flag("debug", "Show debug info").Bool()
-	dryRun       = kingpin.Flag("dryRun", "Show debug info").Bool()
-	d            *domain.Domain
-	l            *livedns.LiveDNS
-)
-
-func main() {
-	kingpin.CommandLine.HelpFlag.Short('h')
-	kingpin.Parse()
-	g := gandi.Config{
-		SharingID: *sharingID,
-		Debug:     *debug,
-	}
-	d = gandi.NewDomainClient(*apiKey, g)
-	l = gandi.NewLiveDNSClient(*apiKey, g)
-	switch *apiType {
-	case "domain":
-		domainType()
-	case "livedns":
-		livednsType()
-	// case "email":
-	// 	email_type()
-	// case "billing":
-	// 	billing_type()
-	// case "organization":
-	// 	organization_type()
-	default:
-		kingpin.Usage()
-	}
-
+type cli struct {
+	globals
+	LiveDNS   liveDNSCmd `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
+	Domain    domainCmd  `kong:"cmd,help='Manage Domains'"`
+	Debug     bool       `kong:"short='d',help='Enable debug logging'"`
+	DryRun    bool       `kong:"help='Enable dry run mode'"`
+	APIKey    string     `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
+	SharingID string     `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
 
-func jsonPrint(data interface{}, err error) {
+type globals struct {
+	liveDNSHandle *livedns.LiveDNS
+	domainHandle  *domain.Domain
+	Version       versionFlag `kong:"name='version',help='Print version information and quit'"`
+}
+
+var c cli
+
+type versionFlag string
+
+func (v versionFlag) Decode(ctx *kong.DecodeContext) error { return nil }
+func (v versionFlag) IsBool() bool                         { return true }
+func (v versionFlag) BeforeApply(app *kong.Kong, vars kong.Vars) error {
+	fmt.Println(vars["version"])
+	app.Exit(0)
+	return nil
+}
+
+func main() {
+	c = cli{
+		globals: globals{
+			Version: "0.0.1",
+		},
+	}
+	ctx := kong.Parse(&c)
+	g := gandi.Config{
+		SharingID: c.SharingID,
+		Debug:     c.Debug,
+		DryRun:    c.DryRun,
+	}
+	c.globals.domainHandle = gandi.NewDomainClient(c.APIKey, g)
+	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(c.APIKey, g)
+	err := ctx.Run(&c.globals)
+	ctx.FatalIfErrorf(err)
+}
+
+func jsonPrint(data interface{}, err error) error {
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"}\n", err)
-		return
+		return fmt.Errorf("{\"error\": \"%w\"}\n", err)
 	}
 	response, _ := json.MarshalIndent(data, "", "  ")
 	fmt.Println(string(response))
+	return nil
 }
 
-func textPrint(data []byte, err error) {
+func textPrint(data []byte, err error) error {
 	if err != nil {
-		fmt.Println("Error: ", err)
-		return
+		return fmt.Errorf("Error: %w", err)
 	}
 	fmt.Println(string(data))
+	return nil
 }
-func noPrint(err error) {
+
+func noPrint(err error) error {
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"}\n", err)
-		return
+		return fmt.Errorf("{\"error\": \"%w\"}\n", err)
 	}
 	fmt.Println("OK")
-}
-
-type actionDescription struct {
-	Action      string
-	Description string
-}
-
-func displayActionsList(actions []actionDescription) {
-	fmt.Printf("Here are the actions accepted by type \"%s\":\n", *resourceType)
-	for _, action := range actions {
-		fmt.Printf("  %s: %s\n", action.Action, action.Description)
-	}
-}
-
-func displayArgsList(arguments []string) {
-	fmt.Printf("Here are the actions accepted by type \"%s\" and action \"%s\":\n", *resourceType, *action)
-	for _, arg := range arguments {
-		fmt.Printf("  * %s\n", arg)
-	}
+	return nil
 }
