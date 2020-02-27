@@ -21,8 +21,6 @@ func livednsDomains() {
 		addDomainToZone()
 	case aGet:
 		getDomain()
-	case aDetach:
-		detachDomain()
 	case aSign:
 		signDomain()
 	case aKeys:
@@ -99,16 +97,6 @@ func changeAssociatedZone() {
 		return
 	}
 	return
-}
-
-func detachDomain() {
-	if len(*args) < 1 {
-		displayArgsList([]string{
-			"FQDN of the domain to detach",
-		})
-		return
-	}
-	noPrint(l.DetachDomain((*args)[0]))
 }
 
 func signDomain() {
