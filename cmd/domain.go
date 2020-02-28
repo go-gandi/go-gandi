@@ -14,9 +14,10 @@ func (cmd *domainListCmd) Run(g *globals) error {
 
 type domainManageCmd struct {
 	Name struct {
-		Name        string             `kong:"arg"`
-		Display     domainDisplayCmd   `kong:"cmd,help='Display the domain'"`
-		NameServers domainDisplayNSCmd `kong:"cmd,name='nameservers',help='Display the Name Servers for the domain'"`
+		Name        string                `kong:"arg"`
+		Display     domainDisplayCmd      `kong:"cmd,help='Display the domain'"`
+		NameServers domainDisplayNSCmd    `kong:"cmd,name='nameservers',help='Display the Name Servers for the domain'"`
+		AutoRenew   domainSetAutoRenewCmd `kong:"cmd,name='autorenew',help='Enable or disable autorenew for the domain'"`
 	} `kong:"arg"`
 }
 
@@ -34,4 +35,14 @@ func (cmd *domainDisplayNSCmd) Run(g *globals) error {
 	fqdn := c.Domain.Manage.Name.Name
 	d := g.domainHandle
 	return jsonPrint(d.GetNameServers(fqdn))
+}
+
+type domainSetAutoRenewCmd struct {
+	Enable bool `kong:"type='bool',help='Should the domain autorenew'"`
+}
+
+func (cmd *domainSetAutoRenewCmd) Run(g *globals) error {
+	fqdn := c.Domain.Manage.Name.Name
+	d := g.domainHandle
+	return noPrint(d.SetAutoRenew(fqdn, cmd.Enable))
 }
