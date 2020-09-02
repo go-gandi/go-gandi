@@ -130,7 +130,7 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	}
 	if g.debug {
 		dump, _ := httputil.DumpResponse(resp, true)
-		fmt.Println("=======================================\nREQUEST:")
+		fmt.Println("=======================================\nRESPONSE:")
 		fmt.Println(string(dump))
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
