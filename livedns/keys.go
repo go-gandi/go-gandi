@@ -1,6 +1,6 @@
 package livedns
 
-import "github.com/tiramiseb/go-gandi/internal/client"
+import "github.com/go-gandi/go-gandi/internal/client"
 
 // SigningKey holds data about a DNSSEC signing key
 type SigningKey struct {

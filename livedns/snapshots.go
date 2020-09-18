@@ -3,7 +3,7 @@ package livedns
 import (
 	"time"
 
-	"github.com/tiramiseb/go-gandi/internal/client"
+	"github.com/go-gandi/go-gandi/internal/client"
 )
 
 // Snapshot represents a point in time record of a domain

@@ -1,6 +1,6 @@
 package livedns
 
-import "github.com/tiramiseb/go-gandi/internal/client"
+import "github.com/go-gandi/go-gandi/internal/client"
 
 // DomainRecord represents a DNS Record
 type DomainRecord struct {

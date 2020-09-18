@@ -1,4 +1,4 @@
-module github.com/tiramiseb/go-gandi
+module github.com/go-gandi/go-gandi
 
 go 1.13
 

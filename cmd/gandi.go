@@ -6,9 +6,9 @@ import (
 
 	"github.com/alecthomas/kong"
 
-	"github.com/tiramiseb/go-gandi"
-	"github.com/tiramiseb/go-gandi/domain"
-	"github.com/tiramiseb/go-gandi/livedns"
+	"github.com/go-gandi/go-gandi"
+	"github.com/go-gandi/go-gandi/domain"
+	"github.com/go-gandi/go-gandi/livedns"
 )
 
 type cli struct {
