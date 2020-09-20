@@ -26,25 +26,26 @@ func NewFromClient(g client.Gandi) *Domain {
 
 // Contact represents a contact associated with a domain
 type Contact struct {
-	Country        string `json:"country"`
-	Email          string `json:"email"`
-	FamilyName     string `json:"family"`
-	GivenName      string `json:"given"`
-	StreetAddr     string `json:"streetaddr"`
-	ContactType    int    `json:"type"`
-	BrandNumber    string `json:"brand_number,omitempty"`
-	City           string `json:"city,omitempty"`
-	DataObfuscated *bool  `json:"data_obfuscated,omitempty"`
-	Fax            string `json:"fax,omitempty"`
-	Language       string `json:"lang,omitempty"`
-	MailObfuscated *bool  `json:"mail_obfuscated,omitempty"`
-	Mobile         string `json:"mobile,omitempty"`
-	OrgName        string `json:"orgname,omitempty"`
-	Phone          string `json:"phone,omitempty"`
-	Siren          string `json:"siren,omitempty"`
-	State          string `json:"state,omitempty"`
-	Validation     string `json:"validation,omitempty"`
-	Zip            string `json:"zip,omitempty"`
+	Country         string                 `json:"country"`
+	Email           string                 `json:"email"`
+	FamilyName      string                 `json:"family"`
+	GivenName       string                 `json:"given"`
+	StreetAddr      string                 `json:"streetaddr"`
+	ContactType     int                    `json:"type"`
+	BrandNumber     string                 `json:"brand_number,omitempty"`
+	City            string                 `json:"city,omitempty"`
+	DataObfuscated  *bool                  `json:"data_obfuscated,omitempty"`
+	Fax             string                 `json:"fax,omitempty"`
+	Language        string                 `json:"lang,omitempty"`
+	MailObfuscated  *bool                  `json:"mail_obfuscated,omitempty"`
+	Mobile          string                 `json:"mobile,omitempty"`
+	OrgName         string                 `json:"orgname,omitempty"`
+	Phone           string                 `json:"phone,omitempty"`
+	Siren           string                 `json:"siren,omitempty"`
+	State           string                 `json:"state,omitempty"`
+	Validation      string                 `json:"validation,omitempty"`
+	Zip             string                 `json:"zip,omitempty"`
+	ExtraParameters map[string]interface{} `json:"extra_parameters,omitempty"`
 }
 
 // ResponseDates represents all the dates associated with a domain
