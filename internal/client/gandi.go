@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"strings"
+
+	"github.com/go-gandi/go-gandi/types"
 )
 
 const (
@@ -135,7 +137,7 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		defer resp.Body.Close()
-		var message StandardResponse
+		var message types.StandardResponse
 		defer resp.Body.Close()
 		decoder := json.NewDecoder(resp.Body)
 		decoder.Decode(&message)
@@ -153,22 +155,4 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		}
 	}
 	return resp, err
-}
-
-// StandardResponse is a standard response
-type StandardResponse struct {
-	Code    int             `json:"code,omitempty"`
-	Message string          `json:"message,omitempty"`
-	UUID    string          `json:"uuid,omitempty"`
-	Object  string          `json:"object,omitempty"`
-	Cause   string          `json:"cause,omitempty"`
-	Status  string          `json:"status,omitempty"`
-	Errors  []StandardError `json:"errors,omitempty"`
-}
-
-// StandardError is embedded in a standard error
-type StandardError struct {
-	Location    string `json:"location"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
 }

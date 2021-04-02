@@ -1,6 +1,8 @@
 package livedns
 
-import "github.com/go-gandi/go-gandi/internal/client"
+import (
+	"github.com/go-gandi/go-gandi/types"
+)
 
 // Domain represents a DNS domain
 type Domain struct {
@@ -32,7 +34,7 @@ func (g *LiveDNS) ListDomains() (domains []Domain, err error) {
 }
 
 // CreateDomain adds a domain to a zone
-func (g *LiveDNS) CreateDomain(fqdn string, ttl int) (response client.StandardResponse, err error) {
+func (g *LiveDNS) CreateDomain(fqdn string, ttl int) (response types.StandardResponse, err error) {
 	_, err = g.client.Post("domains", createDomainRequest{FQDN: fqdn, Zone: zone{TTL: ttl}}, &response)
 	return
 }
@@ -44,7 +46,7 @@ func (g *LiveDNS) GetDomain(fqdn string) (domain Domain, err error) {
 }
 
 // UpdateDomain changes the zone associated to a domain
-func (g *LiveDNS) UpdateDomain(fqdn string, details UpdateDomainRequest) (response client.StandardResponse, err error) {
+func (g *LiveDNS) UpdateDomain(fqdn string, details UpdateDomainRequest) (response types.StandardResponse, err error) {
 	_, err = g.client.Patch("domains/"+fqdn, details, &response)
 	return
 }

@@ -1,6 +1,8 @@
 package livedns
 
-import "github.com/go-gandi/go-gandi/internal/client"
+import (
+	"github.com/go-gandi/go-gandi/types"
+)
 
 // SigningKey holds data about a DNSSEC signing key
 type SigningKey struct {
@@ -56,7 +58,7 @@ func (g *LiveDNS) GetDomainTSIGKeys(fqdn string) (response []TSIGKey, err error)
 }
 
 // AssociateTSIGKeyWithDomain retrieves the specified TSIG key
-func (g *LiveDNS) AssociateTSIGKeyWithDomain(fqdn string, id string) (response client.StandardResponse, err error) {
+func (g *LiveDNS) AssociateTSIGKeyWithDomain(fqdn string, id string) (response types.StandardResponse, err error) {
 	_, err = g.client.Put("domains/"+fqdn+"/axfr/tsig/"+id, nil, &response)
 	return
 }
@@ -68,7 +70,7 @@ func (g *LiveDNS) RemoveTSIGKeyFromDomain(fqdn string, id string) (err error) {
 }
 
 // SignDomain creates a DNSKEY and asks Gandi servers to automatically sign the domain
-func (g *LiveDNS) SignDomain(fqdn string) (response client.StandardResponse, err error) {
+func (g *LiveDNS) SignDomain(fqdn string) (response types.StandardResponse, err error) {
 	f := SigningKey{Flags: 257}
 	_, err = g.client.Post("domains/"+fqdn+"/keys", f, &response)
 	return
