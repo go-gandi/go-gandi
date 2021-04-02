@@ -3,7 +3,7 @@ package livedns
 import (
 	"time"
 
-	"github.com/go-gandi/go-gandi/internal/client"
+	"github.com/go-gandi/go-gandi/types"
 )
 
 // Snapshot represents a point in time record of a domain
@@ -23,7 +23,7 @@ func (g *LiveDNS) ListSnapshots(fqdn string) (snapshots []Snapshot, err error) {
 }
 
 // CreateSnapshot creates a snapshot for a domain
-func (g *LiveDNS) CreateSnapshot(fqdn string) (response client.StandardResponse, err error) {
+func (g *LiveDNS) CreateSnapshot(fqdn string) (response types.StandardResponse, err error) {
 	_, err = g.client.Post("domains/"+fqdn+"/snapshots", nil, &response)
 	return
 }

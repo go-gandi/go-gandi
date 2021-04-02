@@ -1,6 +1,8 @@
 package livedns
 
-import "github.com/go-gandi/go-gandi/internal/client"
+import (
+	"github.com/go-gandi/go-gandi/types"
+)
 
 // DomainRecord represents a DNS Record
 type DomainRecord struct {
@@ -37,7 +39,7 @@ func (g *LiveDNS) GetDomainRecordByNameAndType(fqdn, name, recordtype string) (r
 }
 
 // CreateDomainRecord creates a record in the zone attached to a domain
-func (g *LiveDNS) CreateDomainRecord(fqdn, name, recordtype string, ttl int, values []string) (response client.StandardResponse, err error) {
+func (g *LiveDNS) CreateDomainRecord(fqdn, name, recordtype string, ttl int, values []string) (response types.StandardResponse, err error) {
 	_, err = g.client.Post("domains/"+fqdn+"/records",
 		DomainRecord{
 			RrsetType:   recordtype,
@@ -54,21 +56,21 @@ type itemsPrefixForZoneRecords struct {
 }
 
 // UpdateDomainRecords changes all records in the zone attached to a domain
-func (g *LiveDNS) UpdateDomainRecords(fqdn string, records []DomainRecord) (response client.StandardResponse, err error) {
+func (g *LiveDNS) UpdateDomainRecords(fqdn string, records []DomainRecord) (response types.StandardResponse, err error) {
 	prefixedRecords := itemsPrefixForZoneRecords{Items: records}
 	_, err = g.client.Put("domains/"+fqdn+"/records", prefixedRecords, &response)
 	return
 }
 
 // UpdateDomainRecordsByName changes all records with the given name in the zone attached to the domain
-func (g *LiveDNS) UpdateDomainRecordsByName(fqdn, name string, records []DomainRecord) (response client.StandardResponse, err error) {
+func (g *LiveDNS) UpdateDomainRecordsByName(fqdn, name string, records []DomainRecord) (response types.StandardResponse, err error) {
 	prefixedRecords := itemsPrefixForZoneRecords{Items: records}
 	_, err = g.client.Put("domains/"+fqdn+"/records/"+name, prefixedRecords, &response)
 	return
 }
 
 // UpdateDomainRecordByNameAndType changes the record with the given name and the given type in the zone attached to a domain
-func (g *LiveDNS) UpdateDomainRecordByNameAndType(fqdn, name, recordtype string, ttl int, values []string) (response client.StandardResponse, err error) {
+func (g *LiveDNS) UpdateDomainRecordByNameAndType(fqdn, name, recordtype string, ttl int, values []string) (response types.StandardResponse, err error) {
 	_, err = g.client.Put("domains/"+fqdn+"/records/"+name+"/"+recordtype,
 		DomainRecord{
 			RrsetType:   recordtype,
