@@ -43,12 +43,12 @@ func (d *liveDNSUpdateRecordCmd) Run(g *globals) error {
 	return jsonPrint(l.UpdateDomainRecordByNameAndType(fqdn, d.Name, d.Type, d.TTL, d.Values))
 }
 
-type liveDNSDeleteRecordCmd struct {
+type liveDNSDeleteRecordCmd struct { //nolint: unused
 	Name string `kong:"arg,optional,name='name',help='The name of the record to fetch'"`
 	Type string `kong:"arg,optional,help='The type of the record to retrieve. You must specify the name too.'"`
 }
 
-func (d *liveDNSDeleteRecordCmd) Run(g *globals) error {
+func (d *liveDNSDeleteRecordCmd) Run(g *globals) error { //nolint: unused
 	fqdn := c.LiveDNS.Manage.Name.Name
 	l := g.liveDNSHandle
 	if d.Name != "" && d.Type != "" {
