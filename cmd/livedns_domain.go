@@ -31,7 +31,7 @@ type liveDNSManageCmd struct {
 			List   liveDNSGetRecordsCmd   `kong:"cmd,name='list',help='Display records for domain'"`
 			Create liveDNSCreateRecordCmd `kong:"cmd,name='create',help='Create records for domain'"`
 			Update liveDNSUpdateRecordCmd `kong:"cmd,name='update',help='Update records for domain'"`
-			Delete liveDNSUpdateRecordCmd `kong:"cmd,name='delete',help='Delete records for domain'"`
+			Delete liveDNSDeleteRecordCmd `kong:"cmd,name='delete',help='Delete records for domain'"`
 		} `kong:"cmd"`
 		Sign          liveDNSSignDomainCmd           `kong:"cmd,help='Sign the domain'"`
 		Keys          liveDNSGetDomainKeysCmd        `kong:"cmd,help='Get the DNSSEC keys for the domain'"`
