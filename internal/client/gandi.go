@@ -70,7 +70,9 @@ func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (ht
 	}
 	defer resp.Body.Close()
 	decoder := json.NewDecoder(resp.Body)
-	decoder.Decode(recipient)
+	if err = decoder.Decode(recipient); err != nil {
+		return resp.Header, err
+	}
 	return resp.Header, nil
 }
 
@@ -138,7 +140,9 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		var message StandardResponse
 		defer resp.Body.Close()
 		decoder := json.NewDecoder(resp.Body)
-		decoder.Decode(&message)
+		if err = decoder.Decode(&message); err != nil {
+			return resp, err
+		}
 		if message.Message != "" {
 			err = fmt.Errorf("%d: %s", resp.StatusCode, message.Message)
 		} else if len(message.Errors) > 0 {

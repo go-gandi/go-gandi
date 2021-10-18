@@ -66,7 +66,7 @@ func jsonPrint(data interface{}, err error) error {
 	return nil
 }
 
-func textPrint(data []byte, err error) error {
+func textPrint(data []byte, err error) error { //nolint
 	if err != nil {
 		return fmt.Errorf("Error: %w", err)
 	}
