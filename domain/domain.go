@@ -17,24 +17,6 @@ func NewFromClient(g client.Gandi) *DomainAPI {
 	return &DomainAPI{client: g}
 }
 
-// DNSSECKey represents a DNSSEC key associated with a domain
-type DNSSECKey struct {
-	Algorithm int `json:"algorithm"`
-	Digest string `json:"digest"`
-	DigestType int `json:"digest_type"`
-	ID int `json:"id"`
-	KeyTag int `json:"keytag"`
-	Type string `json:"type"`
-	PublicKey string `json:"public_key"`
-}
-
-// DNSSECKeyCreateRequest represents a request to create a DNSSEC key for a domain
-type DNSSECKeyCreateRequest struct {
-	Algorithm int `json:"algorithm"`
-	Type string `json:"type"`
-	PublicKey string `json:"public_key"`
-}
-
 // ListDomains requests the set of Domains
 // It returns a slice of domains and any error encountered
 func (g *DomainAPI) ListDomains() (domains []ListResponse, err error) {
@@ -85,17 +67,17 @@ func (g *DomainAPI) SetAutoRenew(domain string, autorenew bool) (err error) {
 	return
 }
 
-func (g *Domain) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
+func (g *DomainAPI) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
 	_, err = g.client.Get("domains/"+domain+"/dnskeys", nil, &keys)
 	return
 }
 
-func (g *Domain) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
+func (g *DomainAPI) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
 	_, err = g.client.Post("domains/"+domain+"/dnskeys", key, nil)
 	return
 }
 
-func (g *Domain) DeleteDNSSECKey(domain string, keyid string) (err error) {
+func (g *DomainAPI) DeleteDNSSECKey(domain string, keyid string) (err error) {
 	_, err = g.client.Delete("domains/"+domain+"/dnskeys/"+keyid, nil, nil)
 	return
 }
