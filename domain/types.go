@@ -145,3 +145,21 @@ type Contacts struct {
 type Nameservers struct {
 	Nameservers []string `json:"nameservers,omitempty"`
 }
+
+// DNSSECKey represents a DNSSEC key associated with a domain
+type DNSSECKey struct {
+	Algorithm  int    `json:"algorithm"`
+	Digest     string `json:"digest"`
+	DigestType int    `json:"digest_type"`
+	ID         int    `json:"id"`
+	KeyTag     int    `json:"keytag"`
+	Type       string `json:"type"`
+	PublicKey  string `json:"public_key"`
+}
+
+// DNSSECKeyCreateRequest represents a request to create a DNSSEC key for a domain
+type DNSSECKeyCreateRequest struct {
+	Algorithm int    `json:"algorithm"`
+	Type      string `json:"type"`
+	PublicKey string `json:"public_key"`
+}

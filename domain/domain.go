@@ -66,3 +66,18 @@ func (g *DomainAPI) SetAutoRenew(domain string, autorenew bool) (err error) {
 	_, err = g.client.Patch("domains/"+domain+"/autorenew", AutoRenew{Enabled: &autorenew}, nil)
 	return
 }
+
+func (g *DomainAPI) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
+	_, err = g.client.Get("domains/"+domain+"/dnskeys", nil, &keys)
+	return
+}
+
+func (g *DomainAPI) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
+	_, err = g.client.Post("domains/"+domain+"/dnskeys", key, nil)
+	return
+}
+
+func (g *DomainAPI) DeleteDNSSECKey(domain string, keyid string) (err error) {
+	_, err = g.client.Delete("domains/"+domain+"/dnskeys/"+keyid, nil, nil)
+	return
+}
