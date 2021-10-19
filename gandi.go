@@ -2,6 +2,7 @@ package gandi
 
 import (
 	"github.com/go-gandi/go-gandi/domain"
+	"github.com/go-gandi/go-gandi/email"
 	"github.com/go-gandi/go-gandi/livedns"
 )
 
@@ -19,6 +20,12 @@ type Config struct {
 // It expects an API key, available from https://account.gandi.net/en/
 func NewDomainClient(apikey string, config Config) *domain.Domain {
 	return domain.New(apikey, config.SharingID, config.Debug, config.DryRun)
+}
+
+// NewEmailClient returns a client to the Gandi Email API
+// It expects an API key, available from https://account.gandi.net/en/
+func NewEmailClient(apikey string, config Config) *email.Email {
+	return email.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }
 
 // NewLiveDNSClient returns a client to the Gandi Domains API
