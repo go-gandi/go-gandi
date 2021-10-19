@@ -17,12 +17,12 @@ type Config struct {
 
 // NewDomainClient returns a client to the Gandi Domains API
 // It expects an API key, available from https://account.gandi.net/en/
-func NewDomainClient(apikey string, config Config) *domain.Domain {
+func NewDomainClient(apikey string, config Config) *domain.DomainAPI {
 	return domain.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }
 
 // NewLiveDNSClient returns a client to the Gandi Domains API
 // It expects an API key, available from https://account.gandi.net/en/
-func NewLiveDNSClient(apikey string, config Config) *livedns.LiveDNS {
+func NewLiveDNSClient(apikey string, config Config) *livedns.LiveDNSAPI {
 	return livedns.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }
