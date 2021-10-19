@@ -5,14 +5,14 @@ import (
 )
 
 // New returns an instance of the LiveDNS API client
-func New(apikey string, sharingid string, debug bool, dryRun bool) *LiveDNSAPI {
+func New(apikey string, sharingid string, debug bool, dryRun bool) *LiveDNS {
 	client := client.New(apikey, sharingid, debug, dryRun)
 	client.SetEndpoint("livedns/")
-	return &LiveDNSAPI{client: *client}
+	return &LiveDNS{client: *client}
 }
 
 // NewFromClient returns an instance of the LiveDNS API client
-func NewFromClient(g client.Gandi) *LiveDNSAPI {
+func NewFromClient(g client.Gandi) *LiveDNS {
 	g.SetEndpoint("livedns/")
-	return &LiveDNSAPI{client: g}
+	return &LiveDNS{client: g}
 }

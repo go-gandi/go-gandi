@@ -22,8 +22,8 @@ type cli struct {
 }
 
 type globals struct {
-	liveDNSHandle *livedns.LiveDNSAPI
-	domainHandle  *domain.DomainAPI
+	liveDNSHandle *livedns.LiveDNS
+	domainHandle  *domain.Domain
 	Version       versionFlag `kong:"name='version',help='Print version information and quit'"`
 }
 

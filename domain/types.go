@@ -6,8 +6,8 @@ import (
 	"github.com/go-gandi/go-gandi/internal/client"
 )
 
-// DomainAPI is the API client to the Gandi v5 DomainAPI API
-type DomainAPI struct {
+// Domain is the API client to the Gandi v5 Domain API
+type Domain struct {
 	client client.Gandi
 }
 

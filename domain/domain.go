@@ -5,79 +5,79 @@ import (
 )
 
 // New returns an instance of the Domain API client
-func New(apikey string, sharingid string, debug bool, dryRun bool) *DomainAPI {
+func New(apikey string, sharingid string, debug bool, dryRun bool) *Domain {
 	client := client.New(apikey, sharingid, debug, dryRun)
 	client.SetEndpoint("domain/")
-	return &DomainAPI{client: *client}
+	return &Domain{client: *client}
 }
 
 // NewFromClient returns an instance of the Domain API client
-func NewFromClient(g client.Gandi) *DomainAPI {
+func NewFromClient(g client.Gandi) *Domain {
 	g.SetEndpoint("domain/")
-	return &DomainAPI{client: g}
+	return &Domain{client: g}
 }
 
 // ListDomains requests the set of Domains
 // It returns a slice of domains and any error encountered
-func (g *DomainAPI) ListDomains() (domains []ListResponse, err error) {
+func (g *Domain) ListDomains() (domains []ListResponse, err error) {
 	_, err = g.client.Get("domains", nil, &domains)
 	return
 }
 
 // GetDomain requests a single Domain
 // It returns a Details object and any error encountered
-func (g *DomainAPI) GetDomain(domain string) (domainResponse Details, err error) {
+func (g *Domain) GetDomain(domain string) (domainResponse Details, err error) {
 	_, err = g.client.Get("domains/"+domain, nil, &domainResponse)
 	return
 }
 
 // CreateDomain creates a single Domain
-func (g *DomainAPI) CreateDomain(req CreateRequest) (err error) {
+func (g *Domain) CreateDomain(req CreateRequest) (err error) {
 	_, err = g.client.Post("domains", req, nil)
 	return
 }
 
 // GetNameServers returns the configured nameservers for a domain
-func (g *DomainAPI) GetNameServers(domain string) (nameservers []string, err error) {
+func (g *Domain) GetNameServers(domain string) (nameservers []string, err error) {
 	_, err = g.client.Get("domains/"+domain+"/nameservers", nil, &nameservers)
 	return
 }
 
 // UpdateNameServers sets the list of the nameservers for a domain
-func (g *DomainAPI) UpdateNameServers(domain string, ns []string) (err error) {
+func (g *Domain) UpdateNameServers(domain string, ns []string) (err error) {
 	_, err = g.client.Put("domains/"+domain+"/nameservers", Nameservers{ns}, nil)
 	return
 }
 
 // GetContacts returns the contact objects for a domain
-func (g *DomainAPI) GetContacts(domain string) (contacts Contacts, err error) {
+func (g *Domain) GetContacts(domain string) (contacts Contacts, err error) {
 	_, err = g.client.Get("domains/"+domain+"/contacts", nil, &contacts)
 	return
 }
 
 // SetContacts sets the contact objects for a domain
-func (g *DomainAPI) SetContacts(domain string, contacts Contacts) (err error) {
+func (g *Domain) SetContacts(domain string, contacts Contacts) (err error) {
 	_, err = g.client.Patch("domains/"+domain+"/contacts", contacts, nil)
 	return
 }
 
 // SetAutoRenew enables or disables auto renew on the given Domain
-func (g *DomainAPI) SetAutoRenew(domain string, autorenew bool) (err error) {
+func (g *Domain) SetAutoRenew(domain string, autorenew bool) (err error) {
 	_, err = g.client.Patch("domains/"+domain+"/autorenew", AutoRenew{Enabled: &autorenew}, nil)
 	return
 }
 
-func (g *DomainAPI) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
+func (g *Domain) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
 	_, err = g.client.Get("domains/"+domain+"/dnskeys", nil, &keys)
 	return
 }
 
-func (g *DomainAPI) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
+func (g *Domain) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
 	_, err = g.client.Post("domains/"+domain+"/dnskeys", key, nil)
 	return
 }
 
-func (g *DomainAPI) DeleteDNSSECKey(domain string, keyid string) (err error) {
+func (g *Domain) DeleteDNSSECKey(domain string, keyid string) (err error) {
 	_, err = g.client.Delete("domains/"+domain+"/dnskeys/"+keyid, nil, nil)
 	return
 }
