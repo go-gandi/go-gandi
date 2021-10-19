@@ -6,8 +6,8 @@ import (
 	"github.com/go-gandi/go-gandi/internal/client"
 )
 
-// LiveDNSAPI is the API client to the Gandi v5 LiveDNSAPI API
-type LiveDNSAPI struct {
+// LiveDNS is the API client to the Gandi v5 LiveDNS API
+type LiveDNS struct {
 	client client.Gandi
 }
 
