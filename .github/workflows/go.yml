@@ -19,16 +19,16 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
- 
+
     - name: Build
       run: |
         go build -v .
         go vet ./...
-  
+
     - name: Format
       uses: sjkaliski/go-github-actions/fmt@v0.5.0
-    
+
     - name: Lint
-      uses: sjkaliski/go-github-actions/lint@v0.5.0
-      continue-on-error: true
-      
+      uses: golangci/golangci-lint-action@v2
+      if: runner.os == 'Linux'
+      working-directory: "./gandi/..."
