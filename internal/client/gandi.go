@@ -71,11 +71,14 @@ func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (ht
 		return nil, err
 	}
 	defer resp.Body.Close()
-	decoder := json.NewDecoder(resp.Body)
-	if err = decoder.Decode(recipient); err != nil {
-		return resp.Header, err
+
+	if recipient == nil {
+		return resp.Header, nil
 	}
-	return resp.Header, nil
+
+	decoder := json.NewDecoder(resp.Body)
+
+	return resp.Header, decoder.Decode(recipient)
 }
 
 // GetBytes issues a GET request but does not attempt to parse any response into JSON.
