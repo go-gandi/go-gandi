@@ -39,8 +39,8 @@ jobs:
 
       - name: Build
         run: |
-          OS_ARCH=${{ matrix.os_arch }}
+          GOOSARCH=${{ matrix.os_arch }}
           GOOS=${GOOSARCH%/*}
           GOARCH=${GOOSARCH#*/}
-          NAME=${{github.repository}}-$OS-$ARCH
-          go build -o $NAME -v
+          NAME=${{github.repository}}-$GOOS-$GOARCH
+          GOOS=$GOOS GOARCH=$GOARCH go build -o $NAME -v
