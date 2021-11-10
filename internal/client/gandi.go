@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"net/http/httputil"
-	"strings"
-
 	"github.com/go-gandi/go-gandi/types"
+	"io"
+	"io/ioutil"
+	"log"
+	"moul.io/http2curl"
+	"net/http"
+	"strings"
 )
 
 const (
@@ -103,7 +104,7 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	)
 	params, err := json.Marshal(p)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Fail to json.Marshal request params (error '%s')", err)
 	}
 	client := &http.Client{}
 	suffix := ""
@@ -116,7 +117,7 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		req, err = http.NewRequest(method, g.endpoint+path+suffix, nil)
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Fail to create the request (error '%s')", err)
 	}
 	req.Header.Add("Authorization", "Apikey "+g.apikey)
 	req.Header.Add("Content-Type", "application/json")
@@ -127,26 +128,31 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		req.Header.Add(header[0], header[1])
 	}
 	if g.debug {
-		dump, _ := httputil.DumpRequestOut(req, true)
-		fmt.Println("=======================================\nREQUEST:")
-		fmt.Println(string(dump))
+		command, _ := http2curl.GetCurlCommand(req)
+		log.Println("Request: ", command)
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		return resp, err
+		return resp, fmt.Errorf("Fail to do the request (error '%s')", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return resp, fmt.Errorf("Fail to read the body (error '%s')", err)
 	}
 	if g.debug {
-		dump, _ := httputil.DumpResponse(resp, true)
-		fmt.Println("=======================================\nRESPONSE:")
-		fmt.Println(string(dump))
+		var header bytes.Buffer
+		for k, e := range resp.Header {
+			header.WriteString(fmt.Sprintf("%s: %s ", k, e))
+		}
+		log.Println(fmt.Sprintf("Response : [%s] %s", resp.Status, header.String()))
+		log.Println(fmt.Sprintf("Response body: %s", string(body)))
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		defer resp.Body.Close()
 		var message types.StandardResponse
-		defer resp.Body.Close()
-		decoder := json.NewDecoder(resp.Body)
-		if err = decoder.Decode(&message); err != nil {
-			return resp, err
+
+		if err = json.Unmarshal(body, &message); err != nil {
+			return resp, fmt.Errorf("Fail to decode the response body (error '%s')", err)
 		}
 		if message.Message != "" {
 			err = fmt.Errorf("%d: %s", resp.StatusCode, message.Message)
