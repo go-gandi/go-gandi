@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
-	"net/http/httputil"
 	"strings"
 
 	"github.com/go-gandi/go-gandi/types"
+	"moul.io/http2curl"
 )
 
 const (
@@ -66,19 +67,15 @@ func (g *Gandi) Put(path string, params, recipient interface{}) (http.Header, er
 }
 
 func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (http.Header, error) {
-	resp, err := g.doAskGandi(method, path, params, nil)
+	header, body, err := g.doAskGandi(method, path, params, nil)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
-
 	if recipient == nil {
-		return resp.Header, nil
+		return header, nil
 	}
 
-	decoder := json.NewDecoder(resp.Body)
-
-	return resp.Header, decoder.Decode(recipient)
+	return header, json.Unmarshal(body, &recipient)
 }
 
 // GetBytes issues a GET request but does not attempt to parse any response into JSON.
@@ -87,23 +84,17 @@ func (g *Gandi) GetBytes(path string, params interface{}) (http.Header, []byte, 
 	headers := [][2]string{
 		{"Accept", "text/plain"},
 	}
-	resp, err := g.doAskGandi(http.MethodGet, path, params, headers)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer resp.Body.Close()
-	content, err := ioutil.ReadAll(resp.Body)
-	return resp.Header, content, err
+	return g.doAskGandi(http.MethodGet, path, params, headers)
 }
 
-func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2]string) (*http.Response, error) {
+func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2]string) (http.Header, []byte, error) {
 	var (
 		err error
 		req *http.Request
 	)
 	params, err := json.Marshal(p)
 	if err != nil {
-		return nil, err
+		return nil, nil, fmt.Errorf("Fail to json.Marshal request params (error '%w')", err)
 	}
 	client := &http.Client{}
 	suffix := ""
@@ -116,7 +107,7 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		req, err = http.NewRequest(method, g.endpoint+path+suffix, nil)
 	}
 	if err != nil {
-		return nil, err
+		return nil, nil, fmt.Errorf("Fail to create the request (error '%w')", err)
 	}
 	req.Header.Add("Authorization", "Apikey "+g.apikey)
 	req.Header.Add("Content-Type", "application/json")
@@ -127,26 +118,31 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		req.Header.Add(header[0], header[1])
 	}
 	if g.debug {
-		dump, _ := httputil.DumpRequestOut(req, true)
-		fmt.Println("=======================================\nREQUEST:")
-		fmt.Println(string(dump))
+		command, _ := http2curl.GetCurlCommand(req)
+		log.Println("Request: ", command)
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		return resp, err
+		return nil, nil, fmt.Errorf("Fail to do the request (error '%w')", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, nil, fmt.Errorf("Fail to read the body (error '%w')", err)
 	}
 	if g.debug {
-		dump, _ := httputil.DumpResponse(resp, true)
-		fmt.Println("=======================================\nRESPONSE:")
-		fmt.Println(string(dump))
+		var header bytes.Buffer
+		for k, e := range resp.Header {
+			header.WriteString(fmt.Sprintf("%s: %s ", k, e))
+		}
+		log.Printf("Response : [%s] %s", resp.Status, header.String())
+		log.Printf("Response body: %s", string(body))
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		defer resp.Body.Close()
 		var message types.StandardResponse
-		defer resp.Body.Close()
-		decoder := json.NewDecoder(resp.Body)
-		if err = decoder.Decode(&message); err != nil {
-			return resp, err
+
+		if err = json.Unmarshal(body, &message); err != nil {
+			return nil, nil, fmt.Errorf("Fail to decode the response body (error '%w')", err)
 		}
 		if message.Message != "" {
 			err = fmt.Errorf("%d: %s", resp.StatusCode, message.Message)
@@ -161,5 +157,5 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 
 		}
 	}
-	return resp, err
+	return resp.Header, body, err
 }
