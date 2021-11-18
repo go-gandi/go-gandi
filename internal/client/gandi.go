@@ -138,6 +138,12 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		log.Printf("Response : [%s] %s", resp.Status, header.String())
 		log.Printf("Response body: %s", string(body))
 	}
+	// Delete queries can return a 204 code. In this case, the
+	// body is empty. See for instance:
+	// https://api.gandi.net/docs/simplehosting/#delete-v5-simplehosting-instances-instance_id
+	if resp.StatusCode == 204 {
+		return resp.Header, []byte("{}"), err
+	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		var message types.StandardResponse
 
