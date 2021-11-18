@@ -36,6 +36,11 @@ func (g *Gandi) SetEndpoint(endpoint string) {
 	g.endpoint = gandiEndpoint + endpoint
 }
 
+// GetEndpoint gets the URL of the endpoint.
+func (g *Gandi) GetEndpoint() string {
+	return g.endpoint
+}
+
 // Get issues a GET request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
 // Returns the response headers and any error
 func (g *Gandi) Get(path string, params, recipient interface{}) (http.Header, error) {

@@ -4,6 +4,7 @@ import (
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/email"
 	"github.com/go-gandi/go-gandi/livedns"
+	"github.com/go-gandi/go-gandi/simplehosting"
 )
 
 // Config manages common config for all Gandi API types
@@ -32,4 +33,10 @@ func NewEmailClient(apikey string, config Config) *email.Email {
 // It expects an API key, available from https://account.gandi.net/en/
 func NewLiveDNSClient(apikey string, config Config) *livedns.LiveDNS {
 	return livedns.New(apikey, config.SharingID, config.Debug, config.DryRun)
+}
+
+// NewSimpleHostingClient returns a client to the Gandi Simple Hosting API
+// It expects an API key, available from https://account.gandi.net/en/
+func NewSimpleHostingClient(apikey string, config Config) *simplehosting.SimpleHosting {
+	return simplehosting.New(apikey, config.SharingID, config.Debug, config.DryRun)
 }
