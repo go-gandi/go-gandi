@@ -59,3 +59,20 @@ type ErrorResponse struct {
 	Message string `json:"message,omitempty"`
 	Object  string `json:"object,omitempty"`
 }
+
+type LinkedDNSZone struct {
+	AllowAlteration   bool   `json:"allow_alteration"`
+	LastCheckedStatus string `json:"last_checked_status"`
+}
+
+type Vhost struct {
+	CreatedAt     string         `json:"created_at"`
+	FQDN          string         `json:"fqdn"`
+	IsATestVhost  bool           `json:"is_a_test_vhost"`
+	LinkedDNSZone *LinkedDNSZone `json:"linked_dns_zone"`
+	Status        string         `json:"status"`
+}
+
+type CreateVhostRequest struct {
+	FQDN string `json:"fqdn"`
+}

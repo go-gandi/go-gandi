@@ -48,3 +48,24 @@ func (g *SimpleHosting) DeleteInstance(instanceId string) (response ErrorRespons
 	_, err = g.client.Delete("instances/"+instanceId, nil, &response)
 	return
 }
+
+// ListVhosts lists vhosts of a Simple Hosting instance
+func (g *SimpleHosting) ListVhosts(instanceId string) (response []Vhost, err error) {
+	_, err = g.client.Get("instances/"+instanceId+"/vhosts", nil, &response)
+	return
+}
+
+// ListVhosts creates a vhost for a Simple Hosting instance
+func (g *SimpleHosting) CreateVhost(instanceId string, req CreateVhostRequest) (response Vhost, err error) {
+	_, err = g.client.Post("instances/"+instanceId+"/vhosts", req, &response)
+	if err != nil {
+		return Vhost{}, err
+	}
+	return
+}
+
+// ListVhosts deletes vhosts of a Simple Hosting instance
+func (g *SimpleHosting) DeleteVhost(instanceId string, fqdn string) (response ErrorResponse, err error) {
+	_, err = g.client.Delete("instances/"+instanceId+"/vhosts/"+fqdn, nil, &response)
+	return
+}
