@@ -36,6 +36,11 @@ func (g *Gandi) SetEndpoint(endpoint string) {
 	g.endpoint = gandiEndpoint + endpoint
 }
 
+// GetEndpoint gets the URL of the endpoint.
+func (g *Gandi) GetEndpoint() string {
+	return g.endpoint
+}
+
 // Get issues a GET request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
 // Returns the response headers and any error
 func (g *Gandi) Get(path string, params, recipient interface{}) (http.Header, error) {
@@ -137,6 +142,12 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 		}
 		log.Printf("Response : [%s] %s", resp.Status, header.String())
 		log.Printf("Response body: %s", string(body))
+	}
+	// Delete queries can return a 204 code. In this case, the
+	// body is empty. See for instance:
+	// https://api.gandi.net/docs/simplehosting/#delete-v5-simplehosting-instances-instance_id
+	if resp.StatusCode == 204 {
+		return resp.Header, []byte("{}"), err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		var message types.StandardResponse

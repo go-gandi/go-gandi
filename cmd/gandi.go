@@ -9,22 +9,25 @@ import (
 	"github.com/go-gandi/go-gandi"
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/livedns"
+	"github.com/go-gandi/go-gandi/simplehosting"
 )
 
 type cli struct {
 	globals
-	LiveDNS   liveDNSCmd `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
-	Domain    domainCmd  `kong:"cmd,help='Manage Domains'"`
-	Debug     bool       `kong:"short='d',help='Enable debug logging'"`
-	DryRun    bool       `kong:"help='Enable dry run mode'"`
-	APIKey    string     `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
-	SharingID string     `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
+	LiveDNS       liveDNSCmd       `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
+	Domain        domainCmd        `kong:"cmd,help='Manage Domains'"`
+	SimpleHosting simpleHostingCmd `kong:"cmd,help='Manage Simple Hosting'"`
+	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
+	DryRun        bool             `kong:"help='Enable dry run mode'"`
+	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
+	SharingID     string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
 
 type globals struct {
-	liveDNSHandle *livedns.LiveDNS
-	domainHandle  *domain.Domain
-	Version       versionFlag `kong:"name='version',help='Print version information and quit'"`
+	liveDNSHandle       *livedns.LiveDNS
+	domainHandle        *domain.Domain
+	simpleHostingHandle *simplehosting.SimpleHosting
+	Version             versionFlag `kong:"name='version',help='Print version information and quit'"`
 }
 
 var c cli
@@ -53,6 +56,7 @@ func main() {
 	}
 	c.globals.domainHandle = gandi.NewDomainClient(c.APIKey, g)
 	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(c.APIKey, g)
+	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(c.APIKey, g)
 	err := ctx.Run(&c.globals)
 	ctx.FatalIfErrorf(err)
 }

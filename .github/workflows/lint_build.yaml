@@ -24,10 +24,23 @@ jobs:
         with:
           extra_args: --all-files --show-diff-on-failure
 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Test
+        run: |
+          go test -v ./...
+
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: lint
+    needs: test
     strategy:
       matrix:
         os_arch:
@@ -47,9 +60,3 @@ jobs:
           GOARCH=${GOOSARCH#*/}
           NAME=${{github.repository}}-$GOOS-$GOARCH
           GOOS=$GOOS GOARCH=$GOARCH go build -o $NAME -v
-      - name: Test
-        run: |
-          GOOSARCH=${{ matrix.os_arch }}
-          GOOS=${GOOSARCH%/*}
-          GOARCH=${GOOSARCH#*/}
-          GOOS=$GOOS GOARCH=$GOARCH go test -v ./...
