@@ -47,3 +47,9 @@ jobs:
           GOARCH=${GOOSARCH#*/}
           NAME=${{github.repository}}-$GOOS-$GOARCH
           GOOS=$GOOS GOARCH=$GOARCH go build -o $NAME -v
+      - name: Test
+        run: |
+          GOOSARCH=${{ matrix.os_arch }}
+          GOOS=${GOOSARCH%/*}
+          GOARCH=${GOOSARCH#*/}
+          GOOS=$GOOS GOARCH=$GOARCH go test -v ./...
