@@ -49,6 +49,12 @@ func (g *SimpleHosting) DeleteInstance(instanceId string) (response ErrorRespons
 	return
 }
 
+// // GetVhost requests a single Vhost
+func (g *SimpleHosting) GetVhost(instanceId string, fqdn string) (response Vhost, err error) {
+	_, err = g.client.Get("instances/"+instanceId+"/vhosts/"+fqdn, nil, &response)
+	return
+}
+
 // ListVhosts lists vhosts of a Simple Hosting instance
 func (g *SimpleHosting) ListVhosts(instanceId string) (response []Vhost, err error) {
 	_, err = g.client.Get("instances/"+instanceId+"/vhosts", nil, &response)
