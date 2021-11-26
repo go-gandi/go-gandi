@@ -2,11 +2,31 @@ package livedns
 
 import (
 	"github.com/go-gandi/go-gandi/types"
+	"strings"
 )
 
 // GetDomainRecords lists all records in the zone associated with a domain
 func (g *LiveDNS) GetDomainRecords(fqdn string) (records []DomainRecord, err error) {
-	_, err = g.client.Get("domains/"+fqdn+"/records", nil, &records)
+	headers, err := g.client.Get("domains/"+fqdn+"/records", nil, &records)
+	if err != nil {
+		return
+	}
+	for {
+		if _, ok := headers["Link"]; !ok {
+			break
+		}
+		link := headers["Link"]
+		links := strings.Split(strings.Split(link[0], ",")[0], ";")[0]
+		nextUrl := links[1 : len(links)-1]
+		path := strings.Replace(nextUrl, g.client.GetEndpoint(), "", 1)
+
+		var tmp []DomainRecord
+		headers, err = g.client.Get(path, nil, &tmp)
+		if err != nil {
+			return
+		}
+		records = append(records, tmp...)
+	}
 	return
 }
 
