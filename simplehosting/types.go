@@ -73,6 +73,12 @@ type Vhost struct {
 	Status        string         `json:"status"`
 }
 
+type LinkedDNSZoneRequest struct {
+	AllowAlteration        bool `json:"allow_alteration"`
+	AlowAlterationOverride bool `json:"allow_alteration_override,omitempty"`
+}
+
 type CreateVhostRequest struct {
-	FQDN string `json:"fqdn"`
+	FQDN          string                `json:"fqdn"`
+	LinkedDNSZone *LinkedDNSZoneRequest `json:"linked_dns_zone,omitempty"`
 }
