@@ -71,6 +71,15 @@ func (g *SimpleHosting) CreateVhost(instanceId string, req CreateVhostRequest) (
 	return
 }
 
+// UpdateVhost updates a vhost for a Simple Hosting instance
+func (g *SimpleHosting) UpdateVhost(instanceId string, fqdn string, req PatchVhostRequest) (response PatchVhostResponse, err error) {
+	_, err = g.client.Patch("instances/"+instanceId+"/vhosts/"+fqdn, req, &response)
+	if err != nil {
+		return PatchVhostResponse{}, err
+	}
+	return
+}
+
 // ListVhosts deletes vhosts of a Simple Hosting instance
 func (g *SimpleHosting) DeleteVhost(instanceId string, fqdn string) (response ErrorResponse, err error) {
 	_, err = g.client.Delete("instances/"+instanceId+"/vhosts/"+fqdn, nil, &response)
