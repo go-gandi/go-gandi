@@ -21,6 +21,7 @@ type cli struct {
 	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
 	DryRun        bool             `kong:"help='Enable dry run mode'"`
 	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
+	APIURL        string           `kong:"help='The Gandi API URL',name='api-url',default='https://api.gandi.net'"`
 	SharingID     string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
 
@@ -54,6 +55,7 @@ func main() {
 		SharingID: c.SharingID,
 		Debug:     c.Debug,
 		DryRun:    c.DryRun,
+		APIURL:    c.APIURL,
 	}
 	c.globals.domainHandle = gandi.NewDomainClient(c.APIKey, g)
 	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(c.APIKey, g)

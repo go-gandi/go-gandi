@@ -7,7 +7,7 @@ import (
 
 // New returns an instance of the Domain API client
 func New(apikey string, config config.Config) *Domain {
-	client := client.New(apikey, config.SharingID, config.Debug, config.DryRun)
+	client := client.New(apikey, config.APIURL, config.SharingID, config.Debug, config.DryRun)
 	client.SetEndpoint("domain/")
 	return &Domain{client: *client}
 }

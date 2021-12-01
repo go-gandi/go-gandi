@@ -9,12 +9,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/types"
 	"moul.io/http2curl"
-)
-
-const (
-	gandiEndpoint = "https://api.gandi.net/v5/"
 )
 
 // Gandi is the handle used to interact with the Gandi API
@@ -27,13 +24,17 @@ type Gandi struct {
 }
 
 // New instantiates a new Gandi client
-func New(apikey string, sharingID string, debug bool, dryRun bool) *Gandi {
-	return &Gandi{apikey: apikey, endpoint: gandiEndpoint, sharingID: sharingID, debug: debug, dryRun: dryRun}
+func New(apikey string, apiurl string, sharingID string, debug bool, dryRun bool) *Gandi {
+	if apiurl == "" {
+		apiurl = config.APIURL
+	}
+	endpoint := apiurl + "/v5/"
+	return &Gandi{apikey: apikey, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun}
 }
 
 // SetEndpoint sets the URL to the endpoint. It takes a string defining the subpath under https://api.gandi.net/v5/
 func (g *Gandi) SetEndpoint(endpoint string) {
-	g.endpoint = gandiEndpoint + endpoint
+	g.endpoint = g.endpoint + endpoint
 }
 
 // GetEndpoint gets the URL of the endpoint.
