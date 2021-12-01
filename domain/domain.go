@@ -1,12 +1,13 @@
 package domain
 
 import (
+	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/internal/client"
 )
 
 // New returns an instance of the Domain API client
-func New(apikey string, sharingid string, debug bool, dryRun bool) *Domain {
-	client := client.New(apikey, sharingid, debug, dryRun)
+func New(apikey string, config config.Config) *Domain {
+	client := client.New(apikey, config.SharingID, config.Debug, config.DryRun)
 	client.SetEndpoint("domain/")
 	return &Domain{client: *client}
 }

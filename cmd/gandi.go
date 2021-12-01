@@ -7,6 +7,7 @@ import (
 	"github.com/alecthomas/kong"
 
 	"github.com/go-gandi/go-gandi"
+	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/livedns"
 	"github.com/go-gandi/go-gandi/simplehosting"
@@ -49,7 +50,7 @@ func main() {
 		},
 	}
 	ctx := kong.Parse(&c)
-	g := gandi.Config{
+	g := config.Config{
 		SharingID: c.SharingID,
 		Debug:     c.Debug,
 		DryRun:    c.DryRun,

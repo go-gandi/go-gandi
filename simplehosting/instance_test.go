@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/go-gandi/go-gandi/simplehosting"
+	"github.com/go-gandi/go-gandi/config"
 	"gopkg.in/h2non/gock.v1"
 )
 
@@ -15,7 +16,7 @@ func TestDeleteInstance(t *testing.T) {
 		Delete("/instances/" + instanceId).
 		Reply(204)
 
-	simpleHosting := simplehosting.New("", "", true, false)
+	simpleHosting := simplehosting.New("", config.Config{})
 	response, err := simpleHosting.DeleteInstance(instanceId)
 	if err != nil {
 		t.Fatal(err)
@@ -57,7 +58,7 @@ func TestCreateInstance(t *testing.T) {
 			"message": "Instance is being created",
 		})
 
-	simpleHosting := simplehosting.New("", "", true, false)
+	simpleHosting := simplehosting.New("", config.Config{})
 	instanceId, err := simpleHosting.CreateInstance(
 		simplehosting.CreateInstanceRequest{
 			Name:     instanceName,

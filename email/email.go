@@ -1,10 +1,13 @@
 package email
 
-import "github.com/go-gandi/go-gandi/internal/client"
+import (
+	"github.com/go-gandi/go-gandi/config"
+	"github.com/go-gandi/go-gandi/internal/client"
+)
 
 // New returns an instance of the Email API client
-func New(apikey string, sharingid string, debug bool, dryRun bool) *Email {
-	client := client.New(apikey, sharingid, debug, dryRun)
+func New(apikey string, config config.Config) *Email {
+	client := client.New(apikey, config.SharingID, config.Debug, config.DryRun)
 	client.SetEndpoint("email/")
 	return &Email{client: *client}
 }

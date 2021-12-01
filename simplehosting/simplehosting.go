@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/internal/client"
 )
 
 // New returns an instance of the Simple Hosting API client
-func New(apikey string, sharingid string, debug bool, dryRun bool) *SimpleHosting {
-	client := client.New(apikey, sharingid, debug, dryRun)
+func New(apikey string, config config.Config) *SimpleHosting {
+	client := client.New(apikey, config.SharingID, config.Debug, config.DryRun)
 	client.SetEndpoint("simplehosting/")
 	return &SimpleHosting{client: *client}
 }
