@@ -92,7 +92,7 @@ func (g *Domain) ListWebRedirections(domain string) (webredirs []WebRedirection,
 	return
 }
 
-func (g *Domain) DeleteWebRedirection(domain string, keyid string) (err error) {
-	_, err = g.client.Delete("domains/"+domain+"/webredirs/"+keyid, nil, nil)
+func (g *Domain) DeleteWebRedirection(domain string, host string) (err error) {
+	_, err = g.client.Delete("domains/"+domain+"/webredirs/"+host, nil, nil)
 	return
 }
