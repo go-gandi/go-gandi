@@ -81,3 +81,18 @@ func (g *Domain) DeleteDNSSECKey(domain string, keyid string) (err error) {
 	_, err = g.client.Delete("domains/"+domain+"/dnskeys/"+keyid, nil, nil)
 	return
 }
+
+func (g *Domain) CreateWebRedirection(domain string, webredir WebRedirectionCreateRequest) (err error) {
+	_, err = g.client.Post("domains/"+domain+"/webredirs", webredir, nil)
+	return
+}
+
+func (g *Domain) ListWebRedirections(domain string) (webredirs []WebRedirection, err error) {
+	_, err = g.client.Get("domains/"+domain+"/webredirs", nil, &webredirs)
+	return
+}
+
+func (g *Domain) DeleteWebRedirection(domain string, keyid string) (err error) {
+	_, err = g.client.Delete("domains/"+domain+"/webredirs/"+keyid, nil, nil)
+	return
+}

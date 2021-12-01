@@ -163,3 +163,24 @@ type DNSSECKeyCreateRequest struct {
 	Type      string `json:"type"`
 	PublicKey string `json:"public_key"`
 }
+
+// WebRedirection represents a WebRedirections associated with a domain
+type WebRedirection struct {
+	Host              string     `json:"host"`
+	Type              string     `json:"type"`
+	URL               string     `json:"url"`
+	CertificateStatus string     `json:"cert_status,omitempty"`
+	CertificateUUID   string     `json:"cert_uuid,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	Protocol          string     `json:"protocol,omitempty"`
+	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
+}
+
+// WebRedirectionCreateRequest represents a request to create a WebRedirections for a domain
+type WebRedirectionCreateRequest struct {
+	Host     string `json:"host"`
+	Override bool   `json:"override"`
+	Protocol string `json:"protocol"`
+	Type     string `json:"type"`
+	URL      string `json:"url"`
+}
