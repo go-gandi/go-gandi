@@ -7,6 +7,7 @@ import (
 	"github.com/alecthomas/kong"
 
 	"github.com/go-gandi/go-gandi"
+	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/livedns"
 	"github.com/go-gandi/go-gandi/simplehosting"
@@ -20,6 +21,7 @@ type cli struct {
 	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
 	DryRun        bool             `kong:"help='Enable dry run mode'"`
 	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
+	APIURL        string           `kong:"help='The Gandi API URL',name='api-url',default='https://api.gandi.net'"`
 	SharingID     string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
 
@@ -49,14 +51,16 @@ func main() {
 		},
 	}
 	ctx := kong.Parse(&c)
-	g := gandi.Config{
+	g := config.Config{
+		APIKey:    c.APIKey,
 		SharingID: c.SharingID,
 		Debug:     c.Debug,
 		DryRun:    c.DryRun,
+		APIURL:    c.APIURL,
 	}
-	c.globals.domainHandle = gandi.NewDomainClient(c.APIKey, g)
-	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(c.APIKey, g)
-	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(c.APIKey, g)
+	c.globals.domainHandle = gandi.NewDomainClient(g)
+	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(g)
+	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(g)
 	err := ctx.Run(&c.globals)
 	ctx.FatalIfErrorf(err)
 }
