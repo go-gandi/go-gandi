@@ -52,14 +52,15 @@ func main() {
 	}
 	ctx := kong.Parse(&c)
 	g := config.Config{
+		APIKey:    c.APIKey,
 		SharingID: c.SharingID,
 		Debug:     c.Debug,
 		DryRun:    c.DryRun,
 		APIURL:    c.APIURL,
 	}
-	c.globals.domainHandle = gandi.NewDomainClient(c.APIKey, g)
-	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(c.APIKey, g)
-	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(c.APIKey, g)
+	c.globals.domainHandle = gandi.NewDomainClient(g)
+	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(g)
+	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(g)
 	err := ctx.Run(&c.globals)
 	ctx.FatalIfErrorf(err)
 }

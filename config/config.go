@@ -2,6 +2,8 @@ package config
 
 // Config manages common config for all Gandi API types
 type Config struct {
+	// APIKey is available from https://account.gandi.net/en/
+	APIKey string
 	// SharingID is the Organization ID, available from the Organization API
 	SharingID string
 	// Debug enables verbose debugging of HTTP calls
