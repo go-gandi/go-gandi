@@ -82,6 +82,26 @@ func (g *Domain) DeleteDNSSECKey(domain string, keyid string) (err error) {
 	return
 }
 
+func (g *Domain) CreateGlueRecord(domain string, gluerecord GlueRecordCreateRequest) (err error) {
+	_, err = g.client.Post("domains/"+domain+"/hosts", gluerecord, nil)
+	return
+}
+
+func (g *Domain) ListGlueRecords(domain string) (gluerecords []GlueRecord, err error) {
+	_, err = g.client.Get("domains/"+domain+"/hosts", nil, &gluerecords)
+	return
+}
+
+func (g *Domain) UpdateGlueRecord(domain string, name string, ips []string) (err error) {
+	_, err = g.client.Put("domains/"+domain+"/hosts/"+name, GlueRecordUpdateRequest{ips}, nil)
+	return
+}
+
+func (g *Domain) DeleteGlueRecord(domain string, name string) (err error) {
+	_, err = g.client.Delete("domains/"+domain+"/hosts/"+name, nil, nil)
+	return
+}
+
 func (g *Domain) CreateWebRedirection(domain string, webredir WebRedirectionCreateRequest) (err error) {
 	_, err = g.client.Post("domains/"+domain+"/webredirs", webredir, nil)
 	return

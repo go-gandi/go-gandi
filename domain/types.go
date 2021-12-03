@@ -164,6 +164,26 @@ type DNSSECKeyCreateRequest struct {
 	PublicKey string `json:"public_key"`
 }
 
+// GlueRecord represents the association of a hostname with an IP address at the registry.
+type GlueRecord struct {
+	Name        string   `json:"name"`
+	IPs         []string `json:"ips"`
+	FQDN        string   `json:"fqdn"`
+	Href        string   `json:"href"`
+	FQDNUnicode string   `json:"fqdn_unicode"`
+}
+
+// GlueRecordCreateRequest represents a request to create a GlueRecord for a domain
+type GlueRecordCreateRequest struct {
+	Name string   `json:"name"`
+	IPs  []string `json:"ips"`
+}
+
+// GlueRecordUpdateRequest represents a request to update an existing GlueRecords IP addresses
+type GlueRecordUpdateRequest struct {
+	IPs []string `json:"ips"`
+}
+
 // WebRedirection represents a WebRedirections associated with a domain
 type WebRedirection struct {
 	Host              string     `json:"host"`
