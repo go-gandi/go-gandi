@@ -78,7 +78,21 @@ type LinkedDNSZoneRequest struct {
 	AlowAlterationOverride bool `json:"allow_alteration_override,omitempty"`
 }
 
+type Application struct {
+	Name string `json:"name"`
+}
+
 type CreateVhostRequest struct {
 	FQDN          string                `json:"fqdn"`
 	LinkedDNSZone *LinkedDNSZoneRequest `json:"linked_dns_zone,omitempty"`
+	Application   *Application          `json:"application,omitempty"`
+}
+
+type PatchVhostRequest struct {
+	Application *Application `json:"application,omitempty"`
+}
+
+type PatchVhostResponse struct {
+	FQDN   string `json:"fqdn"`
+	Status string `json:"status"`
 }
