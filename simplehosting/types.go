@@ -9,15 +9,6 @@ type SimpleHosting struct {
 	client client.Gandi
 }
 
-// ListInstancesResponse is the response object returned by listing
-// simplehosting instances
-type ListInstancesResponse struct {
-	ID       string    `json:"id"`
-	Name     string    `json:"name"`
-	Size     string    `json:"size"`
-	Status   string    `json:"status"`
-	Database *Database `json:"database"`
-	Language *Language `json:"language"`
 }
 
 // Database represents the type of a Simple Hosting database

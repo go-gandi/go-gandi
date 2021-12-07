@@ -16,7 +16,7 @@ func New(config config.Config) *SimpleHosting {
 }
 
 // ListInstances requests the list of SimpleHosting instances
-func (g *SimpleHosting) ListInstances() (simplehostings []ListInstancesResponse, err error) {
+func (g *SimpleHosting) ListInstances() (simplehostings []Instance, err error) {
 	_, err = g.client.Get("instances", nil, &simplehostings)
 	return
 }
