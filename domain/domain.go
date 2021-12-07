@@ -93,6 +93,11 @@ func (g *Domain) ListGlueRecords(domain string) (gluerecords []GlueRecord, err e
 	return
 }
 
+func (g *Domain) GetGlueRecord(domain string, name string) (gluerecord GlueRecord, err error) {
+	_, err = g.client.Get("domains/"+domain+"/hosts/"+name, nil, &gluerecord)
+	return
+}
+
 func (g *Domain) UpdateGlueRecord(domain string, name string, ips []string) (err error) {
 	_, err = g.client.Put("domains/"+domain+"/hosts/"+name, GlueRecordUpdateRequest{ips}, nil)
 	return
