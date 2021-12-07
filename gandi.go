@@ -1,6 +1,7 @@
 package gandi
 
 import (
+	"github.com/go-gandi/go-gandi/certificate"
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/email"
@@ -30,4 +31,10 @@ func NewLiveDNSClient(config config.Config) *livedns.LiveDNS {
 // It expects an API key, available from https://account.gandi.net/en/
 func NewSimpleHostingClient(config config.Config) *simplehosting.SimpleHosting {
 	return simplehosting.New(config)
+}
+
+// NewCertificateClient returns a client to the Gandi Certificate API
+// It expects an API key, available from https://account.gandi.net/en/
+func NewCertificateClient(config config.Config) *certificate.Certificate {
+	return certificate.New(config)
 }

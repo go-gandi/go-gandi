@@ -7,6 +7,7 @@ import (
 	"github.com/alecthomas/kong"
 
 	"github.com/go-gandi/go-gandi"
+	"github.com/go-gandi/go-gandi/certificate"
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/domain"
 	"github.com/go-gandi/go-gandi/livedns"
@@ -18,6 +19,7 @@ type cli struct {
 	LiveDNS       liveDNSCmd       `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
 	Domain        domainCmd        `kong:"cmd,help='Manage Domains'"`
 	SimpleHosting simpleHostingCmd `kong:"cmd,help='Manage Simple Hosting'"`
+	Certificate   certificateCmd   `kong:"cmd,help='Manage Simple Hosting'"`
 	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
 	DryRun        bool             `kong:"help='Enable dry run mode'"`
 	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
@@ -29,6 +31,7 @@ type globals struct {
 	liveDNSHandle       *livedns.LiveDNS
 	domainHandle        *domain.Domain
 	simpleHostingHandle *simplehosting.SimpleHosting
+	certificateHandle   *certificate.Certificate
 	Version             versionFlag `kong:"name='version',help='Print version information and quit'"`
 }
 
@@ -61,6 +64,7 @@ func main() {
 	c.globals.domainHandle = gandi.NewDomainClient(g)
 	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(g)
 	c.globals.simpleHostingHandle = gandi.NewSimpleHostingClient(g)
+	c.globals.certificateHandle = gandi.NewCertificateClient(g)
 	err := ctx.Run(&c.globals)
 	ctx.FatalIfErrorf(err)
 }
