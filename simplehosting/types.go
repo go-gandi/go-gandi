@@ -9,15 +9,10 @@ type SimpleHosting struct {
 	client client.Gandi
 }
 
-// ListInstancesResponse is the response object returned by listing
-// simplehosting instances
-type ListInstancesResponse struct {
-	ID       string    `json:"id"`
-	Name     string    `json:"name"`
-	Size     string    `json:"size"`
-	Status   string    `json:"status"`
-	Database *Database `json:"database"`
-	Language *Language `json:"language"`
+type Datacenter struct {
+	Code   string `json:"code"`
+	Name   string `json:"name"`
+	Region string `json:"region"`
 }
 
 // Database represents the type of a Simple Hosting database
@@ -33,12 +28,13 @@ type Language struct {
 }
 
 type Instance struct {
-	ID       string    `json:"id"`
-	Name     string    `json:"name"`
-	Size     string    `json:"size"`
-	Status   string    `json:"status"`
-	Database *Database `json:"database"`
-	Language *Language `json:"language"`
+	ID         string      `json:"id"`
+	Name       string      `json:"name"`
+	Size       string      `json:"size"`
+	Status     string      `json:"status"`
+	Database   *Database   `json:"database"`
+	Language   *Language   `json:"language"`
+	Datacenter *Datacenter `json:"datacenter"`
 }
 
 type InstanceType struct {
