@@ -67,6 +67,7 @@ type Vhost struct {
 	IsATestVhost  bool           `json:"is_a_test_vhost"`
 	LinkedDNSZone *LinkedDNSZone `json:"linked_dns_zone"`
 	Status        string         `json:"status"`
+	Application   *Application   `json:"application,omitempty"`
 }
 
 type LinkedDNSZoneRequest struct {
