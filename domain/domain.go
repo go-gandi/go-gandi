@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"encoding/json"
+
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/internal/client"
 )
@@ -21,8 +23,19 @@ func NewFromClient(g client.Gandi) *Domain {
 // ListDomains requests the set of Domains
 // It returns a slice of domains and any error encountered
 func (g *Domain) ListDomains() (domains []ListResponse, err error) {
-	_, err = g.client.Get("domains", nil, &domains)
-	return
+	_, elements, err := g.client.GetCollection("domains", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var key ListResponse
+		err := json.Unmarshal(element, &key)
+		if err != nil {
+			return nil, err
+		}
+		domains = append(domains, key)
+	}
+	return domains, nil
 }
 
 // GetDomain requests a single Domain
@@ -69,8 +82,19 @@ func (g *Domain) SetAutoRenew(domain string, autorenew bool) (err error) {
 }
 
 func (g *Domain) ListDNSSECKeys(domain string) (keys []DNSSECKey, err error) {
-	_, err = g.client.Get("domains/"+domain+"/dnskeys", nil, &keys)
-	return
+	_, elements, err := g.client.GetCollection("domains/"+domain+"/dnskeys", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var key DNSSECKey
+		err := json.Unmarshal(element, &key)
+		if err != nil {
+			return nil, err
+		}
+		keys = append(keys, key)
+	}
+	return keys, nil
 }
 
 func (g *Domain) CreateDNSSECKey(domain string, key DNSSECKeyCreateRequest) (err error) {
@@ -89,8 +113,19 @@ func (g *Domain) CreateGlueRecord(domain string, gluerecord GlueRecordCreateRequ
 }
 
 func (g *Domain) ListGlueRecords(domain string) (gluerecords []GlueRecord, err error) {
-	_, err = g.client.Get("domains/"+domain+"/hosts", nil, &gluerecords)
-	return
+	_, elements, err := g.client.GetCollection("domains/"+domain+"/hosts", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var gluerecord GlueRecord
+		err := json.Unmarshal(element, &gluerecord)
+		if err != nil {
+			return nil, err
+		}
+		gluerecords = append(gluerecords, gluerecord)
+	}
+	return gluerecords, nil
 }
 
 func (g *Domain) GetGlueRecord(domain string, name string) (gluerecord GlueRecord, err error) {
@@ -114,8 +149,19 @@ func (g *Domain) CreateWebRedirection(domain string, webredir WebRedirectionCrea
 }
 
 func (g *Domain) ListWebRedirections(domain string) (webredirs []WebRedirection, err error) {
-	_, err = g.client.Get("domains/"+domain+"/webredirs", nil, &webredirs)
-	return
+	_, elements, err := g.client.GetCollection("domains/"+domain+"/webredirs", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var webredir WebRedirection
+		err := json.Unmarshal(element, &webredir)
+		if err != nil {
+			return nil, err
+		}
+		webredirs = append(webredirs, webredir)
+	}
+	return webredirs, nil
 }
 
 func (g *Domain) DeleteWebRedirection(domain string, host string) (err error) {

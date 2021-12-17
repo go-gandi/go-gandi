@@ -1,6 +1,7 @@
 package simplehosting
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -16,9 +17,20 @@ func New(config config.Config) *SimpleHosting {
 }
 
 // ListInstances requests the list of SimpleHosting instances
-func (g *SimpleHosting) ListInstances() (simplehostings []Instance, err error) {
-	_, err = g.client.Get("instances", nil, &simplehostings)
-	return
+func (g *SimpleHosting) ListInstances() (instances []Instance, err error) {
+	_, elements, err := g.client.GetCollection("instances", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var instance Instance
+		err := json.Unmarshal(element, &instance)
+		if err != nil {
+			return nil, err
+		}
+		instances = append(instances, instance)
+	}
+	return instances, nil
 }
 
 // GetInstance requests a single Instance
@@ -57,9 +69,20 @@ func (g *SimpleHosting) GetVhost(instanceId string, fqdn string) (response Vhost
 }
 
 // ListVhosts lists vhosts of a Simple Hosting instance
-func (g *SimpleHosting) ListVhosts(instanceId string) (response []Vhost, err error) {
-	_, err = g.client.Get("instances/"+instanceId+"/vhosts", nil, &response)
-	return
+func (g *SimpleHosting) ListVhosts(instanceId string) (vhosts []Vhost, err error) {
+	_, elements, err := g.client.GetCollection("instances/"+instanceId+"/vhosts", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var vhost Vhost
+		err := json.Unmarshal(element, &vhost)
+		if err != nil {
+			return nil, err
+		}
+		vhosts = append(vhosts, vhost)
+	}
+	return vhosts, nil
 }
 
 // ListVhosts creates a vhost for a Simple Hosting instance

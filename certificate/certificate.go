@@ -1,6 +1,8 @@
 package certificate
 
 import (
+	"encoding/json"
+
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/internal/client"
 )
@@ -14,8 +16,19 @@ func New(config config.Config) *Certificate {
 
 // ListCertificates requests the list of issued certificates
 func (g *Certificate) ListCertificates() (certificates []CertificateType, err error) {
-	_, err = g.client.Get("issued-certs", nil, &certificates)
-	return
+	_, elements, err := g.client.GetCollection("issued-certs", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var certificate CertificateType
+		err := json.Unmarshal(element, &certificate)
+		if err != nil {
+			return nil, err
+		}
+		certificates = append(certificates, certificate)
+	}
+	return certificates, nil
 }
 
 // GetCertificate request details of an issued certificates
@@ -38,6 +51,17 @@ func (g *Certificate) DeleteCertificate(certificateId string) (response ErrorRes
 
 // ListPackages lists certificate package types
 func (g *Certificate) ListPackages() (packages []Package, err error) {
-	_, err = g.client.Get("packages", nil, &packages)
-	return
+	_, elements, err := g.client.GetCollection("packages", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var package_ Package
+		err := json.Unmarshal(element, &package_)
+		if err != nil {
+			return nil, err
+		}
+		packages = append(packages, package_)
+	}
+	return packages, nil
 }

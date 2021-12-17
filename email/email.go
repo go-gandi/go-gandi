@@ -1,6 +1,8 @@
 package email
 
 import (
+	"encoding/json"
+
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/internal/client"
 )
@@ -20,8 +22,19 @@ func NewFromClient(g client.Gandi) *Email {
 
 // ListMailboxes list mailboxes attached to domain
 func (e *Email) ListMailboxes(domain string) (mailboxes []ListMailboxResponse, err error) {
-	_, err = e.client.Get("/mailboxes/"+domain, nil, &mailboxes)
-	return
+	_, elements, err := e.client.GetCollection("/mailboxes/"+domain, nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var mailbox ListMailboxResponse
+		err := json.Unmarshal(element, &mailbox)
+		if err != nil {
+			return nil, err
+		}
+		mailboxes = append(mailboxes, mailbox)
+	}
+	return mailboxes, nil
 }
 
 // GetMailbox returns all the parameters linked to a specific mailbox
