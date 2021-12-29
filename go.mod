@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/alecthomas/kong v0.2.2
+	github.com/peterhellberg/link v1.1.0
 	gopkg.in/h2non/gock.v1 v1.1.2
 	moul.io/http2curl v1.0.0
 )

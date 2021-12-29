@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/types"
+	"github.com/peterhellberg/link"
 	"moul.io/http2curl"
 )
 
@@ -46,6 +47,12 @@ func (g *Gandi) GetEndpoint() string {
 // Returns the response headers and any error
 func (g *Gandi) Get(path string, params, recipient interface{}) (http.Header, error) {
 	return g.askGandi(http.MethodGet, path, params, recipient)
+}
+
+// GetCollection supports pagination on GET requests. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
+// Returns the response headers and any error
+func (g *Gandi) GetCollection(path string, params interface{}) (http.Header, []json.RawMessage, error) {
+	return g.askGandiCollection(http.MethodGet, path, params)
 }
 
 // Post issues a POST request. It takes a subpath rooted in the endpoint. Response data is written to the recipient.
@@ -84,12 +91,44 @@ func (g *Gandi) askGandi(method, path string, params, recipient interface{}) (ht
 	return header, json.Unmarshal(body, &recipient)
 }
 
+// askGandiCollection gets a resource collection even if it is
+// paginated: it sends queries until all elements have been retrieved.
+// Note this method only works if the API returns a list of objects.
+func (g *Gandi) askGandiCollection(method, path string, params interface{}) (http.Header, []json.RawMessage, error) {
+	var elements []json.RawMessage
+	var header http.Header
+	for {
+		var partial []json.RawMessage
+		header, err := g.askGandi(method, path, params, &partial)
+		if err != nil {
+			return nil, nil, err
+		}
+		elements = append(elements, partial...)
+
+		if header.Get("link") == "" {
+			break
+		} else {
+			var next string
+			for _, l := range link.Parse(header.Get("link")) {
+				if l.Rel == "next" {
+					next = l.URI
+					break
+				}
+			}
+			if next == "" {
+				return nil, nil, fmt.Errorf("The next page has not been found in the link header")
+			}
+			path = strings.TrimPrefix(next, g.GetEndpoint())
+		}
+
+	}
+	return header, elements, nil
+}
+
 // GetBytes issues a GET request but does not attempt to parse any response into JSON.
 // It returns the response headers, a byteslice of the response, and any error
 func (g *Gandi) GetBytes(path string, params interface{}) (http.Header, []byte, error) {
-	headers := [][2]string{
-		{"Accept", "text/plain"},
-	}
+	headers := [][2]string{{"Accept", "text/plain"}}
 	return g.doAskGandi(http.MethodGet, path, params, headers)
 }
 

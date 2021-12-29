@@ -1,13 +1,26 @@
 package livedns
 
 import (
+	"encoding/json"
+
 	"github.com/go-gandi/go-gandi/types"
 )
 
 // ListDomains lists all domains
 func (g *LiveDNS) ListDomains() (domains []Domain, err error) {
-	_, err = g.client.Get("domains", nil, &domains)
-	return
+	_, elements, err := g.client.GetCollection("domains", nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, element := range elements {
+		var domain Domain
+		err := json.Unmarshal(element, &domain)
+		if err != nil {
+			return nil, err
+		}
+		domains = append(domains, domain)
+	}
+	return domains, nil
 }
 
 // CreateDomain adds a domain to a zone
