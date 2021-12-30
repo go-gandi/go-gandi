@@ -168,3 +168,8 @@ func (g *Domain) DeleteWebRedirection(domain string, host string) (err error) {
 	_, err = g.client.Delete("domains/"+domain+"/webredirs/"+host, nil, nil)
 	return
 }
+
+func (g *Domain) EnableLiveDNS(domain string) (err error) {
+	_, err = g.client.Post("domains/"+domain+"/livedns", nil, nil)
+	return
+}
