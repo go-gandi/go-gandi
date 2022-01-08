@@ -53,7 +53,7 @@ func (g *LiveDNS) GetDomainKeys(fqdn string) (keys []SigningKey, err error) {
 	return
 }
 
-// GetDomainKey deletes a signing key from a domain
+// GetDomainKey return a specific signing key from a domain
 func (g *LiveDNS) GetDomainKey(fqdn, uuid string) (key SigningKey, err error) {
 	_, err = g.client.Get("domains/"+fqdn+"/keys/"+uuid, nil, &key)
 	return
