@@ -57,6 +57,8 @@ type SigningKey struct {
 	FQDN          string `json:"fqdn,omitempty"`
 	Flags         int    `json:"flags,omitempty"`
 	DS            string `json:"ds,omitempty"`
+	PublicKey     string `json:"public_key,omitempty"`
+	Tag           int    `json:"tag,omitempty"`
 	KeyHref       string `json:"key_href,omitempty"`
 }
 
