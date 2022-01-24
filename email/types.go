@@ -15,7 +15,7 @@ type ListMailboxResponse struct {
 	ID          string `json:"id"`
 	Login       string `json:"login"`
 	MailboxType string `json:"mailbox_type"`
-	QuataUsed   int    `json:"quota_used"`
+	QuotaUsed   int    `json:"quota_used"`
 }
 
 // MailboxResponse mailbox parameters
