@@ -73,12 +73,6 @@ func (e *Email) GetForwards(domain string) (forwards []GetForwardRequest, err er
 	return
 }
 
-// GetForward retrieve single forwarding
-func (e *Email) GetForward(domain, source string) (forward GetForwardRequest, err error) {
-	_, err = e.client.Get("/forwards/"+domain+"/"+source, nil, &forward)
-	return
-}
-
 // UpdateForward update forwarding
 func (e *Email) UpdateForward(domain, source string, req UpdateForwardRequest) (err error) {
 	_, err = e.client.Put("/forwards/"+domain+"/"+source, req, nil)
