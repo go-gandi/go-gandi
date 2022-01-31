@@ -164,6 +164,11 @@ func (g *Domain) ListWebRedirections(domain string) (webredirs []WebRedirection,
 	return webredirs, nil
 }
 
+func (g *Domain) GetWebRedirection(domain string, host string) (webredir WebRedirection, err error) {
+	_, err = g.client.Get("domains/"+domain+"/webredirs/"+host, nil, &webredir)
+	return
+}
+
 func (g *Domain) DeleteWebRedirection(domain string, host string) (err error) {
 	_, err = g.client.Delete("domains/"+domain+"/webredirs/"+host, nil, nil)
 	return
