@@ -52,7 +52,7 @@ type SigningKey struct {
 	Status        string `json:"status,omitempty"`
 	UUID          string `json:"id,omitempty"`
 	Algorithm     int    `json:"algorithm,omitempty"`
-	Deleted       *bool  `json:"deleted"`
+	Deleted       *bool  `json:"deleted,omitempty"`
 	AlgorithmName string `json:"algorithm_name,omitempty"`
 	FQDN          string `json:"fqdn,omitempty"`
 	Flags         int    `json:"flags,omitempty"`

@@ -1,6 +1,9 @@
 package livedns
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/go-gandi/go-gandi/types"
 )
 
@@ -40,10 +43,22 @@ func (g *LiveDNS) RemoveTSIGKeyFromDomain(fqdn string, id string) (err error) {
 	return
 }
 
-// SignDomain creates a DNSKEY and asks Gandi servers to automatically sign the domain
+// SignDomain creates a DNSKEY and asks Gandi servers to automatically
+// sign the domain. The UUID of the created key is stored into the
+// response.UUID field.
 func (g *LiveDNS) SignDomain(fqdn string) (response types.StandardResponse, err error) {
 	f := SigningKey{Flags: 257}
-	_, err = g.client.Post("domains/"+fqdn+"/keys", f, &response)
+	header, err := g.client.Post("domains/"+fqdn+"/keys", f, &response)
+	if err != nil {
+		return
+	}
+	location := header.Get("location")
+	endpoint := g.client.GetEndpoint() + "domains/" + fqdn + "/keys/"
+	if strings.HasPrefix(location, endpoint) {
+		response.UUID = strings.TrimPrefix(location, endpoint)
+		return
+	}
+	err = fmt.Errorf("Could not extract DNS key UUID from '%s'", location)
 	return
 }
 
