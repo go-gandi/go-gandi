@@ -2,9 +2,11 @@ package client
 
 import (
 	"encoding/json"
+	"errors"
 	"reflect"
 	"testing"
 
+	"github.com/go-gandi/go-gandi/types"
 	"gopkg.in/h2non/gock.v1"
 )
 
@@ -70,4 +72,24 @@ func TestAskGandiCollectionEmpty(t *testing.T) {
 		t.Fatalf("Length of elements slice should be 0 (instead of %d)", len(rawMessages))
 	}
 
+}
+
+func TestRequestError(t *testing.T) {
+	defer gock.Off()
+	gock.New("https://api.gandi.net/v5/").
+		Get("/domain/domains").
+		Reply(500).
+		JSON(types.StandardResponse{})
+	client := New("", "https://api.gandi.net", "", false, false)
+	response := []map[string]string{}
+	_, err := client.Get("domain/domains", nil, &response)
+
+	var e *types.RequestError
+	if errors.As(err, &e) {
+		if e.StatusCode != 500 {
+			t.Fatalf("Error StatusCode should be: %v)", e.StatusCode)
+		}
+	} else {
+		t.Fatalf("Error type is not RequestError (actual: %v)", err)
+	}
 }

@@ -1,5 +1,9 @@
 package types
 
+import (
+	"fmt"
+)
+
 // StandardResponse is a standard response
 type StandardResponse struct {
 	Code    int             `json:"code,omitempty"`
@@ -16,4 +20,13 @@ type StandardError struct {
 	Location    string `json:"location"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
+}
+
+type RequestError struct {
+	Err        error
+	StatusCode int
+}
+
+func (e *RequestError) Error() string {
+	return fmt.Sprintf("StatusCode: %d ; Err: %s ", e.StatusCode, e.Err)
 }
