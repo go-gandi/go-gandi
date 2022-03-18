@@ -132,6 +132,9 @@ func (g *Gandi) GetBytes(path string, params interface{}) (http.Header, []byte, 
 	return g.doAskGandi(http.MethodGet, path, params, headers)
 }
 
+// doAskGandi performs a call to the API. If the HTTP status code of
+// the response is not success, the returned error is a RequestError
+// (which contains the HTTP StatusCode).
 func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2]string) (http.Header, []byte, error) {
 	var (
 		err error
@@ -205,7 +208,10 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 			err = fmt.Errorf(strings.Join(errors, ", "))
 		} else {
 			err = fmt.Errorf("%d", resp.StatusCode)
-
+		}
+		err = &types.RequestError{
+			Err:        err,
+			StatusCode: resp.StatusCode,
 		}
 	}
 	return resp.Header, body, err
