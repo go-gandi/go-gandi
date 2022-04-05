@@ -204,3 +204,10 @@ type WebRedirectionCreateRequest struct {
 	Type     string `json:"type"`
 	URL      string `json:"url"`
 }
+
+type LiveDNS struct {
+	Current             string   `json:"current"`
+	Nameservers         []string `json:"nameservers"`
+	DNSSECAvailable     bool     `json:"dnssec_available,omitempty"`
+	LiveDNSSECAvailable bool     `json:"livednssec_available,omitempty"`
+}
