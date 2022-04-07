@@ -178,3 +178,8 @@ func (g *Domain) EnableLiveDNS(domain string) (err error) {
 	_, err = g.client.Post("domains/"+domain+"/livedns", nil, nil)
 	return
 }
+
+func (g *Domain) GetLiveDNS(domain string) (livedns LiveDNS, err error) {
+	_, err = g.client.Get("domains/"+domain+"/livedns", nil, &livedns)
+	return
+}
