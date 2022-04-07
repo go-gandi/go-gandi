@@ -143,7 +143,7 @@ type Contacts struct {
 
 // Nameservers represents a list of nameservers
 type Nameservers struct {
-	Nameservers []string `json:"nameservers,omitempty"`
+	Nameservers []string `json:"nameservers"`
 }
 
 // DNSSECKey represents a DNSSEC key associated with a domain
