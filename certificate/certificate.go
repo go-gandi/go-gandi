@@ -37,6 +37,12 @@ func (g *Certificate) GetCertificate(certificateId string) (certificate Certific
 	return
 }
 
+// GetCertificateData requests certificate data for the specified ID.
+func (g *Certificate) GetCertificateData(certificateId string) (data []byte, err error) {
+	_, data, err = g.client.GetBytes("issued-certs/"+certificateId+"/crt", nil)
+	return
+}
+
 // CreateCertificate creates a certificate
 func (g *Certificate) CreateCertificate(req CreateCertificateRequest) (response CreateCertificateResponse, err error) {
 	_, err = g.client.Post("issued-certs", req, &response)
@@ -64,4 +70,12 @@ func (g *Certificate) ListPackages() (packages []Package, err error) {
 		packages = append(packages, package_)
 	}
 	return packages, nil
+}
+
+// GetIntermediateCertificate requests intermediate certificate for the
+// specified type, which can be one of "cert_std", "cert_free", "cert_bus",
+// "cert_pro".
+func (g *Certificate) GetIntermediateCertificate(typ string) (data []byte, err error) {
+	_, data, err = g.client.GetBytes("pem/"+typ, nil)
+	return
 }
