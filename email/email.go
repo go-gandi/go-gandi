@@ -39,48 +39,48 @@ func (e *Email) ListMailboxes(domain string) (mailboxes []ListMailboxResponse, e
 
 // GetMailbox returns all the parameters linked to a specific mailbox
 func (e *Email) GetMailbox(domain, mailbox_id string) (mailbox MailboxResponse, err error) {
-	_, err = e.client.Get("/mailboxes/"+domain+"/"+mailbox_id, nil, &mailbox)
+	_, err = e.client.Get("mailboxes/"+domain+"/"+mailbox_id, nil, &mailbox)
 	return
 }
 
 // CreateEmail creates a new mailbox for the given domain
 func (e *Email) CreateEmail(domain string, req CreateEmailRequest) (err error) {
-	_, err = e.client.Post("/mailboxes/"+domain, req, nil)
+	_, err = e.client.Post("mailboxes/"+domain, req, nil)
 	return
 }
 
 // UpdateEmail update mailbox parameters
 func (e *Email) UpdateEmail(domain, mailbox_id string, req UpdateEmailRequest) (err error) {
-	_, err = e.client.Patch("/mailboxes/"+domain+"/"+mailbox_id, req, nil)
+	_, err = e.client.Patch("mailboxes/"+domain+"/"+mailbox_id, req, nil)
 	return
 }
 
 // DeleteEmail remove mailbox
 func (e *Email) DeleteEmail(domain, mailbox_id string) (err error) {
-	_, err = e.client.Delete("/mailboxes/"+domain+"/"+mailbox_id, nil, nil)
+	_, err = e.client.Delete("mailboxes/"+domain+"/"+mailbox_id, nil, nil)
 	return
 }
 
 // CreateForward creates forwarding
 func (e *Email) CreateForward(domain string, req CreateForwardRequest) (err error) {
-	_, err = e.client.Post("/forwards/"+domain, req, nil)
+	_, err = e.client.Post("forwards/"+domain, req, nil)
 	return
 }
 
 // GetForwards retrieves all forwardings for domain
 func (e *Email) GetForwards(domain string) (forwards []GetForwardRequest, err error) {
-	_, err = e.client.Get("/forwards/"+domain, nil, &forwards)
+	_, err = e.client.Get("forwards/"+domain, nil, &forwards)
 	return
 }
 
 // UpdateForward update forwarding
 func (e *Email) UpdateForward(domain, source string, req UpdateForwardRequest) (err error) {
-	_, err = e.client.Put("/forwards/"+domain+"/"+source, req, nil)
+	_, err = e.client.Put("forwards/"+domain+"/"+source, req, nil)
 	return
 }
 
 // DeleteForward delete forwarding
 func (e *Email) DeleteForward(domain, source string) (err error) {
-	_, err = e.client.Delete("/forwards/"+domain+"/"+source, nil, nil)
+	_, err = e.client.Delete("forwards/"+domain+"/"+source, nil, nil)
 	return
 }
