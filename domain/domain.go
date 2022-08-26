@@ -183,3 +183,18 @@ func (g *Domain) GetLiveDNS(domain string) (livedns LiveDNS, err error) {
 	_, err = g.client.Get("domains/"+domain+"/livedns", nil, &livedns)
 	return
 }
+
+func (g *Domain) GetTags(domain string) (tags []string, err error) {
+	_, err = g.client.Get("domains/"+domain+"/tags", nil, &tags)
+	return
+}
+
+func (g *Domain) SetTags(domain string, tags []string) (err error) {
+	_, err = g.client.Put("domains/"+domain+"/tags", Tags{tags}, nil)
+	return
+}
+
+func (g *Domain) DeleteTags(domain string) (err error) {
+	_, err = g.client.Delete("domains/"+domain+"/tags", nil, nil)
+	return
+}
