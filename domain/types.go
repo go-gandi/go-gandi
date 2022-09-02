@@ -211,3 +211,8 @@ type LiveDNS struct {
 	DNSSECAvailable     bool     `json:"dnssec_available,omitempty"`
 	LiveDNSSECAvailable bool     `json:"livednssec_available,omitempty"`
 }
+
+// Tags represents a list of tags
+type Tags struct {
+	Tags []string `json:"tags"`
+}
