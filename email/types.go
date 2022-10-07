@@ -16,6 +16,7 @@ type ListMailboxResponse struct {
 	Login       string `json:"login"`
 	MailboxType string `json:"mailbox_type"`
 	QuotaUsed   int    `json:"quota_used"`
+	Antispam    bool   `json:"antispam"`
 }
 
 // MailboxResponse mailbox parameters
@@ -32,6 +33,7 @@ type MailboxResponse struct {
 	Address     string   `json:"address"`
 	Href        string   `json:"href"`
 	ID          string   `json:"id"`
+	Antispam    bool     `json:"antispam"`
 }
 
 // CreateEmailRequest create mailbox request
