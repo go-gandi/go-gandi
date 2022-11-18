@@ -94,3 +94,19 @@ func TestRequestError(t *testing.T) {
 		t.Fatalf("Error type is not RequestError (actual: %v)", err)
 	}
 }
+
+func TestRequestErrorNotJson(t *testing.T) {
+	defer gock.Off()
+	gock.New("https://api.gandi.net/v5/").
+		Get("/domain/domains").
+		Reply(400).
+		AddHeader("Content-Type", "text/html").
+		BodyString("<html><p>error</p></html>")
+	client := New("", "https://api.gandi.net", "", false, false)
+	response := []map[string]string{}
+	_, err := client.Get("domain/domains", nil, &response)
+
+	if err.Error() != "Response body is not json for status 400" {
+		t.Fatalf("Invalid error for non Json response code")
+	}
+}

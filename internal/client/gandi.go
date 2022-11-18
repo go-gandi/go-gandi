@@ -201,6 +201,10 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		var message types.StandardResponse
+		var ctype = resp.Header["Content-Type"]
+		if ctype[0] != "application/json" {
+			return nil, nil, fmt.Errorf("Response body is not json for status %d", resp.StatusCode)
+		}
 
 		if err = json.Unmarshal(body, &message); err != nil {
 			return nil, nil, fmt.Errorf("Fail to decode the response body (error '%w')", err)
