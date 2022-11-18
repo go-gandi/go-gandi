@@ -102,7 +102,7 @@ func TestRequestErrorNotJson(t *testing.T) {
 		Reply(400).
 		AddHeader("Content-Type", "text/html").
 		BodyString("<html><p>error</p></html>")
-	client := New("", "https://api.gandi.net", "", false, false)
+	client := New("", "https://api.gandi.net", "", false, false, 1*time.Second)
 	response := []map[string]string{}
 	_, err := client.Get("domain/domains", nil, &response)
 
