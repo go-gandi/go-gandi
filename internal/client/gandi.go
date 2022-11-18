@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/go-gandi/go-gandi/config"
 	"github.com/go-gandi/go-gandi/types"
@@ -22,15 +23,19 @@ type Gandi struct {
 	sharingID string
 	debug     bool
 	dryRun    bool
+	timeout   time.Duration
 }
 
 // New instantiates a new Gandi client
-func New(apikey string, apiurl string, sharingID string, debug bool, dryRun bool) *Gandi {
+func New(apikey string, apiurl string, sharingID string, debug bool, dryRun bool, timeout time.Duration) *Gandi {
 	if apiurl == "" {
 		apiurl = config.APIURL
 	}
 	endpoint := apiurl + "/v5/"
-	return &Gandi{apikey: apikey, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun}
+	if timeout == 0 {
+		timeout = config.Timeout
+	}
+	return &Gandi{apikey: apikey, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun, timeout: timeout}
 }
 
 // SetEndpoint sets the URL to the endpoint. It takes a string defining the subpath under https://api.gandi.net/v5/
@@ -144,7 +149,9 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	if err != nil {
 		return nil, nil, fmt.Errorf("Fail to json.Marshal request params (error '%w')", err)
 	}
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: g.timeout,
+	}
 	suffix := ""
 	if len(g.sharingID) != 0 {
 		suffix += "?sharing_id=" + g.sharingID

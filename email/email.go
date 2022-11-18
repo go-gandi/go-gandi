@@ -9,7 +9,7 @@ import (
 
 // New returns an instance of the Email API client
 func New(config config.Config) *Email {
-	client := client.New(config.APIKey, config.APIURL, config.SharingID, config.Debug, config.DryRun)
+	client := client.New(config.APIKey, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
 	client.SetEndpoint("email/")
 	return &Email{client: *client}
 }

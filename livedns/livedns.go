@@ -7,7 +7,7 @@ import (
 
 // New returns an instance of the LiveDNS API client
 func New(config config.Config) *LiveDNS {
-	client := client.New(config.APIKey, config.APIURL, config.SharingID, config.Debug, config.DryRun)
+	client := client.New(config.APIKey, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
 	client.SetEndpoint("livedns/")
 	return &LiveDNS{client: *client}
 }
