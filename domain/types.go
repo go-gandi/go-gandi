@@ -89,6 +89,13 @@ type SharingSpace struct {
 	Name string `json:"name"`
 }
 
+// TrusteeRole defines which actions a role can perform
+type TrusteeRole struct {
+	Name             string `json:"name,omitempty"`
+	AllowTransferout *bool  `json:"allow_transferout,omitempty"`
+	Editable         *bool  `json:"editable,omitempty"`
+}
+
 // Details describes a single domain
 type Details struct {
 	AutoRenew    *AutoRenew     `json:"autorenew"`
@@ -107,7 +114,7 @@ type Details struct {
 	ID           string         `json:"id,omitempty"`
 	SharingID    string         `json:"sharing_id,omitempty"`
 	Tags         []string       `json:"tags,omitempty"`
-	TrusteeRoles []string       `json:"trustee_roles,omitempty"`
+	TrusteeRoles []TrusteeRole  `json:"trustee_roles,omitempty"`
 }
 
 // CreateRequest is used to request a new domain
