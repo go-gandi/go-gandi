@@ -1,6 +1,10 @@
 package email
 
-import "github.com/go-gandi/go-gandi/internal/client"
+import (
+	"time"
+
+	"github.com/go-gandi/go-gandi/internal/client"
+)
 
 // Email is the API client to the Gandi v5 Email API
 type Email struct {
@@ -9,14 +13,15 @@ type Email struct {
 
 // ListMailboxResponse describes mailbox
 type ListMailboxResponse struct {
-	Address     string `json:"address"`
-	Domain      string `json:"domain"`
-	Href        string `json:"href"`
-	ID          string `json:"id"`
-	Login       string `json:"login"`
-	MailboxType string `json:"mailbox_type"`
-	QuotaUsed   int    `json:"quota_used"`
-	Antispam    bool   `json:"antispam"`
+	Address     string    `json:"address"`
+	Antispam    bool      `json:"antispam"`
+	Domain      string    `json:"domain"`
+	ExpiresAt   time.Time `json:"expires_at"`
+	Href        string    `json:"href"`
+	ID          string    `json:"id"`
+	Login       string    `json:"login"`
+	MailboxType string    `json:"mailbox_type"`
+	QuotaUsed   int       `json:"quota_used"`
 }
 
 // MailboxResponse mailbox parameters
