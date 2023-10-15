@@ -15,6 +15,11 @@ type Email struct {
 type ListMailboxResponse struct {
 	Address     string    `json:"address"`
 	Antispam    bool      `json:"antispam"`
+	Autorenew   struct {
+		Duration      int    `json:"duration"`
+		DurationType  string `json:"duration_type"`
+		Enabled       bool   `json:"enabled"`
+	} `json:"autorenew"`
 	Domain      string    `json:"domain"`
 	ExpiresAt   time.Time `json:"expires_at"`
 	Href        string    `json:"href"`
@@ -29,6 +34,11 @@ type MailboxResponse struct {
 	Address     string    `json:"address"`
 	Aliases     []string  `json:"aliases"`
 	Antispam    bool      `json:"antispam"`
+	Autorenew   struct {
+		Duration      int    `json:"duration"`
+		DurationType  string `json:"duration_type"`
+		Enabled       bool   `json:"enabled"`
+	} `json:"autorenew"`
 	Domain      string    `json:"domain"`
 	ExpiresAt   time.Time `json:"expires_at"`
 	Href        string    `json:"href"`
