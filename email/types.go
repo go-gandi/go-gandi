@@ -31,6 +31,7 @@ type MailboxResponse struct {
 		Message string `json:"message"`
 		Enabled bool   `json:"enabled"`
 	} `json:"responder"`
+	ExpiresAt   time.Time `json:"expires_at"`
 	MailboxType string   `json:"mailbox_type"`
 	Login       string   `json:"login"`
 	QuotaUsed   int      `json:"quota_used"`
