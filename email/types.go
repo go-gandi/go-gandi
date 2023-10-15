@@ -26,20 +26,20 @@ type ListMailboxResponse struct {
 
 // MailboxResponse mailbox parameters
 type MailboxResponse struct {
-	Domain    string `json:"domain"`
+	Address     string    `json:"address"`
+	Aliases     []string  `json:"aliases"`
+	Antispam    bool      `json:"antispam"`
+	Domain      string    `json:"domain"`
+	ExpiresAt   time.Time `json:"expires_at"`
+	Href        string    `json:"href"`
+	ID          string    `json:"id"`
+	Login       string    `json:"login"`
+	MailboxType string    `json:"mailbox_type"`
+	QuotaUsed   int       `json:"quota_used"`
 	Responder struct {
 		Message string `json:"message"`
 		Enabled bool   `json:"enabled"`
 	} `json:"responder"`
-	ExpiresAt   time.Time `json:"expires_at"`
-	MailboxType string   `json:"mailbox_type"`
-	Login       string   `json:"login"`
-	QuotaUsed   int      `json:"quota_used"`
-	Aliases     []string `json:"aliases"`
-	Address     string   `json:"address"`
-	Href        string   `json:"href"`
-	ID          string   `json:"id"`
-	Antispam    bool     `json:"antispam"`
 }
 
 // CreateEmailRequest create mailbox request
