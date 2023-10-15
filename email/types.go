@@ -13,12 +13,12 @@ type Email struct {
 
 // ListMailboxResponse describes mailbox
 type ListMailboxResponse struct {
-	Address     string    `json:"address"`
-	Antispam    bool      `json:"antispam"`
-	Autorenew   struct {
-		Duration      int    `json:"duration"`
-		DurationType  string `json:"duration_type"`
-		Enabled       bool   `json:"enabled"`
+	Address   string `json:"address"`
+	Antispam  bool   `json:"antispam"`
+	Autorenew struct {
+		Duration     int    `json:"duration"`
+		DurationType string `json:"duration_type"`
+		Enabled      bool   `json:"enabled"`
 	} `json:"autorenew"`
 	Domain      string    `json:"domain"`
 	ExpiresAt   time.Time `json:"expires_at"`
@@ -31,13 +31,13 @@ type ListMailboxResponse struct {
 
 // MailboxResponse mailbox parameters
 type MailboxResponse struct {
-	Address     string    `json:"address"`
-	Aliases     []string  `json:"aliases"`
-	Antispam    bool      `json:"antispam"`
-	Autorenew   struct {
-		Duration      int    `json:"duration"`
-		DurationType  string `json:"duration_type"`
-		Enabled       bool   `json:"enabled"`
+	Address   string   `json:"address"`
+	Aliases   []string `json:"aliases"`
+	Antispam  bool     `json:"antispam"`
+	Autorenew struct {
+		Duration     int    `json:"duration"`
+		DurationType string `json:"duration_type"`
+		Enabled      bool   `json:"enabled"`
 	} `json:"autorenew"`
 	Domain      string    `json:"domain"`
 	ExpiresAt   time.Time `json:"expires_at"`
@@ -46,7 +46,7 @@ type MailboxResponse struct {
 	Login       string    `json:"login"`
 	MailboxType string    `json:"mailbox_type"`
 	QuotaUsed   int       `json:"quota_used"`
-	Responder struct {
+	Responder   struct {
 		Message string `json:"message"`
 		Enabled bool   `json:"enabled"`
 	} `json:"responder"`
