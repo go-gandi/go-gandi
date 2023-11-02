@@ -6,6 +6,8 @@ import "time"
 type Config struct {
 	// APIKey is available from https://account.gandi.net/en/
 	APIKey string
+	// Token is available from https://account.gandi.net/en/
+	Token string
 	// SharingID is the Organization ID, available from the Organization API
 	SharingID string
 	// Debug enables verbose debugging of HTTP calls

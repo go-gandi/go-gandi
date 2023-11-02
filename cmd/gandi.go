@@ -23,6 +23,7 @@ type cli struct {
 	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
 	DryRun        bool             `kong:"help='Enable dry run mode'"`
 	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
+	Token         string           `kong:"env='GANDI_PERSONAL_ACCESS_TOKEN',help='The Gandi Personal Access Token (PAT) (may be stored in the GANDI_PERSONAL_ACCESS_TOKEN environment variable)'"`
 	APIURL        string           `kong:"help='The Gandi API URL',name='api-url',default='https://api.gandi.net'"`
 	SharingID     string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
@@ -56,6 +57,7 @@ func main() {
 	ctx := kong.Parse(&c)
 	g := config.Config{
 		APIKey:    c.APIKey,
+		Token:     c.Token,
 		SharingID: c.SharingID,
 		Debug:     c.Debug,
 		DryRun:    c.DryRun,
