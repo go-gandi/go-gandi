@@ -168,10 +168,10 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	if err != nil {
 		return nil, nil, fmt.Errorf("Fail to create the request (error '%w')", err)
 	}
-	if g.apikey != "" {
-		req.Header.Add("Authorization", "Apikey "+g.apikey)
-	} else {
+	if g.token != "" {
 		req.Header.Add("Authorization", "Bearer "+g.token)
+	} else {
+		req.Header.Add("Authorization", "Apikey "+g.apikey)
 	}
 	req.Header.Add("Content-Type", "application/json")
 	if g.dryRun {
