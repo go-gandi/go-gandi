@@ -38,6 +38,8 @@ func New(apikey string, token string, apiurl string, sharingID string, debug boo
 	}
 	if apikey != "" {
 		log.Println("Warning: Authenticating using an API key is deprecated - please use a Personal Access Token instead.")
+	} else if apikey == "" && token == "" {
+		log.Println("Warning: No authentication credentials provided.")
 	}
 	return &Gandi{apikey: apikey, token: token, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun, timeout: timeout}
 }
