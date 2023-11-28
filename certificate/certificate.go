@@ -9,7 +9,7 @@ import (
 
 // New returns an instance of the Certificate API client
 func New(config config.Config) *Certificate {
-	client := client.New(config.APIKey, config.Token, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
+	client := client.New(config.APIKey, config.PersonalAccessToken, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
 	client.SetEndpoint("certificate/")
 	return &Certificate{client: *client}
 }

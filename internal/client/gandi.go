@@ -19,7 +19,7 @@ import (
 // Gandi is the handle used to interact with the Gandi API
 type Gandi struct {
 	apikey    string
-	token     string
+	pat       string
 	endpoint  string
 	sharingID string
 	debug     bool
@@ -28,7 +28,7 @@ type Gandi struct {
 }
 
 // New instantiates a new Gandi client
-func New(apikey string, token string, apiurl string, sharingID string, debug bool, dryRun bool, timeout time.Duration) *Gandi {
+func New(apikey string, pat string, apiurl string, sharingID string, debug bool, dryRun bool, timeout time.Duration) *Gandi {
 	if apiurl == "" {
 		apiurl = config.APIURL
 	}
@@ -36,7 +36,7 @@ func New(apikey string, token string, apiurl string, sharingID string, debug boo
 	if timeout == 0 {
 		timeout = config.Timeout
 	}
-	return &Gandi{apikey: apikey, token: token, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun, timeout: timeout}
+	return &Gandi{apikey: apikey, pat: pat, endpoint: endpoint, sharingID: sharingID, debug: debug, dryRun: dryRun, timeout: timeout}
 }
 
 // SetEndpoint sets the URL to the endpoint. It takes a string defining the subpath under https://api.gandi.net/v5/
@@ -165,8 +165,8 @@ func (g *Gandi) doAskGandi(method, path string, p interface{}, extraHeaders [][2
 	if err != nil {
 		return nil, nil, fmt.Errorf("Fail to create the request (error '%w')", err)
 	}
-	if g.token != "" {
-		req.Header.Add("Authorization", "Bearer "+g.token)
+	if g.pat != "" {
+		req.Header.Add("Authorization", "Bearer "+g.pat)
 	} else {
 		req.Header.Add("Authorization", "Apikey "+g.apikey)
 	}
