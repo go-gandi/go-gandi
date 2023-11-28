@@ -4,8 +4,10 @@ import "time"
 
 // Config manages common config for all Gandi API types
 type Config struct {
-	// APIKey is available from https://account.gandi.net/en/
+	// APIKey has been deprecated by Gandi in favor of Personal Access Token. Please refer to the Gandi authentication documentation: https://api.gandi.net/docs/authentication/ for details.
 	APIKey string
+	// PersonalAccessToken is a configured token from the Gandi Admin application. Please refer to the Gandi authentication documentation for its creation: https://api.gandi.net/docs/authentication/
+	PersonalAccessToken string
 	// SharingID is the Organization ID, available from the Organization API
 	SharingID string
 	// Debug enables verbose debugging of HTTP calls

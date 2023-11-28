@@ -11,7 +11,7 @@ import (
 
 // New returns an instance of the Simple Hosting API client
 func New(config config.Config) *SimpleHosting {
-	client := client.New(config.APIKey, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
+	client := client.New(config.APIKey, config.PersonalAccessToken, config.APIURL, config.SharingID, config.Debug, config.DryRun, config.Timeout)
 	client.SetEndpoint("simplehosting/")
 	return &SimpleHosting{client: *client}
 }

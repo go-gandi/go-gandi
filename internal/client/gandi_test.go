@@ -30,7 +30,7 @@ func TestAskGandiCollection(t *testing.T) {
 		Reply(200).
 		JSON([]map[string]string{map[string]string{"item": "item2"}})
 
-	client := New("", "https://api.gandi.net", "", false, false, 1*time.Second)
+	client := New("", "", "https://api.gandi.net", "", false, false, 1*time.Second)
 	var elements []element
 	_, rawMessages, err := client.askGandiCollection("GET", "domain/domains", nil)
 	for _, rawMessage := range rawMessages {
@@ -64,7 +64,7 @@ func TestAskGandiCollectionEmpty(t *testing.T) {
 		Get("/domain/domains").
 		Reply(200).
 		JSON([]map[string]string{})
-	client := New("", "https://api.gandi.net", "", false, false, 1*time.Second)
+	client := New("", "", "https://api.gandi.net", "", false, false, 1*time.Second)
 	_, rawMessages, err := client.askGandiCollection("GET", "domain/domains", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -81,7 +81,7 @@ func TestRequestError(t *testing.T) {
 		Get("/domain/domains").
 		Reply(500).
 		JSON(types.StandardResponse{})
-	client := New("", "https://api.gandi.net", "", false, false, 1*time.Second)
+	client := New("", "", "https://api.gandi.net", "", false, false, 1*time.Second)
 	response := []map[string]string{}
 	_, err := client.Get("domain/domains", nil, &response)
 
@@ -102,7 +102,7 @@ func TestRequestErrorNotJson(t *testing.T) {
 		Reply(400).
 		AddHeader("Content-Type", "text/html").
 		BodyString("<html><p>error</p></html>")
-	client := New("", "https://api.gandi.net", "", false, false, 1*time.Second)
+	client := New("", "", "https://api.gandi.net", "", false, false, 1*time.Second)
 	response := []map[string]string{}
 	_, err := client.Get("domain/domains", nil, &response)
 

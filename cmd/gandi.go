@@ -16,15 +16,16 @@ import (
 
 type cli struct {
 	globals
-	LiveDNS       liveDNSCmd       `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
-	Domain        domainCmd        `kong:"cmd,help='Manage Domains'"`
-	SimpleHosting simpleHostingCmd `kong:"cmd,help='Manage Simple Hosting'"`
-	Certificate   certificateCmd   `kong:"cmd,help='Manage Simple Hosting'"`
-	Debug         bool             `kong:"short='d',help='Enable debug logging'"`
-	DryRun        bool             `kong:"help='Enable dry run mode'"`
-	APIKey        string           `kong:"env='GANDI_KEY',help='The Gandi LiveDNS API key (may be stored in the GANDI_KEY environment variable)'"`
-	APIURL        string           `kong:"help='The Gandi API URL',name='api-url',default='https://api.gandi.net'"`
-	SharingID     string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
+	LiveDNS             liveDNSCmd       `kong:"cmd,name='livedns',help='Manage LiveDNS'"`
+	Domain              domainCmd        `kong:"cmd,help='Manage Domains'"`
+	SimpleHosting       simpleHostingCmd `kong:"cmd,help='Manage Simple Hosting'"`
+	Certificate         certificateCmd   `kong:"cmd,help='Manage Simple Hosting'"`
+	Debug               bool             `kong:"short='d',help='Enable debug logging'"`
+	DryRun              bool             `kong:"help='Enable dry run mode'"`
+	APIKey              string           `kong:"env='GANDI_KEY',help='The deprecated Gandi API Key (may be stored in the GANDI_KEY environment variable)'"`
+	PersonalAccessToken string           `kong:"env='GANDI_PERSONAL_ACCESS_TOKEN',help='The Gandi Personal Access Token (PAT) (may be stored in the GANDI_PERSONAL_ACCESS_TOKEN environment variable)'"`
+	APIURL              string           `kong:"help='The Gandi API URL',name='api-url',default='https://api.gandi.net'"`
+	SharingID           string           `kong:"short='i',env='GANDI_SHARING_ID',help='The Gandi LiveDNS sharingID (may be stored in the GANDI_SHARING_ID environment variable)'"`
 }
 
 type globals struct {
@@ -55,11 +56,12 @@ func main() {
 	}
 	ctx := kong.Parse(&c)
 	g := config.Config{
-		APIKey:    c.APIKey,
-		SharingID: c.SharingID,
-		Debug:     c.Debug,
-		DryRun:    c.DryRun,
-		APIURL:    c.APIURL,
+		APIKey:              c.APIKey,
+		PersonalAccessToken: c.PersonalAccessToken,
+		SharingID:           c.SharingID,
+		Debug:               c.Debug,
+		DryRun:              c.DryRun,
+		APIURL:              c.APIURL,
 	}
 	c.globals.domainHandle = gandi.NewDomainClient(g)
 	c.globals.liveDNSHandle = gandi.NewLiveDNSClient(g)
